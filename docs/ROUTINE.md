@@ -139,7 +139,7 @@ One check, start to finish. Steps 2–3 happen in one request (`/api/check`), so
 - [ ] Read this routine once from start to finish. Copy the must-have list into a checklist you will tick (GitHub Issues, a GitHub Project board, or Notion).
 - [x] Make a **Hugging Face** account (free, no card). Create an access token with *write* rights (Settings → Access Tokens). Save it in a password manager, not in a file.
 - [x] Make a **Vercel** account by signing in with GitHub (Hobby plan, no card).
-- [ ] Check the Gemini key still works: a 5-line Python script that asks Gemini 3.5 Flash-Lite “say hi”. Keep the key in an environment variable only.
+- [x] Check the Gemini key still works: a 5-line Python script that asks Gemini 3.5 Flash-Lite “say hi”. Keep the key in an environment variable only.
 - [ ] Tell your teammate the plan and split work if possible (for example: teammate writes `diseases.json` on Day 4 and collects real photos for Day 6).
 
 #### Block B · Repo and back-end skeleton (≈ 2 h)

@@ -6,7 +6,7 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 
 | Day | Date | Goal | Status |
 | --- | --- | --- | --- |
-| 1 | Tue 17 Nov | Set up the project, connect all pages | almost done (Gemini key check, checklist, tell teammate left) |
+| 1 | Tue 17 Nov | Set up the project, connect all pages | almost done (checklist, tell teammate left) |
 | 2 | Wed 18 Nov | Make the app's model files in Colab | not started |
 | 3 | Thu 19 Nov | Back end: photo in, disease out | not started |
 | 4 | Fri 20 Nov | Back end: Gemini advice + disease facts | not started |
@@ -29,13 +29,13 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 - Models: E4 works in the research repo (5-fold); the app's model files (Day 2) are not built yet.
 - Accounts: Hugging Face account + write token, Vercel account (Hobby) — done 18 Nov.
   `GEMINI_API_KEY`, `HF_TOKEN`, `ALLOWED_ORIGINS` are set in `backend/.env` (git-ignored).
-  Gemini key not yet tested with `scripts/check_gemini.py`.
+  Gemini key works: `backend/scripts/check_gemini.py` got a reply from `gemini-3.5-flash-lite` (18 Nov).
 
 ## Daily log
 
 ### Day 1 — Tue 17 Nov
 - **Done:** router + 8 pages, NavLink menus, `api.js` + online dot, FastAPI `/api/health` + CORS, `requirements.txt`, `.env.example`, 3 tests, first commit.
-- **Left over:** Gemini key check, checklist, tell teammate. (HF + Vercel accounts, HF token, GitHub repo + push: done 18 Nov.)
+- **Left over:** checklist, tell teammate. (HF + Vercel accounts, HF token, GitHub repo + push, Gemini key check: done 18 Nov.)
 - **Blockers:** none (Python 3.11 installed today).
 
 <!-- one entry per day: done / left over / blockers -->
@@ -58,7 +58,7 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 ## Bugs and ideas for later
 
 - Vercel (Day 8): add a rewrite so deep links like `/history` don't give 404 (we use BrowserRouter).
-- Gemini model ID `gemini-3.5-flash-lite` is a guess in `scripts/check_gemini.py` — confirm in AI Studio, set `GEMINI_MODEL` in `.env` if different.
+- ~~Gemini model ID `gemini-3.5-flash-lite` is a guess~~ — confirmed working 18 Nov (no `GEMINI_MODEL` needed in `.env`).
 - Day 2: pin `scikit-learn==<Colab version>` in `requirements.txt`. Day 3: ask Nabil, then install torch + transformers (~1 GB).
 - The laptop's default Python is 3.14 — always use `backend/.venv` (3.11).
 - Git shows LF/CRLF warnings on Windows; harmless. Could add a `.gitattributes` later.
