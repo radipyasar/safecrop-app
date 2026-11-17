@@ -162,7 +162,7 @@ One check, start to finish. Steps 2–3 happen in one request (`/api/check`), so
 
 - [x] Both servers start with one command each (`npm run dev`, `uvicorn …`).
 - [x] Clicking every menu item opens the right page; a wrong address shows “page not found”.
-- [ ] The front end shows “server online” when the back end runs and “offline” when it doesn't.
+- [x] The front end shows “server online” when the back end runs and “offline” when it doesn't.
 - [ ] Code is on GitHub; `.env` is not.
 
 **If you get stuck**
