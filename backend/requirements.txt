@@ -1,0 +1,30 @@
+# SafeCrop back end (Python 3.11).
+# CPU-only PyTorch: the extra index stops pip from downloading the huge GPU build on Linux (Hugging Face Space).
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# web server
+fastapi
+uvicorn[standard]
+python-multipart
+python-dotenv
+
+# photos
+pillow
+pillow-heif
+
+# model and search
+numpy
+torch
+transformers
+safetensors
+huggingface_hub
+# pin to the exact version used in Colab on Day 2 (the photo-check forests need the same version)
+scikit-learn
+joblib
+
+# advice
+google-genai
+
+# tests
+pytest
+httpx

@@ -1,0 +1,18 @@
+# secrets
+.env
+*.env.local
+.env.*.local
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# node
+node_modules/
+dist/
+# models and data (kept on Hugging Face + Drive, not in git)
+backend/models/
+*.db
+# personal Claude Code notes
+CLAUDE.local.md
+.claude/settings.local.json

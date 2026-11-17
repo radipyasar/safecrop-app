@@ -1,0 +1,48 @@
+# SafeCrop web app — progress
+
+Update this at the end of every day (the `/wrapup` command does it for you).
+
+## Status by day
+
+| Day | Date | Goal | Status |
+| --- | --- | --- | --- |
+| 1 | Tue 17 Nov | Set up the project, connect all pages | not started |
+| 2 | Wed 18 Nov | Make the app's model files in Colab | not started |
+| 3 | Thu 19 Nov | Back end: photo in, disease out | not started |
+| 4 | Fri 20 Nov | Back end: Gemini advice + disease facts | not started |
+| 5 | Sat 21 Nov | Front end: the full check flow | not started |
+| 6 | Sun 22 Nov | Real photos + Week 10 update + disease pages | not started |
+| 7 | Mon 23 Nov | History, Profile, Home with real data | not started |
+| 8 | Tue 24 Nov | Put it online (Hugging Face + Vercel) | not started |
+| 9 | Wed 25 Nov | Test everything, fix bugs | not started |
+| 10 | Thu 26 Nov | Polish, safety, documents | not started |
+| 11 | Fri 27 Nov | Freeze, demo video, backups | not started |
+
+## Where things are now (17 Nov)
+
+- Front end: React + Vite home page only (sample data in `frontend/src/data/sample.js`). No routing yet.
+- Back end: not started.
+- Models: E4 works in the research repo (5-fold); the app's model files (Day 2) are not built yet.
+- Accounts: Gemini AI Studio key exists. Hugging Face and Vercel accounts: to check on Day 1.
+
+## Daily log
+
+<!-- one entry per day: done / left over / blockers -->
+
+## Numbers for slides
+
+| What | Value | Date measured |
+| --- | --- | --- |
+| Time per check, laptop CPU | | |
+| Time per check, Hugging Face Space | | |
+| Space start-up time after sleeping | | |
+| Fold 0, E4 L3 with vs without healthy / look-alike pictures | | |
+| Fold 0, compressed L3 with vs without resample | | |
+| Real photos: right / wrong / not sure (of N) | | |
+| Gemini agrees with CLIP (% of checks) | | |
+| Fallback advice used (count) | | |
+| Test plan passed (of 20) | | |
+
+## Bugs and ideas for later
+
+-
