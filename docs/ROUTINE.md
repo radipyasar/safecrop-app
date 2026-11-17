@@ -137,18 +137,18 @@ One check, start to finish. Steps 2–3 happen in one request (`/api/check`), so
 #### Block A · Plan and accounts (≈ 1.5 h)
 
 - [ ] Read this routine once from start to finish. Copy the must-have list into a checklist you will tick (GitHub Issues, a GitHub Project board, or Notion).
-- [ ] Make a **Hugging Face** account (free, no card). Create an access token with *write* rights (Settings → Access Tokens). Save it in a password manager, not in a file.
-- [ ] Make a **Vercel** account by signing in with GitHub (Hobby plan, no card).
+- [x] Make a **Hugging Face** account (free, no card). Create an access token with *write* rights (Settings → Access Tokens). Save it in a password manager, not in a file.
+- [x] Make a **Vercel** account by signing in with GitHub (Hobby plan, no card).
 - [ ] Check the Gemini key still works: a 5-line Python script that asks Gemini 3.5 Flash-Lite “say hi”. Keep the key in an environment variable only.
 - [ ] Tell your teammate the plan and split work if possible (for example: teammate writes `diseases.json` on Day 4 and collects real photos for Day 6).
 
 #### Block B · Repo and back-end skeleton (≈ 2 h)
 
-- [ ] Create a new GitHub repo `safecrop-app`. Move `safecrop-web` into `frontend/`.
+- [x] Create a new GitHub repo `safecrop-app`. Move `safecrop-web` into `frontend/`.
 - [x] Create `backend/` with a Python 3.11 virtual environment and `requirements.txt` (fastapi, uvicorn\[standard\], python-multipart, pillow, pillow-heif, numpy, scikit-learn, joblib, torch (CPU), transformers, safetensors, huggingface_hub, google-genai, python-dotenv, pytest, httpx).
 - [x] Write `app/main.py` with `GET /api/health` returning `{"status": "ok"}` and CORS allowing `http://localhost:5173`.
 - [x] Add `.gitignore` (`.env`, `.venv/`, `node_modules/`, `backend/models/`, `*.db`) and `.env.example` (`GEMINI_API_KEY=`, `HF_TOKEN=`, `ALLOWED_ORIGINS=`).
-- [ ] Run `uvicorn app.main:app --reload`, open `http://localhost:8000/docs`, try the health call. First commit and push.
+- [x] Run `uvicorn app.main:app --reload`, open `http://localhost:8000/docs`, try the health call. First commit and push.
 
 #### Block C · Front-end pages and links (≈ 2 h)
 
@@ -163,7 +163,7 @@ One check, start to finish. Steps 2–3 happen in one request (`/api/check`), so
 - [x] Both servers start with one command each (`npm run dev`, `uvicorn …`).
 - [x] Clicking every menu item opens the right page; a wrong address shows “page not found”.
 - [x] The front end shows “server online” when the back end runs and “offline” when it doesn't.
-- [ ] Code is on GitHub; `.env` is not.
+- [x] Code is on GitHub; `.env` is not.
 
 **If you get stuck**
 

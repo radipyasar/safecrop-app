@@ -6,7 +6,7 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 
 | Day | Date | Goal | Status |
 | --- | --- | --- | --- |
-| 1 | Tue 17 Nov | Set up the project, connect all pages | partly done (accounts + GitHub push left) |
+| 1 | Tue 17 Nov | Set up the project, connect all pages | almost done (Gemini key check, checklist, tell teammate left) |
 | 2 | Wed 18 Nov | Make the app's model files in Colab | not started |
 | 3 | Thu 19 Nov | Back end: photo in, disease out | not started |
 | 4 | Fri 20 Nov | Back end: Gemini advice + disease facts | not started |
@@ -25,16 +25,17 @@ Update this at the end of every day (the `/wrapup` command does it for you).
   `src/api.js` has `getHealth()`; the sidebar shows a server online / offline dot.
 - Back end: FastAPI skeleton with `GET /api/health` and CORS; 3 pytest tests pass. Python 3.11 venv in
   `backend/.venv` with the small packages only (torch / transformers not installed yet).
-- Git: local repo, 1 commit. Not on GitHub yet.
+- Git: on GitHub (`radipyasar/safecrop-app`), `main` pushed. History checked 18 Nov: no key in any commit.
 - Models: E4 works in the research repo (5-fold); the app's model files (Day 2) are not built yet.
-- Accounts: Gemini AI Studio key exists (not yet tested with `scripts/check_gemini.py`).
-  Hugging Face and Vercel accounts: not made yet.
+- Accounts: Hugging Face account + write token, Vercel account (Hobby) — done 18 Nov.
+  `GEMINI_API_KEY`, `HF_TOKEN`, `ALLOWED_ORIGINS` are set in `backend/.env` (git-ignored).
+  Gemini key not yet tested with `scripts/check_gemini.py`.
 
 ## Daily log
 
 ### Day 1 — Tue 17 Nov
 - **Done:** router + 8 pages, NavLink menus, `api.js` + online dot, FastAPI `/api/health` + CORS, `requirements.txt`, `.env.example`, 3 tests, first commit.
-- **Left over:** Hugging Face + Vercel accounts, Gemini key check, create GitHub repo + push, checklist, tell teammate.
+- **Left over:** Gemini key check, checklist, tell teammate. (HF + Vercel accounts, HF token, GitHub repo + push: done 18 Nov.)
 - **Blockers:** none (Python 3.11 installed today).
 
 <!-- one entry per day: done / left over / blockers -->
