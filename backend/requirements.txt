@@ -11,16 +11,19 @@ python-dotenv
 # photos
 pillow
 pillow-heif
+# photo check (app/photo_check.py): same OpenCV as Colab on Day 2, so the 16 measurements match the forests
+opencv-python-headless==4.14.0.*
 
 # model and search
-numpy
+# pinned to the versions that made backend/models on Day 2 (Colab, 19 Nov 2026; see models/export_info.json):
+# photo_check.joblib only loads with the same scikit-learn, and numpy must stay on 2.x
+numpy==2.4.6
 torch
 transformers
 safetensors
 huggingface_hub
-# pin to the exact version used in Colab on Day 2 (the photo-check forests need the same version)
-scikit-learn
-joblib
+scikit-learn==1.6.1
+joblib==1.6.0
 
 # advice
 google-genai

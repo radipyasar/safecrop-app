@@ -175,31 +175,31 @@ If CORS blocks the call (red error in the browser console), check that the back 
 
 #### Block A · Train the app model (E4 settings, all photos) (≈ 2 h)
 
-- [ ] Make `SafeCrop_app_model_export.ipynb` from the repo's `finetune.py` (ask Claude Code to write it). Use the same default settings as E3/E4: last 4 blocks + projection, 15 epochs, lr 1e-5 (head 1e-3), consistency weight 1.0, fixed seed.
-- [ ] Train on **all 240 photos** of the 8 diseases (no folds this time, because the app should learn from everything). On a T4 this takes about 3–5 minutes.
-- [ ] Save **only the changed weights** (last 4 blocks, final norm, visual projection) as `clip_ft_delta.safetensors`. The app loads the normal CLIP ViT-L/14 from Hugging Face and puts these on top. Check that loading them back gives the same embedding for one photo, and note the seed and library versions.
+- [x] Make `SafeCrop_app_model_export.ipynb` from the repo's `finetune.py` (ask Claude Code to write it). Use the same default settings as E3/E4: last 4 blocks + projection, 15 epochs, lr 1e-5 (head 1e-3), consistency weight 1.0, fixed seed.
+- [x] Train on **all 240 photos** of the 8 diseases (no folds this time, because the app should learn from everything). On a T4 this takes about 3–5 minutes.
+- [x] Save **only the changed weights** (last 4 blocks, final norm, visual projection) as `clip_ft_delta.safetensors`. The app loads the normal CLIP ViT-L/14 from Hugging Face and puts these on top. Check that loading them back gives the same embedding for one photo, and note the seed and library versions.
 
 #### Block B · Build the picture database (≈ 1.5 h)
 
-- [ ] For every one of the 240 photos: the clean photo + 15 noisy copies (5 noise types × L1–L3, seed family 2026, not 299). Embed all with the fine-tuned model.
-- [ ] Add the 240 PlantVillage extras (4 look-alike diseases + 3 healthy leaves) and their noisy copies, labelled `healthy_…` or `other_…`, so the app can say “healthy” or “not in our list”.
-- [ ] Save `database.npz`: embeddings (normalised), label, photo_id, is_copy, noise type, level. About 7,700 × 768 numbers, roughly 25 MB.
-- [ ] Save a 200-pixel JPEG thumbnail of every **clean** photo in `thumbs/`. The app always shows the clean picture, even when a noisy copy was the match.
+- [x] For every one of the 240 photos: the clean photo + 15 noisy copies (5 noise types × L1–L3, seed family 2026, not 299). Embed all with the fine-tuned model.
+- [x] Add the 240 PlantVillage extras (4 look-alike diseases + 3 healthy leaves) and their noisy copies, labelled `healthy_…` or `other_…`, so the app can say “healthy” or “not in our list”.
+- [x] Save `database.npz`: embeddings (normalised), label, photo_id, is_copy, noise type, level. About 7,700 × 768 numbers, roughly 25 MB.
+- [x] Save a 200-pixel JPEG thumbnail of every **clean** photo in `thumbs/`. The app always shows the clean picture, even when a noisy copy was the match.
 
 #### Block C · Photo check, thresholds and checks (≈ 2 h)
 
-- [ ] Retrain the photo-check forests on all 960 noisy test images; save `photo_check.joblib` + the feature code as `photo_check.py`; note the scikit-learn version.
-- [ ] **Pick the “sure” and “not sure” cuts** from the repo's out-of-fold E4 predictions (not the new model): the vote share at which answers are right at least 95% of the time (“sure”), and the one below which they are right less than 70% (“not sure”). Save them in `thresholds.json`.
-- [ ] **Pick the “not a leaf” cut:** embed 30 non-leaf photos (desk, hand, sky, food); choose the best-similarity value that separates them from leaves.
-- [ ] **Check the healthy pictures don't hurt too much:** on fold 0 (out-of-fold), compare E4 at L3 with and without the healthy / look-alike pictures in the database. Write both numbers down for your slides (in the frozen noisy album it was 95.2% vs 88.1%).
-- [ ] **Check the resample fix on E4:** compressed L3 photos with and without resample (fold 0). Keep the fix in the app only if it helps or ties.
-- [ ] Upload all files to a **private Hugging Face model repo** (e.g. `NabilRafi/safecrop-models`) and to Drive; download them into `backend/models/`.
+- [x] Retrain the photo-check forests on all 960 noisy test images; save `photo_check.joblib` + the feature code as `photo_check.py`; note the scikit-learn version.
+- [x] **Pick the “sure” and “not sure” cuts** from the repo's out-of-fold E4 predictions (not the new model): the vote share at which answers are right at least 95% of the time (“sure”), and the one below which they are right less than 70% (“not sure”). Save them in `thresholds.json`.
+- [x] **Pick the “not a leaf” cut:** embed 30 non-leaf photos (desk, hand, sky, food); choose the best-similarity value that separates them from leaves.
+- [x] **Check the healthy pictures don't hurt too much:** on fold 0 (out-of-fold), compare E4 at L3 with and without the healthy / look-alike pictures in the database. Write both numbers down for your slides (in the frozen noisy album it was 95.2% vs 88.1%).
+- [x] **Check the resample fix on E4:** compressed L3 photos with and without resample (fold 0). Keep the fix in the app only if it helps or ties.
+- [x] Upload all files to a **private Hugging Face model repo** (e.g. `NabilRafi/safecrop-models`) and to Drive; download them into `backend/models/`.
 
 **Done when**
 
-- [ ] `backend/models/` has `clip_ft_delta.safetensors`, `database.npz`, `thumbs/`, `photo_check.joblib`, `thresholds.json`.
-- [ ] A short `docs/MODEL_CARD.md` lists: training data, settings, seed, versions, thresholds, and the two fold-0 checks.
-- [ ] The same files are safe in the Hugging Face model repo and on Drive.
+- [x] `backend/models/` has `clip_ft_delta.safetensors`, `database.npz`, `thumbs/`, `photo_check.joblib`, `thresholds.json`.
+- [x] A short `docs/MODEL_CARD.md` lists: training data, settings, seed, versions, thresholds, and the two fold-0 checks.
+- [x] The same files are safe in the Hugging Face model repo and on Drive.
 
 ## Day 3 — Thursday 19 November: Back end: photo in, disease out
 

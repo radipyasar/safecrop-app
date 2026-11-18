@@ -7,7 +7,7 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 | Day | Date | Goal | Status |
 | --- | --- | --- | --- |
 | 1 | Tue 17 Nov | Set up the project, connect all pages | done (2 small to-dos: checklist, tell teammate) |
-| 2 | Wed 18 Nov | Make the app's model files in Colab | not started (moved to Thu 19 Nov) |
+| 2 | Wed 18 Nov | Make the app's model files in Colab | done 19 Nov (Colab run 18 min; files in `backend/models/`, HF, Drive) |
 | 3 | Thu 19 Nov | Back end: photo in, disease out | not started |
 | 4 | Fri 20 Nov | Back end: Gemini advice + disease facts | not started |
 | 5 | Sat 21 Nov | Front end: the full check flow | not started |
@@ -53,8 +53,14 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 | Time per check, laptop CPU | | |
 | Time per check, Hugging Face Space | | |
 | Space start-up time after sleeping | | |
-| Fold 0, E4 L3 with vs without healthy / look-alike pictures | | |
-| Fold 0, compressed L3 with vs without resample | | |
+| Fold 0, E4 L3 with vs without healthy / look-alike pictures | 85.4% (41/48) with vs 97.9% (47/48) without; McNemar 0 vs 6, p = 0.031 (all 6 → healthy / not in list) | 19 Nov 2026 |
+| Fold 0, compressed L3 with vs without resample | 8/9 vs 8/9 (tie → resample kept) | 19 Nov 2026 |
+| Fold 0, app database, answers by decision | sure 99.4% right (161/162), likely 85.7% (18/21), not sure 44.4% (4/9) | 19 Nov 2026 |
+| Cut-offs (recipe-B out-of-fold E4 answers) | sure ≥ 0.902 (right 98.8%), not sure < 0.601 (right 41.0%) | 19 Nov 2026 |
+| "Not a leaf" cut-off (fold 0) | 0.760: 192/192 held-out leaves kept, 44/44 non-leaf pictures rejected | 19 Nov 2026 |
+| Photo check, fair test on 960 images | problem 98.0%, level 93.2% (within one level 99.7%) | 19 Nov 2026 |
+| CLIP embedding only, laptop CPU (not a full check) | 0.83 s per photo | 19 Nov 2026 |
+| Colab export run (T4): training / whole notebook | 176 s / 18 min | 19 Nov 2026 |
 | Real photos: right / wrong / not sure (of N) | | |
 | Gemini agrees with CLIP (% of checks) | | |
 | Fallback advice used (count) | | |
@@ -66,6 +72,12 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 - Vercel (Day 8): add a rewrite so deep links like `/history` don't give 404 (we use BrowserRouter).
 - ~~Gemini model ID `gemini-3.5-flash-lite` is a guess~~ — confirmed working 18 Nov (no `GEMINI_MODEL` needed in `.env`).
 - Day 2: pin `scikit-learn==<Colab version>` in `requirements.txt`. Day 3: ask Nabil, then install torch + transformers (~1 GB).
+  The notebook prints the exact line to pin ("PIN THESE": scikit-learn, numpy, opencv-python-headless); the back end
+  also needs `opencv-python-headless` for `photo_check.py` (not in `requirements.txt` yet).
+- Day 2 notebook: `notebooks/SafeCrop_app_model_export.ipynb`; its one input zip is made by
+  `python notebooks/make_colab_inputs.py` (→ `dist/safecrop_app_inputs.zip`, git-ignored). Smoke-tested on the laptop
+  (tiny fake CLIP, all 16 steps pass). Cut-offs it will pick (from recipe-B out-of-fold E4 answers): sure ≥ 0.902,
+  not sure < 0.601.
 - Plan is 1 day behind (Day 2 moved to Thu 19 Nov). Catch-up idea: run Day 2 Block A+B in Colab first; while the
   fold-0 checks run, start the Day 3 back end. If still behind by Day 7, drop nice-to-haves first
   (feedback button, Bangla, home-screen icon, webcam, stats page) — never must-haves.
