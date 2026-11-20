@@ -8,7 +8,7 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 | --- | --- | --- | --- |
 | 1 | Tue 17 Nov | Set up the project, connect all pages | done (2 small to-dos: checklist, tell teammate) |
 | 2 | Wed 18 Nov | Make the app's model files in Colab | done 19 Nov (Colab run 18 min; files in `backend/models/`, HF, Drive) |
-| 3 | Sat 21 Nov | Back end: photo in, disease out | not started |
+| 3 | Sat 21 Nov | Back end: photo in, disease out | done (`/api/check` works, 79 tests, 0.82 s per check) |
 | 4 | Sun 22 Nov | Back end: Gemini advice + disease facts + Week 10 update | not started |
 | 5 | Mon 23 Nov | Front end: the full check flow | not started |
 | 6 | Tue 24 Nov | Real photos + disease pages | not started |
@@ -20,21 +20,28 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 
 Dates shifted by 2 days on 21 Nov (Day 3 = Sat 21 … Day 11 = Sun 29).
 
-## Where things are now (19 Nov, end of Day 2 — done one day late)
+## Where things are now (21 Nov, end of Day 3 — on the shifted plan)
 
 - Front end: routing works — 7 pages + "page not found"; menus highlight the current page; home buttons
   open `/check`. Only the home page has real content (sample data); other pages are titles.
-  `src/api.js` has `getHealth()`; the sidebar shows a server online / offline dot.
-- Back end: FastAPI skeleton with `GET /api/health` and CORS; 3 pytest tests pass. Python 3.11 venv in
-  `backend/.venv` with the small packages only — torch, transformers, scikit-learn, opencv not installed yet
-  (`requirements.txt` now pins scikit-learn 1.6.1, numpy 2.4.6, joblib 1.6.0, opencv-python-headless 4.14.0.*).
+  `src/api.js` has `getHealth()`; the sidebar shows a server online / offline dot. (Day 5 connects it to `/api/check`.)
+- Back end: **`POST /api/check` works** — photo check (16 measurements + forests, resample for blocky photos),
+  fine-tuned CLIP, 5-picture vote, option C decisions, 5 neighbours from different photos, clean thumbnails at
+  `/static/thumbs/`, `timing_ms`. Model loads once in the background at start-up (`/api/health` → `model_loaded`;
+  `/api/check` says "starting" with 503 until then). Uploads: JPEG / PNG / WebP / HEIC ≤ 10 MB, EXIF turn fixed,
+  clear 400 / 413 / 415 errors. The newest 1,000 results (never photos) are kept in memory for `/api/advice`.
+  Files: `app/main.py`, `model.py`, `predict.py`, `photo_check.py`, `schemas.py`. **79 tests pass** (37 s).
+  `scripts/time_checks.py` times start-up and checks (also `--url` for the Space on Day 8).
+  All packages installed in `backend/.venv`; torch 2.14.1, transformers 5.22.1, Pillow 11.3.0 pinned to Colab.
+- Not built yet: `/api/advice`, `/api/diseases`, `data/diseases.json`, SQLite log (Day 4).
 - Models: **done.** `backend/models/` (git-ignored) has `clip_ft_delta.safetensors`, `database.npz` (7,680 × 768),
   `thumbs/` (480), `photos.csv`, `photo_check.joblib` + `photo_check.py`, `thresholds.json`, `README.md`,
   `export_info.json`, `checks/`. Same files in the private HF repo `Radip/safecrop-models` and Drive
   `SafeCrop_app/app_model_files`. Checksums 10/10; all load with the pinned versions on Python 3.11; laptop CPU gives
   the same embeddings as the Colab database (cosine 1.000000). CLIP ViT-L/14 (1.7 GB) is in the laptop's HF cache.
 - Docs: `docs/MODEL_CARD.md` written. Notebook `notebooks/SafeCrop_app_model_export.ipynb` + `make_colab_inputs.py`.
-- Git: on GitHub (`radipyasar/safecrop-app`), `main` pushed (`e57cd61`, 19 Nov). No keys in git.
+- Git: on GitHub (`radipyasar/safecrop-app`). Day 3 work is in 3 commits on `main` (`32924ef`, `b291959`,
+  `ae7d49e`) — push them. No keys in git.
 - Accounts: Hugging Face account + write token, Vercel account (Hobby) — done 18 Nov.
   `GEMINI_API_KEY`, `HF_TOKEN`, `ALLOWED_ORIGINS` are set in `backend/.env` (git-ignored); `HF_TOKEN` is also a
   Colab secret. Gemini key works: `backend/scripts/check_gemini.py` got a reply from `gemini-3.5-flash-lite` (18 Nov).
@@ -55,6 +62,11 @@ Dates shifted by 2 days on 21 Nov (Day 3 = Sat 21 … Day 11 = Sun 29).
 - **Done:** Colab export notebook (laptop smoke test, then a real T4 run, 18 min); app model + database + thumbnails + photo check + cut-offs; fold-0 checks; files on HF + Drive + `backend/models/` (all load, checksums OK); `MODEL_CARD.md`; versions pinned; pushed.
 - **Left over:** none from Day 2. Day 3 not started (plan still 1 day behind). From Day 1: checklist, tell teammate.
 - **Blockers:** none. Finding to handle on Day 3: healthy / look-alike pictures cost 6/48 L3 images on fold 0 (p = 0.031).
+
+### Day 3 — Sat 21 Nov (plan shifted by 2 days today)
+- **Done:** option C decided and tested (sick L3 called healthy 6/48 → 0/48; healthy still recognised 96% → 56%); packages installed + pinned; model loads once (laptop = Colab, cosine 1.000000); photo check, vote, decisions, neighbours; `POST /api/check` with clear errors; 79 tests; time per check 0.82 s (on battery); Nabil checked everything in `/docs`.
+- **Left over:** none from Day 3. Plugged-in timing skipped (battery number kept, labelled). From Day 1: checklist, tell teammate.
+- **Blockers:** none.
 
 <!-- one entry per day: done / left over / blockers -->
 
