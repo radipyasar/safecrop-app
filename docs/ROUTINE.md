@@ -209,10 +209,10 @@ If CORS blocks the call (red error in the browser console), check that the back 
 
 #### Block A · Load the model once at start-up (≈ 2 h)
 
-- [ ] `app/model.py`: load `openai/clip-vit-large-patch14` (vision part + processor), put the fine-tuned weights on top, switch to eval mode, use `torch.inference_mode()`, set `torch.set_num_threads` to the CPU count.
-- [ ] Load `database.npz` and `thresholds.json` into memory once.
-- [ ] Use FastAPI's start-up (lifespan) to load everything and run one warm-up photo, so the first real check is not slow.
-- [ ] Make `/api/health` report `model_loaded: true` only after loading has finished.
+- [x] `app/model.py`: load `openai/clip-vit-large-patch14` (vision part + processor), put the fine-tuned weights on top, switch to eval mode, use `torch.inference_mode()`, set `torch.set_num_threads` to the CPU count.
+- [x] Load `database.npz` and `thresholds.json` into memory once.
+- [x] Use FastAPI's start-up (lifespan) to load everything and run one warm-up photo, so the first real check is not slow.
+- [x] Make `/api/health` report `model_loaded: true` only after loading has finished.
 
 #### Block B · Photo check and prediction (≈ 2 h)
 

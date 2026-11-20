@@ -8,8 +8,8 @@ uvicorn[standard]
 python-multipart
 python-dotenv
 
-# photos
-pillow
+# photos (Pillow pinned to Colab's version: prepare_photo's resize must match what the photo check learned from)
+pillow==11.3.0
 pillow-heif
 # photo check (app/photo_check.py): same OpenCV as Colab on Day 2, so the 16 measurements match the forests
 opencv-python-headless==4.14.0.*
@@ -18,8 +18,9 @@ opencv-python-headless==4.14.0.*
 # pinned to the versions that made backend/models on Day 2 (Colab, 19 Nov 2026; see models/export_info.json):
 # photo_check.joblib only loads with the same scikit-learn, and numpy must stay on 2.x
 numpy==2.4.6
-torch
-transformers
+# torch and transformers: same versions as the Colab export, so the laptop gives the same 768 numbers
+torch==2.14.1
+transformers==5.22.1
 safetensors
 huggingface_hub
 scikit-learn==1.6.1
