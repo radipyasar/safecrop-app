@@ -8,7 +8,8 @@ disable-model-invocation: true
 Start SafeCrop routine day $ARGUMENTS.
 
 1. Read `docs/PROGRESS.md`. If no day number was given, work it out from today's date
-   (Day 1 = Tue 17 Nov 2026, Day 11 = Fri 27 Nov 2026). If an earlier day is unfinished, say which
+   (shifted by 2 days on 21 Nov: Day 3 = Sat 21 Nov 2026 … Day 11 = Sun 29 Nov 2026; the table at the top of
+   `docs/ROUTINE.md` has every date). If an earlier day is unfinished, say which
    tasks are left and ask whether to finish those first.
 2. Read that day's section in `docs/ROUTINE.md` (the heading starts with `## Day N —`), including its
    "Done when" and "If you get stuck" parts.

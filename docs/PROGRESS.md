@@ -62,7 +62,9 @@ Dates shifted by 2 days on 21 Nov (Day 3 = Sat 21 … Day 11 = Sun 29).
 
 | What | Value | Date measured |
 | --- | --- | --- |
-| Time per check, laptop CPU | | |
+| Time per check, laptop CPU (i5-13420H, 12 threads, **on battery**) | median **0.82 s** (48 checks; typical 0.80–0.84 s, one outlier 5.4 s that did not repeat); split: CLIP 0.71 s, photo check 0.05–0.11 s, read 3 ms, search 1 ms | 21 Nov 2026 |
+| Laptop start-up until `model_loaded: true` | 11.2 s (7.6 s importing PyTorch etc. + 3.5 s loading the model and warm-up) | 21 Nov 2026 |
+| PyTorch threads, laptop (median per check) | 12 threads 0.77 s vs 8 threads 0.94 s → keep 12 (all CPU threads) | 21 Nov 2026 |
 | Time per check, Hugging Face Space | | |
 | Space start-up time after sleeping | | |
 | Fold 0, E4 L3 with vs without healthy / look-alike pictures | 85.4% (41/48) with vs 97.9% (47/48) without; McNemar 0 vs 6, p = 0.031 (all 6 → healthy / not in list) | 19 Nov 2026 |
@@ -81,7 +83,7 @@ Dates shifted by 2 days on 21 Nov (Day 3 = Sat 21 … Day 11 = Sun 29).
 | Gemini agrees with CLIP (% of checks) | | |
 | Fallback advice used (count) | | |
 | Test plan passed (of 20) | | |
-| Back-end automatic tests passing | 3 / 3 | 19 Nov 2026 |
+| Back-end automatic tests passing | 79 / 79 (37 s, includes loading the model once) | 21 Nov 2026 |
 
 ## Bugs and ideas for later
 

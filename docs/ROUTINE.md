@@ -223,17 +223,17 @@ If CORS blocks the call (red error in the browser console), check that the back 
 
 #### Block C · The endpoint and its tests (≈ 1.5 h)
 
-- [ ] `POST /api/check`: accept JPEG, PNG, WebP and HEIC up to 10 MB; reject other files with a clear message (HTTP 415 / 413). Fix EXIF rotation, convert to RGB.
-- [ ] Give every check a `check_id` and remember the result in memory for the advice call (and later in the SQLite log).
-- [ ] Add `timing_ms` (photo check, embedding, search) to every answer.
-- [ ] Write pytest tests: 8 sample photos (one per disease, clean and L3) give the right disease; a text file is rejected; an empty file is rejected; a 15 MB file is rejected.
-- [ ] Measure the time per check on your laptop CPU (write it down for the slides).
+- [x] `POST /api/check`: accept JPEG, PNG, WebP and HEIC up to 10 MB; reject other files with a clear message (HTTP 415 / 413). Fix EXIF rotation, convert to RGB.
+- [x] Give every check a `check_id` and remember the result in memory for the advice call (and later in the SQLite log).
+- [x] Add `timing_ms` (photo check, embedding, search) to every answer.
+- [x] Write pytest tests: 8 sample photos (one per disease, clean and L3) give the right disease; a text file is rejected; an empty file is rejected; a 15 MB file is rejected.
+- [x] Measure the time per check on your laptop CPU (write it down for the slides).
 
 **Done when**
 
-- [ ] In `/docs`, uploading each of the 8 clean sample photos returns the right disease.
-- [ ] Bad files get a clear error, never a crash. All pytest tests pass.
-- [ ] You know the time per check on your laptop (target: under 5 seconds).
+- [x] In `/docs`, uploading each of the 8 clean sample photos returns the right disease.
+- [x] Bad files get a clear error, never a crash. All pytest tests pass.
+- [x] You know the time per check on your laptop (target: under 5 seconds).
 
 **If you get stuck**
 
