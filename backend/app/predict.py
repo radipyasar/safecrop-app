@@ -153,7 +153,7 @@ class Predictor:
     def run(self, photo):
         """photo: 224 x 224 RGB uint8 from photo_check.prepare_photo. Returns photo_check, result, neighbours,
         timing_ms and `raw` (numbers for the server's own log)."""
-        t, lib, ms = self.t, self.lib, {}
+        t, ms = self.t, {}
 
         t0 = time.perf_counter()
         check = photo_check.check_photo(photo, self.checker)
@@ -167,6 +167,20 @@ class Predictor:
         ms["embed"] = (time.perf_counter() - t0) * 1000
 
         t0 = time.perf_counter()
+        out = self.answer(q, check)
+        ms["search"] = (time.perf_counter() - t0) * 1000
+
+        out["photo_check"] = {"problem": check["problem"], "problem_words": check["problem_words"],
+                              "level": check["level"], "sure": round(check["problem_sure"], 3),
+                              "level_sure": round(check["level_sure"], 3), "signs": check["signs"],
+                              "message": photo_message(check), "fix_applied": fix}
+        out["timing_ms"] = {k: round(v, 1) for k, v in ms.items()}
+        return out
+
+    def answer(self, q, check):
+        """768 numbers + the photo check -> result, neighbours and raw vote (no CLIP needed, so tests can call it
+        with an embedding saved in the database)."""
+        t, lib = self.t, self.lib
         sims = lib.emb @ q
         order = np.argsort(-sims)
         top = order[: t["k"]]
@@ -189,7 +203,6 @@ class Predictor:
         neighbours = [{"disease_id": lib.label[i], "disease_name": lib.name(lib.label[i]),
                        "thumb_url": f"/static/thumbs/{lib.photo_id[i]}.jpg", "similarity": round(float(sims[i]), 4)}
                       for i in unique_neighbours(order, lib)]
-        ms["search"] = (time.perf_counter() - t0) * 1000
 
         message = photo_message(check)
         if decision == "retake" and reason == "not_a_leaf":
@@ -200,10 +213,6 @@ class Predictor:
             tip = None
 
         return {
-            "photo_check": {"problem": check["problem"], "problem_words": check["problem_words"],
-                            "level": check["level"], "sure": round(check["problem_sure"], 3),
-                            "level_sure": round(check["level_sure"], 3), "signs": check["signs"],
-                            "message": message, "fix_applied": fix},
             "result": {"decision": decision, "reason": reason, "disease_id": shown,
                        "disease_name": lib.name(shown) if shown else None,
                        "crop": lib.names[shown]["crop"] if shown else None,
@@ -211,6 +220,5 @@ class Predictor:
                        "confidence_words": CONFIDENCE_WORDS[decision], "runner_up": runner_up, "tip": tip,
                        "best_similarity": round(best, 4)},
             "neighbours": neighbours,
-            "timing_ms": {k: round(v, 1) for k, v in ms.items()},
             "raw": {"winner": winner, "share": round(float(share), 4)},
         }

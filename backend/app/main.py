@@ -51,6 +51,7 @@ ALLOWED_ORIGINS = [
 class State:
     predictor: Predictor | None = None  # set once loading and the warm-up have finished
     load_seconds: float | None = None
+    load_error: str | None = None  # set if loading failed (the details are in the server log)
     checks: "OrderedDict[str, dict]" = OrderedDict()
     lock = threading.Lock()
 
@@ -65,8 +66,9 @@ def load_everything():
     try:
         predictor = Predictor.load(MODELS_DIR)
         predictor.warm_up()
-    except Exception:
+    except Exception as e:
         log.exception("Could not load the model files from %s", MODELS_DIR)
+        STATE.load_error = f"{type(e).__name__}: {e}"
         return
     STATE.load_seconds = time.perf_counter() - t0
     STATE.predictor = predictor

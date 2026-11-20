@@ -85,6 +85,38 @@ Chosen **before** any real-photo test; they must not be changed after looking at
 | Recipe B (used to choose) | 98.8% right (846/856) | 76.9% (50/65) | 41.0% (16/39) |
 | Test images | 99.9% (912/913) | 81.8% (27/33) | 50.0% (7/14) |
 
+## Decision rules in the app (option C, chosen 21 Nov 2026)
+
+`backend/app/predict.py` checks these in order. "Closest disease" = the same 5-picture vote over pictures of our 8
+diseases only. No new cut-off: "very strong vote" is the `sure` cut-off.
+
+| # | When | Decision |
+| --- | --- | --- |
+| 1 | best similarity < 0.760 | retake ("doesn't look like a leaf") |
+| 2 | photo check ≥ 60% sure the photo is L3 **and** vote share < 0.601 | retake ("too unclear") |
+| 3 | winner is a healthy leaf / look-alike disease, vote share ≥ 0.902 **and** photo check not L3 | healthy / not in list |
+| 3b | winner is a healthy leaf / look-alike disease, otherwise | **not sure**: closest disease, the healthy / look-alike label as runner-up, retake tip |
+| 4 | winner is one of our 8 diseases | sure (≥ 0.902) · likely (≥ 0.601) · not sure |
+
+A strong vote for one of our diseases stays "Very likely" at L3 (fold 0: sure answers at L3 were right 31/31); the
+photo warning still shows.
+
+What option C changes (measured 21 Nov 2026, before any real-photo test):
+
+| What | Before (Day 2 rule) | Option C |
+| --- | --- | --- |
+| Sick L3 photos called healthy / not in list (fold 0, 48 images) | 6 | **0** |
+| Healthy photos still called healthy (1,440 images) | 96.0% | 56.0% |
+| … by level L0 / L1 / L2 / L3 | 100 / 99.8 / 97.3 / 90.0% | 96.7 / 90.2 / 69.8 / 0% |
+| Look-alike photos still "not in our list" (1,920 images) | 93.1% | 39.2% |
+
+- Sick photos: the 6 fold-0 images had vote shares 0.40–0.80, so the vote rule alone stops them, whatever level the
+  photo check gives. Without the extras, all 6 were voted to the right disease (vote 1.0).
+- Healthy / look-alike photos: the app model (never trained on them), each photo's own 16 pictures hidden from the
+  database; their 90 + 120 photos × (clean + 15 noisy copies). The photo check's level was stood in by the true noise
+  level (copies are not saved as images; the photo check gets the level right 93.2%).
+- The cost: unclear healthy leaves see "not sure + closest disease + retake" instead of "healthy".
+
 ## The fair checks (fold 0: a second model trained without 48 photos, same seed)
 
 **1. Do the healthy / look-alike pictures hurt?** The same 192 held-out images, three databases:
@@ -142,16 +174,22 @@ one bright pixel); the forests give the same answers for all 6 (largest probabil
 | numpy | 2.4.6 | `==2.4.6` |
 | OpenCV | 4.14.0 | `opencv-python-headless==4.14.0.*` (measurements can shift between versions) |
 | joblib | 1.6.0 | `==1.6.0` |
-| torch / transformers | 2.14.1 (CUDA 13.0) / 5.22.1 | not pinned (the weights are plain tensors) |
+| torch / transformers | 2.14.1 (CUDA 13.0) / 5.22.1 | `torch==2.14.1` (CPU build) / `transformers==5.22.1` (pinned 21 Nov) |
+| Pillow | 11.3.0 | `==11.3.0` (`prepare_photo`'s resize feeds the photo check) |
 | Python | 3.13 | back end runs 3.11 |
+
+Laptop check (21 Nov 2026, Windows, torch 2.14.1 CPU): the 8 clean sample photos give cosine **1.000000** with their
+`database.npz` rows, and the vote reproduces Colab's sanity number exactly (0.9917 of 240 clean photos voted to their
+own disease). Both are back-end tests (`tests/test_model.py`, `tests/test_predict.py`).
 
 ## Known limits (say these in reports)
 
 - All noise is computer-made, one problem per photo. **Real phone photos are not tested yet** (Day 6).
 - Each disease comes from one photo source (apple scab: two), so CLIP can partly match photo **style**. Potato late
   blight and grape leaf blight are PlantVillage lab photos.
-- The healthy / look-alike pictures lower L3 accuracy on fold 0 by 6 of 48 images (see above); those photos get
-  "healthy" or "not in our list" instead of the disease.
+- The healthy / look-alike pictures lower L3 accuracy on fold 0 by 6 of 48 images (see above). With option C those
+  photos get "not sure" (with the closest disease) instead of "healthy" / "not in our list"; the price is that only
+  56% of healthy-leaf images are still called healthy (none at L3).
 - The fold-0 checks use 48 photos (192 images): about ±7 points of chance variation per level.
 - Black gram rests on 30 photos. Only the default fine-tuning settings were tried.
 - The "not a leaf" check was set with 30 phone photos and 14 sample pictures; unusual objects may still pass.

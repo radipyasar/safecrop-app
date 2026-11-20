@@ -102,12 +102,12 @@ One check, start to finish. Steps 2–3 happen in one request (`/api/check`), so
 
 | Decision        | When (thresholds chosen on Day 2)                                                                           | What the farmer sees                                                                     |
 |-----------------|-------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| **sure**        | vote share at or above the “sure” cut, photo check OK or L1–L2                                              | “Very likely: Potato late blight” + similar pictures + advice                            |
+| **sure**        | one of our 8 diseases with vote share at or above the “sure” cut (also at L3: fold 0 L3 sure 31/31 right; the photo warning still shows) | “Very likely: Potato late blight” + similar pictures + advice                            |
 | **likely**      | vote share between the two cuts                                                                             | “Likely: X. Could also be Y.” + a tip to retake a clearer photo                          |
-| **not sure**    | vote share below the lower cut                                                                              | “SafeCrop is not sure.” Top 2 guesses, a retake button, and a nudge to ask an expert     |
-| **healthy**     | the winning label is a healthy leaf                                                                         | “This leaf looks healthy.” + what to watch for                                           |
-| **not in list** | the winning label is a look-alike disease SafeCrop does not cover                                           | “This may be a disease SafeCrop doesn't know yet.” + ask an expert                       |
-| **retake**      | best similarity below the “not a leaf” cut, or the photo check is sure the photo is L3 and the vote is weak | “We can't read this photo.” + exactly what to fix (hold steady, more light, move closer) |
+| **not sure**    | vote share below the lower cut; **or (option C)** a healthy / look-alike winner whose vote is below the “sure” cut or whose photo is L3 | “SafeCrop is not sure.” Top 2 guesses (option C: the closest of our 8 diseases + the healthy / look-alike label), a retake tip, and a nudge to ask an expert |
+| **healthy**     | the winning label is a healthy leaf, vote share at or above the “sure” cut, and the photo check does not say L3 (option C, chosen 21 Nov) | “This leaf looks healthy.” + what to watch for                                           |
+| **not in list** | the winning label is a look-alike disease SafeCrop does not cover, with the same option C conditions as “healthy” | “This may be a disease SafeCrop doesn't know yet.” + ask an expert                       |
+| **retake**      | best similarity below the “not a leaf” cut, or the photo check is sure (≥ 60%) the photo is L3 and the vote share is below the lower cut | “We can't read this photo.” + exactly what to fix (hold steady, more light, move closer) |
 
 ### Folder layout (one GitHub repo: `safecrop-app`)
 
@@ -216,10 +216,10 @@ If CORS blocks the call (red error in the browser console), check that the back 
 
 #### Block B · Photo check and prediction (≈ 2 h)
 
-- [ ] `app/photo_check.py`: same 16 measurements as in Colab, then the two forests → problem, level, how sure. Apply resample to blocky photos only if Day 2 said it helps.
-- [ ] `app/predict.py`: embed → cosine similarity with every database picture → top 5 → weighted vote → winning label, vote share, runner-up.
-- [ ] Turn the numbers into one **decision** (sure / likely / not sure / healthy / not in list / retake) using `thresholds.json` and the decision table (after the API table).
-- [ ] For the 5 neighbours, return the **clean** photo's thumbnail URL (`/static/thumbs/…`) and remove duplicates (two copies of the same photo count once).
+- [x] `app/photo_check.py`: same 16 measurements as in Colab, then the two forests → problem, level, how sure. Apply resample to blocky photos only if Day 2 said it helps.
+- [x] `app/predict.py`: embed → cosine similarity with every database picture → top 5 → weighted vote → winning label, vote share, runner-up.
+- [x] Turn the numbers into one **decision** (sure / likely / not sure / healthy / not in list / retake) using `thresholds.json` and the decision table (after the API table).
+- [x] For the 5 neighbours, return the **clean** photo's thumbnail URL (`/static/thumbs/…`) and remove duplicates (two copies of the same photo count once).
 
 #### Block C · The endpoint and its tests (≈ 1.5 h)
 

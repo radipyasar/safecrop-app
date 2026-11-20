@@ -71,6 +71,10 @@ Dates shifted by 2 days on 21 Nov (Day 3 = Sat 21 … Day 11 = Sun 29).
 | Cut-offs (recipe-B out-of-fold E4 answers) | sure ≥ 0.902 (right 98.8%), not sure < 0.601 (right 41.0%) | 19 Nov 2026 |
 | "Not a leaf" cut-off (fold 0) | 0.760: 192/192 held-out leaves kept, 44/44 non-leaf pictures rejected | 19 Nov 2026 |
 | Photo check, fair test on 960 images | problem 98.0%, level 93.2% (within one level 99.7%) | 19 Nov 2026 |
+| Option C: sick L3 photos called healthy / not in list (fold 0) | 6/48 before → **0/48** (all 6 had vote 0.40–0.80, below the 0.902 "sure" cut) | 21 Nov 2026 |
+| Option C: healthy photos still called healthy (app model, own photo hidden, 1,440 images) | 96.0% → 56.0% (L0 100 → 96.7, L1 99.8 → 90.2, L2 97.3 → 69.8, L3 90.0 → 0%) | 21 Nov 2026 |
+| Option C: look-alike photos still "not in our list" (1,920 images) | 93.1% → 39.2% | 21 Nov 2026 |
+| Laptop vs Colab (torch 2.14.1 CPU) | embeddings cosine 1.000000 (8 clean photos); vote sanity 0.9917 = Colab's | 21 Nov 2026 |
 | CLIP embedding only, laptop CPU (not a full check) | 0.83 s per photo | 19 Nov 2026 |
 | Colab export run (T4): training / whole notebook | 176 s / 18 min | 19 Nov 2026 |
 | Real photos: right / wrong / not sure (of N) | | |
@@ -84,13 +88,19 @@ Dates shifted by 2 days on 21 Nov (Day 3 = Sat 21 … Day 11 = Sun 29).
 - Vercel (Day 8): add a rewrite so deep links like `/history` don't give 404 (we use BrowserRouter).
 - ~~Gemini model ID `gemini-3.5-flash-lite` is a guess~~ — confirmed working 18 Nov (no `GEMINI_MODEL` needed in `.env`).
 - ~~Day 2: pin scikit-learn~~ — done 19 Nov (scikit-learn 1.6.1, numpy 2.4.6, joblib 1.6.0, opencv-python-headless
-  4.14.0.*). Day 3: ask Nabil, then `pip install -r requirements.txt` in `backend/.venv` (torch + transformers ~1 GB).
-- Day 3 (`predict.py`): apply the "not sure" cut-off to healthy / not-in-list answers too. On fold 0, 5 of the 6 L3
-  photos lost to the PlantVillage extras had vote share 0.40–0.60 → should show "not sure", not a confident "healthy".
-- Day 3 (`model.py`): transformers 5 prints a long "LOAD REPORT" (unused text weights) when loading
-  `CLIPVisionModelWithProjection` from the full CLIP checkpoint — harmless; set `transformers.logging.set_verbosity_error()`.
-  Load it as in `backend/models/README.md` (vision config with `projection_dim = 768`).
-- Day 3: copy `backend/models/photo_check.py` into `backend/app/photo_check.py` (same code the forests learned from).
+  4.14.0.*). Installed in `backend/.venv` on 21 Nov, with torch 2.14.1 (CPU), transformers 5.22.1 and Pillow 11.3.0
+  also pinned to the Colab versions.
+- ~~Day 3 (`predict.py`): apply the "not sure" cut-off to healthy / not-in-list answers too~~ — done 21 Nov as
+  **option C** (stricter: healthy / not in list only with vote ≥ 0.902 and a photo that is not L3). Rules in
+  `docs/MODEL_CARD.md` and the ROUTINE decision table.
+- ~~Day 3 (`model.py`): hide transformers' "LOAD REPORT"~~ — done 21 Nov (also loads CLIP from the local cache first,
+  so start-up needs no internet).
+- ~~Day 3: copy `backend/models/photo_check.py` into `backend/app/photo_check.py`~~ — done 21 Nov (identical copy).
+- Day 4 (advice): the routine sends the farmer's photo to Gemini, but the server keeps no photos (only each check's
+  result, in memory, newest 1,000). Simplest: the front end sends the photo again with `/api/advice`; nothing stored.
+- Day 5 (Result page), option C answers (`reason: healthy_or_other_unclear`): `disease_id` is the closest of our 8
+  diseases (its vote share can be 0) and `runner_up` is the healthy / look-alike label that won the vote. Word it like
+  "Not sure: this could be a healthy leaf, or Potato late blight. Retake a clearer photo."
 - On Windows the photo-check measurements differ very slightly from Colab/Linux for 6/840 images (same answers);
   the HF Space runs Linux like Colab.
 - `dist/safecrop_app_inputs.zip` (88.5 MB, git-ignored) is only needed to rerun the Colab notebook; can be deleted.
