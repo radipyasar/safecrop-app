@@ -2,7 +2,8 @@
 
 > Markdown copy of `SafeCrop_webapp_routine_17-27Nov2026.pdf`. Tick a box by changing `- [ ]` to `- [x]`.
 > **Dates shifted by 2 days on 21 Nov, then by 1 more day from Day 4** (Day 3 = Sat 21, Day 4 = Mon 23 … Day 11 = Mon 30).
-> The Week 10 update is on Day 4 (Mon 23; slides show work up to Day 3) and the Week 11 update is on Day 11 (Mon 30).
+> The Week 10 update stays on **Sun 22** (its own short section after Day 3; slides show work up to Day 3 only) and the
+> Week 11 update is on Day 11 (Mon 30).
 > The PDF still has the old dates.
 
 Tuesday 17 November to Monday 30 November 2026. Every task, in order, with a clear "done when" check for each day, so that by 30 November SafeCrop works end to end and is online.
@@ -20,7 +21,8 @@ Tuesday 17 November to Monday 30 November 2026. Every task, in order, with a cle
 | 1   | Tue 17 Nov    | Set up the project, connect all pages                      | Every menu item opens a page; back end says “ok”                 |
 | 2   | Wed 18–Thu 19 | Make the app's model files in Colab                        | Fine-tuned CLIP, database, photo check and thresholds saved      |
 | 3   | Sat 21 Nov    | Back end: photo in, disease out                            | `/api/check` names the disease for 8 sample photos               |
-| 4   | Mon 23 Nov    | Back end: Gemini advice + disease facts + **Week 10 update** | `/api/advice` works, with a fallback; Week 10 slides presented   |
+| —   | Sun 22 Nov    | **Week 10 update** (shows work up to Day 3)                | Week 10 slides presented                                         |
+| 4   | Mon 23 Nov    | Back end: Gemini advice + disease facts                    | `/api/advice` works, with a fallback                             |
 | 5   | Tue 24 Nov    | Front end: the full check flow                             | Upload → result → advice works on the laptop                     |
 | 6   | Wed 25 Nov    | Real photos + disease pages                                | Real-photo table done; disease pages filled                      |
 | 7   | Thu 26 Nov    | History, Profile, Home with real data                      | No sample data left anywhere                                     |
@@ -240,13 +242,11 @@ If CORS blocks the call (red error in the browser console), check that the back 
 
 If a check takes much longer than 5 seconds on the laptop, check that the model loads only once (not per request) and that gradients are off. If memory is short, load the model in half precision only for the database step, not for live checks.
 
-## Day 4 — Monday 23 November: Back end: Gemini advice and disease facts, and the Week 10 update
+## Week 10 update — Sunday 22 November (after Day 3, before Day 4)
 
-**Goal:** the back end can explain each result in plain words, using facts you checked, and still answers when Gemini fails. Week 10 slides ready and presented.
+**Goal:** Week 10 slides ready and presented. No build work today.
 
-**Week 10 update today**
-
-The supervisor wants tables and numbers. The slides show the work **up to Day 3** only (Day 4 advice is built after the meeting). Lead with the Day 2 tables and the time per check (Day 3), not with descriptions. Real photos are tested on Day 6 (Wed 25 Nov), so say their results come in the Week 11 update.
+The supervisor wants tables and numbers. The slides show the work **up to Day 3** only (advice, front end and real photos come later). Lead with the Day 2 tables and the time per check (Day 3), not with descriptions. Real photos are tested on Day 6 (Wed 25 Nov), so say their results come in the Week 11 update.
 
 #### Week 10 slides (supervisor update today — do this before the meeting) (≈ 1.5 h)
 
@@ -254,7 +254,15 @@ The supervisor wants tables and numbers. The slides show the work **up to Day 3*
 - [ ] Slide: the API table and the decision table.
 - [ ] Slide: numbers — time per check on the laptop, the two Day 2 fold-0 checks (with / without healthy pictures, resample), answers by decision, the cut-offs, photo check on 960 images (all in “Numbers for slides” in `docs/PROGRESS.md`).
 - [ ] Slide: screenshots of `/api/check` working in `/docs` (the front-end screens come on Day 5).
-- [ ] Slide: plan for 24–30 Nov (Days 5–11 of this routine), with the real-photo test on Wed 25 Nov.
+- [ ] Slide: plan for 23–30 Nov (Days 4–11 of this routine), with the real-photo test on Wed 25 Nov.
+
+**Done when**
+
+- [ ] Week 10 slides are in the deck and presented.
+
+## Day 4 — Monday 23 November: Back end: Gemini advice and disease facts
+
+**Goal:** the back end can explain each result in plain words, using facts you checked, and still answers when Gemini fails.
 
 #### Block A · Write the disease facts (≈ 2 h)
 
@@ -283,7 +291,6 @@ The supervisor wants tables and numbers. The slides show the work **up to Day 3*
 - [ ] `/api/advice` returns Gemini's advice in about 10 seconds or less, and fallback advice when the key is removed.
 - [ ] `/api/diseases` returns all 8 diseases with checked facts and sources.
 - [ ] Every check is written to the SQLite log; no photos are stored.
-- [ ] Week 10 slides are in the deck and presented.
 
 **If you get stuck**
 
@@ -327,7 +334,7 @@ To trigger the special screens without hunting for photos, add a hidden test opt
 
 ## Day 6 — Wednesday 25 November: Real photos and the disease pages
 
-**Goal:** the first fair test of the app on real phone photos, and the Diseases pages filled with real facts. (The Week 10 slides moved to Day 4.)
+**Goal:** the first fair test of the app on real phone photos, and the Diseases pages filled with real facts. (The Week 10 update was on Sun 22.)
 
 #### Block A · Real-photo test (do this first) (≈ 2 h)
 
@@ -638,7 +645,7 @@ Tick these on the last day. If every box is ticked, SafeCrop is fully functional
 - [ ] Full test plan table
 - [ ] README tested by a teammate
 - [ ] API, model card, data card
-- [ ] Week 10 slides done (23 Nov)
+- [ ] Week 10 slides done (22 Nov)
 - [ ] Demo video recorded; v1.0 tagged
 - [ ] Week 11 numbers and known limits written
 

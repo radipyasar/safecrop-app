@@ -9,7 +9,8 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 | 1 | Tue 17 Nov | Set up the project, connect all pages | done (2 small to-dos: checklist, tell teammate) |
 | 2 | Wed 18 Nov | Make the app's model files in Colab | done 19 Nov (Colab run 18 min; files in `backend/models/`, HF, Drive) |
 | 3 | Sat 21 Nov | Back end: photo in, disease out | done (`/api/check` works, 79 tests, 0.82 s per check) |
-| 4 | Mon 23 Nov | Back end: Gemini advice + disease facts + Week 10 update | not started |
+| — | Sun 22 Nov | Week 10 update (shows work up to Day 3) | not started |
+| 4 | Mon 23 Nov | Back end: Gemini advice + disease facts | not started |
 | 5 | Tue 24 Nov | Front end: the full check flow | not started |
 | 6 | Wed 25 Nov | Real photos + disease pages | not started |
 | 7 | Thu 26 Nov | History, Profile, Home with real data | not started |
@@ -121,7 +122,7 @@ Dates shifted by 2 days on 21 Nov, then 1 more day from Day 4 (Day 4 = Mon 23 �
 - "Not a leaf" gap is narrow at L3 (worst held-out leaf 0.790 vs most leaf-like non-leaf photo 0.730; cut 0.760):
   watch it on real photos (Day 6) but don't change the cut-off after seeing them.
 - Plan shifted by 2 days on 21 Nov, then 1 more day from Day 4 (also 21 Nov): Day 3 = Sat 21, Day 4 = Mon 23, …
-  Day 11 = Mon 30. The Week 10 update is on Day 4 (Mon 23) and shows work up to Day 3 only, before the real-photo
+  Day 11 = Mon 30. The Week 10 update stays on Sun 22 (own section, no build work) and shows work up to Day 3 only, before the real-photo
   test (Day 6, Wed 25) — show the Day 2 tables + the laptop time per check; real-photo results go into the Week 11
   update (Day 11, Mon 30). If still behind by Day 7, drop nice-to-haves first (feedback button, Bangla, home-screen icon, webcam, stats page) —
   never must-haves.

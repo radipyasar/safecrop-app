@@ -83,7 +83,7 @@ compression. 7 diseases → 840 images; black gram adds 120 → 960. Extra: 240 
 
 ## Deadlines
 
-- Week 10 update: Mon 23 Nov 2026 (supervisor wants tables and numbers; shows work up to Day 3).
+- Week 10 update: Sun 22 Nov 2026 (supervisor wants tables and numbers; shows work up to Day 3).
 - Week 11 update: Mon 30 Nov 2026 (working app + demo video).
 - Week 12: Sun 6 Dec 2026 — final presentation, live demo, 8-page report.
 

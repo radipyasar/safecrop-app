@@ -9,7 +9,7 @@ The full project story and every result we rely on: @docs/PROJECT_STORY.md
 Where the build is right now (what's done, what's next): @docs/PROGRESS.md
 The day-by-day plan (17–30 Nov 2026) is in `docs/ROUTINE.md`. Before working on any app task,
 read that day's section (`## Day N — …`). Day 1 = Tue 17 Nov, Day 2 = Wed 18–Thu 19, Day 3 = Sat 21 Nov,
-Day 4 = Mon 23 Nov, Day 5 = Tue 24 … Day 11 = Mon 30 Nov (shifted by 2 days, then 1 more day from Day 4).
+Day 4 = Mon 23 Nov, Day 5 = Tue 24 … Day 11 = Mon 30 Nov (shifted by 2 days, then 1 more day from Day 4). Week 10 update = Sun 22 Nov (work up to Day 3).
 
 ## How to work with me (Nabil)
 
