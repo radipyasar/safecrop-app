@@ -9,16 +9,16 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 | 1 | Tue 17 Nov | Set up the project, connect all pages | done (2 small to-dos: checklist, tell teammate) |
 | 2 | Wed 18 Nov | Make the app's model files in Colab | done 19 Nov (Colab run 18 min; files in `backend/models/`, HF, Drive) |
 | 3 | Sat 21 Nov | Back end: photo in, disease out | done (`/api/check` works, 79 tests, 0.82 s per check) |
-| 4 | Sun 22 Nov | Back end: Gemini advice + disease facts + Week 10 update | not started |
-| 5 | Mon 23 Nov | Front end: the full check flow | not started |
-| 6 | Tue 24 Nov | Real photos + disease pages | not started |
-| 7 | Wed 25 Nov | History, Profile, Home with real data | not started |
-| 8 | Thu 26 Nov | Put it online (Hugging Face + Vercel) | not started |
-| 9 | Fri 27 Nov | Test everything, fix bugs | not started |
-| 10 | Sat 28 Nov | Polish, safety, documents | not started |
-| 11 | Sun 29 Nov | Freeze, demo video, backups + Week 11 update | not started |
+| 4 | Mon 23 Nov | Back end: Gemini advice + disease facts + Week 10 update | not started |
+| 5 | Tue 24 Nov | Front end: the full check flow | not started |
+| 6 | Wed 25 Nov | Real photos + disease pages | not started |
+| 7 | Thu 26 Nov | History, Profile, Home with real data | not started |
+| 8 | Fri 27 Nov | Put it online (Hugging Face + Vercel) | not started |
+| 9 | Sat 28 Nov | Test everything, fix bugs | not started |
+| 10 | Sun 29 Nov | Polish, safety, documents | not started |
+| 11 | Mon 30 Nov | Freeze, demo video, backups + Week 11 update | not started |
 
-Dates shifted by 2 days on 21 Nov (Day 3 = Sat 21 … Day 11 = Sun 29).
+Dates shifted by 2 days on 21 Nov, then 1 more day from Day 4 (Day 4 = Mon 23 … Day 11 = Mon 30).
 
 ## Where things are now (21 Nov, end of Day 3 — on the shifted plan)
 
@@ -120,9 +120,10 @@ Dates shifted by 2 days on 21 Nov (Day 3 = Sat 21 … Day 11 = Sun 29).
 - `dist/safecrop_app_inputs.zip` (88.5 MB, git-ignored) is only needed to rerun the Colab notebook; can be deleted.
 - "Not a leaf" gap is narrow at L3 (worst held-out leaf 0.790 vs most leaf-like non-leaf photo 0.730; cut 0.760):
   watch it on real photos (Day 6) but don't change the cut-off after seeing them.
-- Plan shifted by 2 days on 21 Nov: Day 3 = Sat 21, Day 4 = Sun 22, … Day 11 = Sun 29. The Week 10 slides
-  moved to Day 4 (Sun 22), before the real-photo test (Day 6, Tue 24) — show the Day 2 tables + the laptop time
-  per check; real-photo results go into the Week 11 update (Day 11, Sun 29). If still behind by Day 7, drop nice-to-haves first (feedback button, Bangla, home-screen icon, webcam, stats page) —
+- Plan shifted by 2 days on 21 Nov, then 1 more day from Day 4 (also 21 Nov): Day 3 = Sat 21, Day 4 = Mon 23, …
+  Day 11 = Mon 30. The Week 10 update is on Day 4 (Mon 23) and shows work up to Day 3 only, before the real-photo
+  test (Day 6, Wed 25) — show the Day 2 tables + the laptop time per check; real-photo results go into the Week 11
+  update (Day 11, Mon 30). If still behind by Day 7, drop nice-to-haves first (feedback button, Bangla, home-screen icon, webcam, stats page) —
   never must-haves.
 - The Gemini check script is at `backend/scripts/check_gemini.py` (not `scripts/`).
 - The laptop's default Python is 3.14 — always use `backend/.venv` (3.11).

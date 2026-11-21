@@ -1,16 +1,17 @@
-# SafeCrop web app — 11-day build routine (17–29 Nov 2026)
+# SafeCrop web app — 11-day build routine (17–30 Nov 2026)
 
 > Markdown copy of `SafeCrop_webapp_routine_17-27Nov2026.pdf`. Tick a box by changing `- [ ]` to `- [x]`.
-> **Dates shifted by 2 days on 21 Nov** (Day 3 = Sat 21 … Day 11 = Sun 29). The Week 10 slides moved to Day 4
-> (Sun 22) and the Week 11 update is on Day 11 (Sun 29). The PDF still has the old dates.
+> **Dates shifted by 2 days on 21 Nov, then by 1 more day from Day 4** (Day 3 = Sat 21, Day 4 = Mon 23 … Day 11 = Mon 30).
+> The Week 10 update is on Day 4 (Mon 23; slides show work up to Day 3) and the Week 11 update is on Day 11 (Mon 30).
+> The PDF still has the old dates.
 
-Tuesday 17 November to Sunday 29 November 2026. Every task, in order, with a clear "done when" check for each day, so that by 29 November SafeCrop works end to end and is online.
+Tuesday 17 November to Monday 30 November 2026. Every task, in order, with a clear "done when" check for each day, so that by 30 November SafeCrop works end to end and is online.
 
-**Where you are today (16 Nov) and where you will be on 29 Nov**
+**Where you are today (16 Nov) and where you will be on 30 Nov**
 
 **Today:** the React home page runs on `localhost:5173` with sample data. The models work in Colab and in the `NabilRafi/SafeCrop` repo (E4, fine-tuned CLIP + noisy copies, is the most robust: 97.1% at L3 on the test images, 85.2% on recipe B). There is no back end yet.
 
-**29 Nov:** a farmer opens one public link on a phone, takes a photo of a leaf, and gets: a photo-quality check, the disease from fine-tuned CLIP, the 5 most similar reference pictures, and advice written by Gemini from checked disease facts. Past checks are saved in History. A demo video is recorded and shown at the Week 11 update (29 Nov).
+**30 Nov:** a farmer opens one public link on a phone, takes a photo of a leaf, and gets: a photo-quality check, the disease from fine-tuned CLIP, the 5 most similar reference pictures, and advice written by Gemini from checked disease facts. Past checks are saved in History. A demo video is recorded and shown at the Week 11 update (30 Nov).
 
 ### The 11 days at a glance
 
@@ -19,14 +20,14 @@ Tuesday 17 November to Sunday 29 November 2026. Every task, in order, with a cle
 | 1   | Tue 17 Nov    | Set up the project, connect all pages                      | Every menu item opens a page; back end says “ok”                 |
 | 2   | Wed 18–Thu 19 | Make the app's model files in Colab                        | Fine-tuned CLIP, database, photo check and thresholds saved      |
 | 3   | Sat 21 Nov    | Back end: photo in, disease out                            | `/api/check` names the disease for 8 sample photos               |
-| 4   | Sun 22 Nov    | Back end: Gemini advice + disease facts + **Week 10 update** | `/api/advice` works, with a fallback; Week 10 slides presented   |
-| 5   | Mon 23 Nov    | Front end: the full check flow                             | Upload → result → advice works on the laptop                     |
-| 6   | Tue 24 Nov    | Real photos + disease pages                                | Real-photo table done; disease pages filled                      |
-| 7   | Wed 25 Nov    | History, Profile, Home with real data                      | No sample data left anywhere                                     |
-| 8   | Thu 26 Nov    | Put it online (Hugging Face + Vercel)                      | The public link works on a phone                                 |
-| 9   | Fri 27 Nov    | Test everything, fix bugs                                  | All tests in the test plan pass                                  |
-| 10  | Sat 28 Nov    | Polish, safety, documents                                  | A teammate can run it from the README                            |
-| 11  | Sun 29 Nov    | Freeze, demo video, backups + **Week 11 update**           | v1.0 tagged, video recorded, link works; Week 11 update given    |
+| 4   | Mon 23 Nov    | Back end: Gemini advice + disease facts + **Week 10 update** | `/api/advice` works, with a fallback; Week 10 slides presented   |
+| 5   | Tue 24 Nov    | Front end: the full check flow                             | Upload → result → advice works on the laptop                     |
+| 6   | Wed 25 Nov    | Real photos + disease pages                                | Real-photo table done; disease pages filled                      |
+| 7   | Thu 26 Nov    | History, Profile, Home with real data                      | No sample data left anywhere                                     |
+| 8   | Fri 27 Nov    | Put it online (Hugging Face + Vercel)                      | The public link works on a phone                                 |
+| 9   | Sat 28 Nov    | Test everything, fix bugs                                  | All tests in the test plan pass                                  |
+| 10  | Sun 29 Nov    | Polish, safety, documents                                  | A teammate can run it from the README                            |
+| 11  | Mon 30 Nov    | Freeze, demo video, backups + **Week 11 update**           | v1.0 tagged, video recorded, link works; Week 11 update given    |
 
 ## Before you start
 
@@ -46,7 +47,7 @@ Tuesday 17 November to Sunday 29 November 2026. Every task, in order, with a cle
 
 ## What “fully functional” means (the target)
 
-These are the features SafeCrop must have by 29 November. Use this list as the finish line: the app is done when every must-have works on the public link.
+These are the features SafeCrop must have by 30 November. Use this list as the finish line: the app is done when every must-have works on the public link.
 
 | \#  | Must-have feature                                                                                                                                       | Where it lives         |
 |-----|---------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|
@@ -239,13 +240,13 @@ If CORS blocks the call (red error in the browser console), check that the back 
 
 If a check takes much longer than 5 seconds on the laptop, check that the model loads only once (not per request) and that gradients are off. If memory is short, load the model in half precision only for the database step, not for live checks.
 
-## Day 4 — Sunday 22 November: Back end: Gemini advice and disease facts, and the Week 10 update
+## Day 4 — Monday 23 November: Back end: Gemini advice and disease facts, and the Week 10 update
 
 **Goal:** the back end can explain each result in plain words, using facts you checked, and still answers when Gemini fails. Week 10 slides ready and presented.
 
 **Week 10 update today**
 
-The supervisor wants tables and numbers. Lead with the Day 2 tables and the time per check (Day 3), not with descriptions. Real photos are tested on Day 6 (Tue 24 Nov), so say their results come in the Week 11 update.
+The supervisor wants tables and numbers. The slides show the work **up to Day 3** only (Day 4 advice is built after the meeting). Lead with the Day 2 tables and the time per check (Day 3), not with descriptions. Real photos are tested on Day 6 (Wed 25 Nov), so say their results come in the Week 11 update.
 
 #### Week 10 slides (supervisor update today — do this before the meeting) (≈ 1.5 h)
 
@@ -253,7 +254,7 @@ The supervisor wants tables and numbers. Lead with the Day 2 tables and the time
 - [ ] Slide: the API table and the decision table.
 - [ ] Slide: numbers — time per check on the laptop, the two Day 2 fold-0 checks (with / without healthy pictures, resample), answers by decision, the cut-offs, photo check on 960 images (all in “Numbers for slides” in `docs/PROGRESS.md`).
 - [ ] Slide: screenshots of `/api/check` working in `/docs` (the front-end screens come on Day 5).
-- [ ] Slide: plan for 23–29 Nov (Days 5–11 of this routine), with the real-photo test on Tue 24 Nov.
+- [ ] Slide: plan for 24–30 Nov (Days 5–11 of this routine), with the real-photo test on Wed 25 Nov.
 
 #### Block A · Write the disease facts (≈ 2 h)
 
@@ -288,7 +289,7 @@ The supervisor wants tables and numbers. Lead with the Day 2 tables and the time
 
 If Gemini returns text that is not valid JSON, use the SDK's structured-output option (a response schema) instead of asking for JSON in words, and still wrap the parse in a try/except that falls back.
 
-## Day 5 — Monday 23 November: Front end: the full check flow
+## Day 5 — Tuesday 24 November: Front end: the full check flow
 
 **Goal:** on the laptop, a user can upload a photo, watch the steps, see the result with similar pictures, and read the advice.
 
@@ -324,7 +325,7 @@ If Gemini returns text that is not valid JSON, use the SDK's structured-output o
 
 To trigger the special screens without hunting for photos, add a hidden test option in development only (for example `?force=healthy`) that the back end ignores in production.
 
-## Day 6 — Tuesday 24 November: Real photos and the disease pages
+## Day 6 — Wednesday 25 November: Real photos and the disease pages
 
 **Goal:** the first fair test of the app on real phone photos, and the Diseases pages filled with real facts. (The Week 10 slides moved to Day 4.)
 
@@ -350,7 +351,7 @@ To trigger the special screens without hunting for photos, add a hidden test opt
 
 If you don't have labelled real photos yet, take 3–4 photos each of whatever leaves you can find (healthy leaves count) and ask your teammate for field-trip photos; even 15 photos give a useful first table.
 
-## Day 7 — Wednesday 25 November: History, Profile and a home page with real data
+## Day 7 — Thursday 26 November: History, Profile and a home page with real data
 
 **Goal:** every screen uses real data; the sample data file is deleted.
 
@@ -384,7 +385,7 @@ If you don't have labelled real photos yet, take 3–4 photos each of whatever l
 
 Browser storage holds about 5 MB. Keep the history thumbnail small (about 160 pixels wide, JPEG) or 50 checks will not fit.
 
-## Day 8 — Thursday 26 November: Put SafeCrop online
+## Day 8 — Friday 27 November: Put SafeCrop online
 
 **Goal:** one public link that works on a phone over mobile data, with the back end on a free Hugging Face Space and the front end on Vercel.
 
@@ -420,7 +421,7 @@ Browser storage holds about 5 MB. Keep the history thumbnail small (about 160 pi
 
 If the Space build runs out of memory or space, make sure the CPU-only torch wheel is used and that model files are downloaded at start-up, not copied into the image. If the Space still fails, a backup for the demo is to run the back end on your laptop and share it with a free Cloudflare quick tunnel (`cloudflared tunnel --url http://localhost:8000`), which needs no account or card.
 
-## Day 9 — Friday 27 November: Test everything and fix bugs
+## Day 9 — Saturday 28 November: Test everything and fix bugs
 
 **Goal:** every test in the plan below passes on the public link, and every bug from Day 8 is fixed.
 
@@ -447,7 +448,7 @@ If the Space build runs out of memory or space, make sure the CPU-only torch whe
 - [ ] The bug list from Day 8 is empty or only has nice-to-have items left.
 - [ ] `docs/TEST_RESULTS.md` has the full test table.
 
-## Day 10 — Saturday 28 November: Polish, safety and documents
+## Day 10 — Sunday 29 November: Polish, safety and documents
 
 **Goal:** the app looks finished, is safe to show to farmers, and a teammate can run it from the README alone.
 
@@ -477,7 +478,7 @@ If the Space build runs out of memory or space, make sure the CPU-only torch whe
 - [ ] Safety and privacy notes are on screen; no secret in the repo history.
 - [ ] Your teammate ran the app from the README without your help.
 
-## Day 11 — Sunday 29 November: Freeze, demo video, backups and the Week 11 update
+## Day 11 — Monday 30 November: Freeze, demo video, backups and the Week 11 update
 
 **Goal:** version 1.0 is online, a demo video is recorded and shown at the Week 11 update (today), and everything is backed up.
 
@@ -593,7 +594,7 @@ Test page: `http://localhost:8000/docs`
 - One change at a time: change, test, commit. If something breaks, `git diff` shows what changed.
 - Keep a running “numbers” note (time per check, real-photo results, fold-0 checks) for the Week 10 and Week 11 slides.
 
-## Master checklist for 29 November
+## Master checklist for 30 November
 
 Tick these on the last day. If every box is ticked, SafeCrop is fully functional.
 
@@ -637,7 +638,7 @@ Tick these on the last day. If every box is ticked, SafeCrop is fully functional
 - [ ] Full test plan table
 - [ ] README tested by a teammate
 - [ ] API, model card, data card
-- [ ] Week 10 slides done (22 Nov)
+- [ ] Week 10 slides done (23 Nov)
 - [ ] Demo video recorded; v1.0 tagged
 - [ ] Week 11 numbers and known limits written
 

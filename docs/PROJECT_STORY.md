@@ -38,7 +38,7 @@ compression. 7 diseases → 840 images; black gram adds 120 → 960. Extra: 240 
 | 8–11 Nov | Fine-tuning kit and experiments E0–E4 (repo `NabilRafi/SafeCrop`) | E4 L3 97.1% |
 | 11 Nov | Recipe B: same photos, noise made a different way, same strength — the robustness test | E4 L3 85.2% (best) |
 | 15 Nov | Week 9 update; React home page built (sample data, no back end) | — |
-| 17–27 Nov | Build the full web app (this repo) — see `docs/ROUTINE.md` | — |
+| 17–30 Nov | Build the full web app (this repo) — see `docs/ROUTINE.md` | — |
 
 ## The experiments E0–E4 (all CLIP ViT-L/14, 5 folds by photo)
 
@@ -83,8 +83,8 @@ compression. 7 diseases → 840 images; black gram adds 120 → 960. Extra: 240 
 
 ## Deadlines
 
-- Week 10 update: Sun 22 Nov 2026 (supervisor wants tables and numbers).
-- Week 11 update: Sun 29 Nov 2026 (working app + demo video).
+- Week 10 update: Mon 23 Nov 2026 (supervisor wants tables and numbers; shows work up to Day 3).
+- Week 11 update: Mon 30 Nov 2026 (working app + demo video).
 - Week 12: Sun 6 Dec 2026 — final presentation, live demo, 8-page report.
 
 ## Links
