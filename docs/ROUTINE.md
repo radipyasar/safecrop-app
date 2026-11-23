@@ -98,7 +98,7 @@ One check, start to finish. Steps 2–3 happen in one request (`/api/check`), so
 |--------------------------|------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `GET /api/health`        | nothing                                              | `{status, model_loaded, version}`                                                                                                                                                                                                           |
 | `POST /api/check`        | the photo (form field `image`); header `X-Device-Id` | `check_id`; `photo_check` {problem, level, sure, message, fix_applied}; `result` {decision, disease_id, disease_name, crop, vote_share, confidence_words, runner_up}; `neighbours` \[5 × {disease_id, thumb_url, similarity}\]; `timing_ms` |
-| `POST /api/advice`       | `{check_id, lang}`                                   | `{source: gemini | fallback, agrees, summary, steps[], see_expert_when, safety_note}`                                                                                                                                                       |
+| `POST /api/advice`       | form: `check_id`, `lang`, optional `image` (not stored)| `{source: gemini | fallback, agrees, summary, steps[], see_expert_when, safety_note}`                                                                                                                                                       |
 | `GET /api/diseases`      | nothing                                              | list of the 8 diseases (id, crop, names, short description, thumbnail)                                                                                                                                                                      |
 | `GET /api/diseases/{id}` | nothing                                              | full facts: symptoms, what to do now, prevention, when to call an expert, sources                                                                                                                                                           |
 | `GET /static/thumbs/…`   | nothing                                              | small reference pictures shown on the Result and Disease pages                                                                                                                                                                              |
@@ -281,16 +281,16 @@ The supervisor wants tables and numbers. The slides show the work **up to Day 3*
 
 #### Block C · Endpoints, log and tests (≈ 1.5 h)
 
-- [ ] `POST /api/advice`, `GET /api/diseases`, `GET /api/diseases/{id}`.
-- [ ] `app/db.py`: SQLite table `checks` (id, time, device_id, problem, level, label, vote_share, decision, gemini_agrees, advice_source, timing). Do **not** store photos (privacy).
-- [ ] Tests: advice returns valid JSON; with the key removed it returns the fallback; an unknown `check_id` gives a clear 404.
-- [ ] Put the key only in `backend/.env`. Run `git status` and make sure `.env` is not listed.
+- [x] `POST /api/advice`, `GET /api/diseases`, `GET /api/diseases/{id}`.
+- [x] `app/db.py`: SQLite table `checks` (id, time, device_id, problem, level, label, vote_share, decision, gemini_agrees, advice_source, timing). Do **not** store photos (privacy).
+- [x] Tests: advice returns valid JSON; with the key removed it returns the fallback; an unknown `check_id` gives a clear 404.
+- [x] Put the key only in `backend/.env`. Run `git status` and make sure `.env` is not listed.
 
 **Done when**
 
-- [ ] `/api/advice` returns Gemini's advice in about 10 seconds or less, and fallback advice when the key is removed.
-- [ ] `/api/diseases` returns all 8 diseases with checked facts and sources.
-- [ ] Every check is written to the SQLite log; no photos are stored.
+- [x] `/api/advice` returns Gemini's advice in about 10 seconds or less, and fallback advice when the key is removed.
+- [x] `/api/diseases` returns all 8 diseases with checked facts and sources.
+- [x] Every check is written to the SQLite log; no photos are stored.
 
 **If you get stuck**
 

@@ -10,7 +10,7 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 | 2 | Wed 18 Nov | Make the app's model files in Colab | done 19 Nov (Colab run 18 min; files in `backend/models/`, HF, Drive) |
 | 3 | Sat 21 Nov | Back end: photo in, disease out | done (`/api/check` works, 79 tests, 0.82 s per check) |
 | — | Sun 22 Nov | Week 10 update (shows work up to Day 3) | done (presented) |
-| 4 | Mon 23 Nov | Back end: Gemini advice + disease facts | in progress |
+| 4 | Mon 23 Nov | Back end: Gemini advice + disease facts | done (`/api/advice` + fallback, `/api/diseases`, SQLite log, 140 tests) |
 | 5 | Tue 24 Nov | Front end: the full check flow | not started |
 | 6 | Wed 25 Nov | Real photos + disease pages | not started |
 | 7 | Thu 26 Nov | History, Profile, Home with real data | not started |
@@ -94,10 +94,11 @@ Dates shifted by 2 days on 21 Nov, then 1 more day from Day 4 (Day 4 = Mon 23 �
 | Colab export run (T4): training / whole notebook | 176 s / 18 min | 19 Nov 2026 |
 | Real photos: right / wrong / not sure (of N) | | |
 | Gemini advice time, laptop (`scripts/try_advice.py`, 4 sample photos, with photo) | 2.0–4.3 s per answer (English 2.0, 2.3, 4.2 s; Bangla 4.3 s); fallback 0 s | 23 Nov 2026 |
+| Gemini advice time through the real server (`/api/advice` over HTTP, photo sent, 4 sample photos) | 2.1–3.2 s (median 2.2 s); agrees yes on both L0 photos, unsure on both L3 photos; fallback without key 0 s | 23 Nov 2026 |
 | Gemini agrees with CLIP (% of checks) | | |
 | Fallback advice used (count) | | |
 | Test plan passed (of 20) | | |
-| Back-end automatic tests passing | 79 / 79 (37 s, includes loading the model once) | 21 Nov 2026 |
+| Back-end automatic tests passing | 140 / 140 (110 s, includes loading the model once; Gemini faked, no quota) | 23 Nov 2026 |
 
 ## Bugs and ideas for later
 
@@ -112,8 +113,10 @@ Dates shifted by 2 days on 21 Nov, then 1 more day from Day 4 (Day 4 = Mon 23 �
 - ~~Day 3 (`model.py`): hide transformers' "LOAD REPORT"~~ — done 21 Nov (also loads CLIP from the local cache first,
   so start-up needs no internet).
 - ~~Day 3: copy `backend/models/photo_check.py` into `backend/app/photo_check.py`~~ — done 21 Nov (identical copy).
-- Day 4 (advice): the routine sends the farmer's photo to Gemini, but the server keeps no photos (only each check's
-  result, in memory, newest 1,000). Simplest: the front end sends the photo again with `/api/advice`; nothing stored.
+- ~~Day 4 (advice): how Gemini sees the photo~~ — done 23 Nov (option a): `/api/advice` is a form with `check_id`, `lang`
+  and an optional `image`. **Day 5:** the Result page sends the same photo file again with the advice call (FormData);
+  the server uses it once and keeps nothing. Advice for a check is only available while the server remembers the check
+  (newest 1,000, lost on restart) → on 404 show "check the photo again".
 - Day 5 (Result page), option C answers (`reason: healthy_or_other_unclear`): `disease_id` is the closest of our 8
   diseases (its vote share can be 0) and `runner_up` is the healthy / look-alike label that won the vote. Word it like
   "Not sure: this could be a healthy leaf, or Potato late blight. Retake a clearer photo."

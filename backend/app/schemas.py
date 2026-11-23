@@ -63,3 +63,48 @@ class CheckResponse(BaseModel):
     result: Result
     neighbours: list[Neighbour]
     timing_ms: Timing
+
+
+class Advice(BaseModel):
+    source: Literal["gemini", "fallback"] = Field(description="who wrote the advice")
+    agrees: Literal["yes", "no", "unsure"] = Field(description="Gemini's second opinion on CLIP's answer "
+                                                               "(always 'unsure' for the fallback or without a photo)")
+    summary: str
+    steps: list[str] = Field(description="3-5 short steps")
+    see_expert_when: str
+    safety_note: str
+    lang: Literal["en", "bn"] = Field(description="language of the text (the fallback is always English)")
+    fallback_reason: str | None = Field(description="no_key, quota, timeout, error, client_error, unsafe, retake "
+                                                    "or null when Gemini answered")
+    cached: bool = Field(description="true when the same check + language was answered before")
+    timing_ms: float | None = None
+
+
+class Source(BaseModel):
+    title: str
+    url: str
+
+
+class DiseaseSummary(BaseModel):
+    id: str
+    kind: Literal["disease", "pest"]
+    group: Literal["A", "B"] = Field(description="A = info-rich, B = info-scarce")
+    crop: str
+    name_en: str
+    name_bn: str
+    short: str
+    thumb_url: str | None = Field(description="clean thumbnail of one of our photos")
+
+
+class DiseaseDetail(DiseaseSummary):
+    cause_type: str
+    cause: str
+    signs: list[str]
+    do_now: list[str]
+    prevention: list[str]
+    see_expert_when: str
+    looks_like: list[str]
+    sources: list[Source]
+    photos: list[str] = Field(description="up to 6 clean thumbnails of our photos of this disease")
+    photo_credit: str | None = Field(description="where our photos come from, with the licence")
+    helpline: str = Field(examples=["16123"])

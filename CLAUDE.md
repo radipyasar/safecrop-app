@@ -82,7 +82,7 @@ docs/                PROJECT_STORY, ROUTINE, PROGRESS, MODEL_CARD, DATA_CARD, AP
   disease_id, disease_name, crop, vote_share, confidence_words, runner_up, tip, best_similarity},
   `neighbours` [5 × {disease_id, disease_name, thumb_url, similarity}], `timing_ms` {read, photo_check, embed,
   search, total}. Errors: 400 empty, 413 too big, 415 not a photo, 503 still starting. Shapes: `app/schemas.py`.
-- `POST /api/advice` `{check_id, lang}` → `{source: gemini|fallback, agrees, summary, steps[], see_expert_when, safety_note}`
+- `POST /api/advice` (form fields `check_id`, `lang` = en|bn, optional `image` = the same photo again, used once and never stored) → `{source: gemini|fallback, agrees, summary, steps[], see_expert_when, safety_note, lang, fallback_reason, cached, timing_ms}`. 404 unknown `check_id`.
 - `GET /api/diseases`, `GET /api/diseases/{id}`, static `/static/thumbs/…`
 - Decisions: `sure`, `likely`, `not_sure`, `healthy`, `not_in_list`, `retake` (cut-offs in `backend/models/thresholds.json`).
   Option C (21 Nov): `healthy` / `not_in_list` only with vote ≥ the `sure` cut and a photo that is not L3; otherwise

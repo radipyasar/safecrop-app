@@ -1,11 +1,18 @@
 """Shared test helpers. Tests that need the model files (backend/models, not in git) are skipped without them."""
 
+import os
+import tempfile
 import time
 from pathlib import Path
 
 import pytest
 
-from app.main import MODELS_DIR
+# Before the app is imported: tests never use the real Gemini key (no quota spent; tests that want Gemini use a fake)
+# and write to a throw-away log instead of backend/safecrop.db.
+os.environ["GEMINI_API_KEY"] = ""
+os.environ["DB_PATH"] = str(Path(tempfile.mkdtemp(prefix="safecrop_test_")) / "test.db")
+
+from app.main import MODELS_DIR  # noqa: E402
 
 SAMPLES = Path(__file__).resolve().parent / "samples"
 HAVE_MODELS = all((MODELS_DIR / f).exists() for f in

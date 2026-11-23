@@ -131,7 +131,7 @@ class Advisor:
         with self._lock:
             cached = self._cache.get((check_id, lang))
         if cached:
-            return {**cached, "cached": True}
+            return {**cached, "cached": True, "timing_ms": round((time.perf_counter() - t0) * 1000, 1)}
 
         answer, why = None, None
         if facts_id(check["result"]) is None:
