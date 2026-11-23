@@ -6,11 +6,11 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 
 | Day | Date | Goal | Status |
 | --- | --- | --- | --- |
-| 1 | Tue 17 Nov | Set up the project, connect all pages | done (2 small to-dos: checklist, tell teammate) |
+| 1 | Tue 17 Nov | Set up the project, connect all pages | done (checklist + teammate done 23 Nov) |
 | 2 | Wed 18 Nov | Make the app's model files in Colab | done 19 Nov (Colab run 18 min; files in `backend/models/`, HF, Drive) |
 | 3 | Sat 21 Nov | Back end: photo in, disease out | done (`/api/check` works, 79 tests, 0.82 s per check) |
-| — | Sun 22 Nov | Week 10 update (shows work up to Day 3) | not started |
-| 4 | Mon 23 Nov | Back end: Gemini advice + disease facts | not started |
+| — | Sun 22 Nov | Week 10 update (shows work up to Day 3) | done (presented) |
+| 4 | Mon 23 Nov | Back end: Gemini advice + disease facts | in progress |
 | 5 | Tue 24 Nov | Front end: the full check flow | not started |
 | 6 | Wed 25 Nov | Real photos + disease pages | not started |
 | 7 | Thu 26 Nov | History, Profile, Home with real data | not started |

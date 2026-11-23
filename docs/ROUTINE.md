@@ -141,11 +141,11 @@ One check, start to finish. Steps 2–3 happen in one request (`/api/check`), so
 
 #### Block A · Plan and accounts (≈ 1.5 h)
 
-- [ ] Read this routine once from start to finish. Copy the must-have list into a checklist you will tick (GitHub Issues, a GitHub Project board, or Notion).
+- [x] Read this routine once from start to finish. Copy the must-have list into a checklist you will tick (GitHub Issues, a GitHub Project board, or Notion).
 - [x] Make a **Hugging Face** account (free, no card). Create an access token with *write* rights (Settings → Access Tokens). Save it in a password manager, not in a file.
 - [x] Make a **Vercel** account by signing in with GitHub (Hobby plan, no card).
 - [x] Check the Gemini key still works: a 5-line Python script that asks Gemini 3.5 Flash-Lite “say hi”. Keep the key in an environment variable only.
-- [ ] Tell your teammate the plan and split work if possible (for example: teammate writes `diseases.json` on Day 4 and collects real photos for Day 6).
+- [x] Tell your teammate the plan and split work if possible (for example: teammate writes `diseases.json` on Day 4 and collects real photos for Day 6).
 
 #### Block B · Repo and back-end skeleton (≈ 2 h)
 
@@ -250,15 +250,15 @@ The supervisor wants tables and numbers. The slides show the work **up to Day 3*
 
 #### Week 10 slides (supervisor update today — do this before the meeting) (≈ 1.5 h)
 
-- [ ] Slide: how the app works (the “How the finished app works” diagram) and the tech stack table.
-- [ ] Slide: the API table and the decision table.
-- [ ] Slide: numbers — time per check on the laptop, the two Day 2 fold-0 checks (with / without healthy pictures, resample), answers by decision, the cut-offs, photo check on 960 images (all in “Numbers for slides” in `docs/PROGRESS.md`).
-- [ ] Slide: screenshots of `/api/check` working in `/docs` (the front-end screens come on Day 5).
-- [ ] Slide: plan for 23–30 Nov (Days 4–11 of this routine), with the real-photo test on Wed 25 Nov.
+- [x] Slide: how the app works (the “How the finished app works” diagram) and the tech stack table.
+- [x] Slide: the API table and the decision table.
+- [x] Slide: numbers — time per check on the laptop, the two Day 2 fold-0 checks (with / without healthy pictures, resample), answers by decision, the cut-offs, photo check on 960 images (all in “Numbers for slides” in `docs/PROGRESS.md`).
+- [x] Slide: screenshots of `/api/check` working in `/docs` (the front-end screens come on Day 5).
+- [x] Slide: plan for 23–30 Nov (Days 4–11 of this routine), with the real-photo test on Wed 25 Nov.
 
 **Done when**
 
-- [ ] Week 10 slides are in the deck and presented.
+- [x] Week 10 slides are in the deck and presented.
 
 ## Day 4 — Monday 23 November: Back end: Gemini advice and disease facts
 
