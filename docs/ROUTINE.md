@@ -274,10 +274,10 @@ The supervisor wants tables and numbers. The slides show the work **up to Day 3*
 
 #### Block B · The advice service (≈ 2 h)
 
-- [ ] `app/advice.py`: use `google-genai` with Gemini 3.5 Flash-Lite. Send: the farmer's photo, the predicted disease, its facts from `diseases.json`, and the photo-check result.
-- [ ] Ask for a JSON answer with a fixed shape: `agrees` (yes / no / unsure), `summary` (2 sentences), `steps` (3–5 short steps), `see_expert_when`, `safety_note`. Tell Gemini to use only the given facts and simple words, and to answer in the requested language (English or Bangla).
-- [ ] Timeout of 20 seconds and one retry. Cache the answer by `check_id` so a page refresh doesn't spend quota.
-- [ ] **Fallback:** if Gemini fails, times out or the daily quota is used up, build the same JSON from `diseases.json` with `source: "fallback"`.
+- [x] `app/advice.py`: use `google-genai` with Gemini 3.5 Flash-Lite. Send: the farmer's photo, the predicted disease, its facts from `diseases.json`, and the photo-check result.
+- [x] Ask for a JSON answer with a fixed shape: `agrees` (yes / no / unsure), `summary` (2 sentences), `steps` (3–5 short steps), `see_expert_when`, `safety_note`. Tell Gemini to use only the given facts and simple words, and to answer in the requested language (English or Bangla).
+- [x] Timeout of 20 seconds and one retry. Cache the answer by `check_id` so a page refresh doesn't spend quota.
+- [x] **Fallback:** if Gemini fails, times out or the daily quota is used up, build the same JSON from `diseases.json` with `source: "fallback"`.
 
 #### Block C · Endpoints, log and tests (≈ 1.5 h)
 

@@ -93,6 +93,7 @@ Dates shifted by 2 days on 21 Nov, then 1 more day from Day 4 (Day 4 = Mon 23 â€
 | CLIP embedding only, laptop CPU (not a full check) | 0.83 s per photo | 19 Nov 2026 |
 | Colab export run (T4): training / whole notebook | 176 s / 18 min | 19 Nov 2026 |
 | Real photos: right / wrong / not sure (of N) | | |
+| Gemini advice time, laptop (`scripts/try_advice.py`, 4 sample photos, with photo) | 2.0â€“4.3 s per answer (English 2.0, 2.3, 4.2 s; Bangla 4.3 s); fallback 0 s | 23 Nov 2026 |
 | Gemini agrees with CLIP (% of checks) | | |
 | Fallback advice used (count) | | |
 | Test plan passed (of 20) | | |
