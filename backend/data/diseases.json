@@ -1,0 +1,364 @@
+{
+  "about": {
+    "what": "Checked facts for SafeCrop's advice. Gemini rewrites these in plain words; it must not add treatments.",
+    "updated": "2026-11-23",
+    "rules": [
+      "No chemical names and no doses. Say: ask your local agriculture officer which product and dose to use.",
+      "Every entry needs 1-3 sources. Set 'checked' to true only after a person has opened every source and compared the facts."
+    ],
+    "helpline": {
+      "number": "16123",
+      "name": "Krishi Call Centre (Department of Agricultural Extension, DAE)",
+      "name_bn": "কৃষি কল সেন্টার",
+      "note": "Calls go to agriculture officers. Also: your Upazila Agriculture Office.",
+      "checked_on": "2026-11-23",
+      "source": "https://www.bssnews.net/special-stories/401845"
+    },
+    "ask_officer": "Ask your local agriculture officer which product and dose to use."
+  },
+  "entries": [
+    {
+      "id": "potato_late_blight",
+      "kind": "disease",
+      "group": "A",
+      "crop": "potato",
+      "name_en": "Potato late blight",
+      "name_bn": "আলুর নাবি ধসা রোগ",
+      "cause_type": "water mould (fungus-like)",
+      "cause": "A water mould called Phytophthora infestans. It spreads very fast in cool, wet or foggy weather.",
+      "short": "Dark, wet-looking patches on potato leaves that spread fast in cool, damp weather and can kill the whole plant.",
+      "signs": [
+        "Pale or dark green, wet-looking spots, often at the tips and edges of leaves, with a yellow ring around them.",
+        "The spots grow quickly into large dark brown patches that are not stopped by the leaf veins.",
+        "In damp weather, a white, fuzzy growth on the underside of the leaf at the edge of the spots.",
+        "Dark patches on the leaf stalks and stems; whole plants can turn brown and dry as if burnt by frost.",
+        "Potatoes in the ground can get reddish-brown, dry rot under the skin."
+      ],
+      "do_now": [
+        "Check the whole field today, especially after fog or rain. The disease can strip a field in about two weeks.",
+        "Pull out badly sick plants, put them in a bag or bury them deep. Do not leave them in a heap near the field.",
+        "Keep the leaves as dry as you can: water the soil, not the leaves, and water in the morning.",
+        "Spraying can protect the healthy plants, but timing matters. Ask your local agriculture officer which product and dose to use."
+      ],
+      "prevention": [
+        "Plant clean, certified seed potatoes, and a resistant variety if one is available.",
+        "Remove volunteer potato plants and piles of thrown-away potatoes, where the disease survives.",
+        "Leave space between plants so air can move and leaves dry quickly.",
+        "Cover the potatoes well with soil (earthing up) so spores from the leaves don't reach them.",
+        "Harvest in dry weather and store only healthy potatoes."
+      ],
+      "see_expert_when": "Call an expert at once if many plants show spots after foggy or rainy days, or if spots keep spreading after you removed sick plants.",
+      "looks_like": ["Potato early blight (round brown spots with rings like a target)"],
+      "sources": [
+        {"title": "Late blight of tomato and potato — University of Minnesota Extension", "url": "https://extension.umn.edu/disease-management/late-blight"},
+        {"title": "Late Blight / Potato — UC Statewide IPM Program", "url": "https://ipm.ucanr.edu/agriculture/potato/late-blight/"},
+        {"title": "Tomato-Potato Late Blight in the Home Garden — Penn State Extension", "url": "https://extension.psu.edu/tomato-potato-late-blight-in-the-home-garden"}
+      ],
+      "checked": true
+    },
+    {
+      "id": "apple_scab",
+      "kind": "disease",
+      "group": "A",
+      "crop": "apple",
+      "name_en": "Apple scab",
+      "name_bn": "আপেলের স্ক্যাব রোগ",
+      "cause_type": "fungus",
+      "cause": "A fungus called Venturia inaequalis. It lives through the winter in fallen leaves and spreads in wet spring weather.",
+      "short": "Olive-green to dark brown, velvety spots on apple leaves and rough, cracked spots on the fruit.",
+      "signs": [
+        "Small, olive-green spots that later turn brown or black, often first on the underside of the leaf.",
+        "The spots have a soft, feathery edge and a velvety look.",
+        "Badly hit leaves turn yellow and fall early.",
+        "Dark, rough (scabby) spots on the fruit that crack as the fruit grows; young fruit can be bent out of shape."
+      ],
+      "do_now": [
+        "Pick up and remove fallen leaves under the tree; this is where the fungus survives.",
+        "Remove badly spotted fruit so it does not spread the disease.",
+        "Sprays work only if they are on time and cover both sides of the leaves. Ask your local agriculture officer which product and dose to use."
+      ],
+      "prevention": [
+        "Clean up fallen leaves in autumn or early spring (rake them up, bury or compost them).",
+        "Prune the tree so air and sun reach inside and leaves dry fast.",
+        "Choose scab-resistant apple varieties when planting new trees."
+      ],
+      "see_expert_when": "Ask an expert if spots appear on many leaves and fruit early in the season, or if spots come back every year.",
+      "looks_like": ["Cedar apple rust (bright orange-yellow spots)"],
+      "sources": [
+        {"title": "Apple Scab (Venturia inaequalis) — Cornell CALS IPM fact sheet", "url": "https://cals.cornell.edu/integrated-pest-management/outreach-education/fact-sheets/apple-scab-fruit-fact-sheet"},
+        {"title": "Apple Scab — University of Illinois Extension", "url": "https://extension.illinois.edu/plant-problems/apple-scab"},
+        {"title": "Apple IPM: Apple scab — UMass Amherst", "url": "https://www.umass.edu/agriculture-food-environment/fruit/fact-sheets/apple-ipm-apple-scab"}
+      ],
+      "checked": true
+    },
+    {
+      "id": "rice_stem_borer",
+      "kind": "pest",
+      "group": "A",
+      "crop": "rice",
+      "name_en": "Rice stem borer",
+      "name_bn": "ধানের মাজরা পোকা",
+      "cause_type": "insect pest (not a disease)",
+      "cause": "This is an insect pest, not a disease. The caterpillar (larva) of a small moth, mostly the yellow stem borer (Scirpophaga incertulas), eats the inside of the rice stem.",
+      "short": "An insect, not a disease: its caterpillars bore into rice stems, so the centre shoot dies (dead heart) or the panicle comes out white and empty (white head).",
+      "signs": [
+        "Dead heart: in young plants the centre leaf rolls, turns brown and dries; it pulls out easily by hand.",
+        "White head: at flowering time the panicle turns white and the grains are empty.",
+        "Small holes in the stem and the caterpillar or its waste inside the stem.",
+        "Small groups of eggs, covered with light brown hairs, near the tips of the leaves.",
+        "Small yellowish-white moths flying at night, attracted to lights."
+      ],
+      "do_now": [
+        "Pull out plants with dead hearts and destroy them, with the caterpillar inside.",
+        "Collect and destroy egg groups from the leaf tips.",
+        "Put bamboo sticks or branches in the field so birds can sit there and eat the moths and caterpillars (perching).",
+        "Once white heads have appeared it is too late for a spray to help that crop.",
+        "Use an insecticide only if an officer says the number of insects is high enough. Ask your local agriculture officer which product and dose to use."
+      ],
+      "prevention": [
+        "After harvest, cut the stubble close to the ground and plough the field to kill caterpillars hiding in it.",
+        "Plant at the same time as your neighbours, so the insects don't move from field to field.",
+        "Use the variety and planting time your local office recommends.",
+        "Do not use too much nitrogen fertiliser (urea); soft, lush plants attract more borers."
+      ],
+      "see_expert_when": "Ask an expert if you see dead hearts or egg groups in many hills, or white heads spreading around the field.",
+      "looks_like": [],
+      "sources": [
+        {"title": "Yellow and white rice stemborers: deadheart — PhilRice (based on IRRI Rice Knowledge Bank)", "url": "https://dbmp.philrice.gov.ph/CPD/Stemborer/SB_deadheart.html"},
+        {"title": "Yellow and white rice stemborers: whitehead — PhilRice", "url": "https://dbmp.philrice.gov.ph/CPD/Stemborer/SB_whitehead.html"},
+        {"title": "Rice white stem borer — Pacific Pests, Pathogens and Weeds (Lucidcentral)", "url": "https://apps.lucidcentral.org/ppp_v9/pdf/web_full/rice_white_stem_borer_411.pdf"}
+      ],
+      "checked": true
+    },
+    {
+      "id": "black_gram_yellow_mosaic",
+      "kind": "disease",
+      "group": "A",
+      "crop": "black gram",
+      "name_en": "Black gram yellow mosaic",
+      "name_bn": "মাষকলাইয়ের হলুদ মোজাইক রোগ",
+      "cause_type": "virus (spread by whitefly)",
+      "cause": "A virus (mungbean yellow mosaic virus and related viruses). Tiny white flies (whitefly) carry it from sick plants to healthy ones. It is not spread by seed or by touch.",
+      "short": "Bright yellow and green patches (a mosaic) on black gram leaves, spread by whitefly; plants give few, small pods.",
+      "signs": [
+        "Small yellow spots on young leaves that grow into bright yellow and green patches (a mosaic).",
+        "Later, whole leaves can turn yellow.",
+        "Sick plants stay small and give few pods; pods are small, bent, and can also have yellow patches.",
+        "Plants infected when young may die before making seed.",
+        "Tiny white insects (whitefly) on the underside of the leaves."
+      ],
+      "do_now": [
+        "Pull out sick plants early (in the first weeks after sowing) and destroy them away from the field.",
+        "Hang yellow sticky traps to catch whitefly.",
+        "Remove weeds in and around the field; they can hide the virus and the whitefly.",
+        "There is no cure for a plant that already has the virus. To control whitefly, ask your local agriculture officer which product and dose to use."
+      ],
+      "prevention": [
+        "Grow a resistant variety; ask your local office which one is recommended in your area.",
+        "Sow at the recommended time.",
+        "Keep the field and its edges free of weeds.",
+        "Some farmers grow a few rows of a tall crop (maize or sorghum) around the field as a barrier against whitefly."
+      ],
+      "see_expert_when": "Ask an expert if many young plants show yellow patches, or if whitefly numbers are high.",
+      "looks_like": [],
+      "sources": [
+        {"title": "Black gram: Yellow mosaic — TNAU Agritech Portal", "url": "https://agritech.tnau.ac.in/crop_protection/black_gram_disease/blackgram_d8.html"},
+        {"title": "Yellow mosaic of mungbean and urdbean: current status and future strategies (FAO AGRIS record)", "url": "https://agris.fao.org/search/en/records/65ded47f0f3e94b9e5d1dcd5"}
+      ],
+      "checked": true
+    },
+    {
+      "id": "pear_leaf_spot",
+      "kind": "disease",
+      "group": "B",
+      "crop": "pear",
+      "name_en": "Pear leaf spot",
+      "name_bn": "নাশপাতির পাতার দাগ রোগ",
+      "cause_type": "fungus",
+      "cause": "A fungus called Septoria pyricola (also called Mycosphaerella pyri). It lives in fallen leaves and spreads with rain.",
+      "short": "Small round spots with a grey-white centre and a dark purple-brown edge on pear leaves.",
+      "signs": [
+        "Small round spots, about 3–5 mm across, first on the upper side of the leaf.",
+        "Each spot has a grey or whitish centre and a dark brown or purple edge.",
+        "Tiny black dots inside older spots.",
+        "Many spots can make leaves yellow and fall early, mostly late in the season.",
+        "Sometimes small dark spots on the fruit."
+      ],
+      "do_now": [
+        "Remove and destroy fallen leaves under the tree.",
+        "Remove badly spotted leaves you can reach.",
+        "If many leaves are spotted, ask your local agriculture officer which product and dose to use."
+      ],
+      "prevention": [
+        "Clean up fallen leaves every season; the fungus survives in them.",
+        "Prune the tree so air moves and leaves dry quickly after rain.",
+        "Water the soil, not the leaves."
+      ],
+      "see_expert_when": "Ask an expert if spots cover many leaves or leaves are falling early.",
+      "looks_like": ["Fabraea leaf spot of pear (darker spots)"],
+      "sources": [
+        {"title": "Pear Leaf Spot in the Home Fruit Planting — Penn State Extension", "url": "https://extension.psu.edu/pear-leaf-spot-in-the-home-fruit-planting"},
+        {"title": "Mycosphaerella leaf spot — Michigan State University IPM", "url": "https://www.canr.msu.edu/ipm/diseases/mycosphaerella_leaf_spot"},
+        {"title": "DiaMOS Plant dataset description (our photo source; lists Septoria piricola)", "url": "https://zenodo.org/records/5557313/files/Description_DIaMOS_Plant_dataset.pdf"}
+      ],
+      "checked": true
+    },
+    {
+      "id": "grape_leaf_blight",
+      "kind": "disease",
+      "group": "B",
+      "crop": "grape",
+      "name_en": "Grape leaf blight",
+      "name_bn": "আঙুরের পাতা ঝলসানো রোগ",
+      "cause_type": "fungus",
+      "cause": "A fungus called Pseudocercospora vitis (old name Isariopsis), so it is also called Isariopsis leaf spot.",
+      "short": "Brown to purplish-brown spots on grape leaves, often on older leaves late in the season; badly hit leaves dry and fall.",
+      "signs": [
+        "Brown or purplish-brown spots on the upper side of the leaf, round or uneven, a few millimetres across.",
+        "Spots can join into larger dead (dry) areas.",
+        "Later, dark growth on the underside of the leaf below the spots.",
+        "Mostly older leaves; badly hit leaves dry up and fall early."
+      ],
+      "do_now": [
+        "Remove spotted leaves and fallen leaves and destroy them away from the vines.",
+        "Keep the leaves dry: water the soil, not the leaves.",
+        "If many leaves are spotted, ask your local agriculture officer which product and dose to use."
+      ],
+      "prevention": [
+        "Clean up fallen leaves after the season.",
+        "Prune and train the vines so air moves through them.",
+        "In well-looked-after vineyards this disease is seldom a big problem."
+      ],
+      "see_expert_when": "Ask an expert if spots spread over many vines or leaves fall early.",
+      "looks_like": ["Grape black rot", "Grape esca (black measles)"],
+      "sources": [
+        {"title": "Leaf spots of grapes — University of Kentucky Fruit Scouting Guide", "url": "https://fruitscout.mgcafe.uky.edu/leaf-spots-grapes"},
+        {"title": "Pseudocercospora vitis (MYCOPS) — EPPO Global Database", "url": "https://qbank.eppo.int/fungi/taxon/MYCOPS/"}
+      ],
+      "checked": true
+    },
+    {
+      "id": "jute_mosaic",
+      "kind": "disease",
+      "group": "B",
+      "crop": "jute",
+      "name_en": "Jute mosaic",
+      "name_bn": "পাটের মোজাইক রোগ",
+      "cause_type": "virus (spread by whitefly)",
+      "cause": "A virus (a begomovirus) carried by tiny white flies (whitefly). In Bangladesh it is reported as one of the most damaging jute diseases.",
+      "short": "Yellow and green patches (a mosaic) on jute leaves, spread by whitefly; it lowers fibre yield and quality.",
+      "signs": [
+        "Small yellow flecks on young leaves.",
+        "The flecks grow into mixed yellow and green patches (a mosaic).",
+        "Leaves can become wrinkled or smaller, and plants grow less.",
+        "Tiny white insects (whitefly) on the underside of the leaves."
+      ],
+      "do_now": [
+        "Pull out sick plants early and destroy them away from the field.",
+        "Remove weeds in and around the field.",
+        "Hang yellow sticky traps to catch whitefly.",
+        "There is no cure for a plant that already has the virus. To control whitefly, ask your local agriculture officer which product and dose to use."
+      ],
+      "prevention": [
+        "Use healthy seed of a variety your local office or BJRI recommends.",
+        "Keep the field and its edges free of weeds.",
+        "Check young plants often for yellow flecks and whitefly."
+      ],
+      "see_expert_when": "Ask an expert if many plants show yellow patches, or whitefly numbers are high.",
+      "looks_like": [],
+      "sources": [
+        {"title": "Light microscopy and PCR based detection of the causal agent of leaf mosaic of jute — Progressive Agriculture (BanglaJOL)", "url": "https://www.banglajol.info/index.php/PA/article/view/16463"},
+        {"title": "Jute — Banglapedia", "url": "https://en.banglapedia.org/index.php/Jute"}
+      ],
+      "checked": true
+    },
+    {
+      "id": "jute_dieback",
+      "kind": "disease",
+      "group": "B",
+      "crop": "jute",
+      "name_en": "Jute dieback",
+      "name_bn": "পাটের আগা মরা রোগ",
+      "cause_type": "fungus (to check)",
+      "cause": "The plant dies from the tip downwards. In research it is a later stage of fungus attacks on the stem, best described for jute anthracnose (Colletotrichum fungi). The exact cause for our photos is not confirmed.",
+      "short": "Jute leaves and shoot tips turn brown and dry from the top down; often a later stage of a fungus attack on the stem.",
+      "signs": [
+        "Leaves near the top of the plant turn brown and dry.",
+        "The shoot tip and side branches wither and die back from the top.",
+        "Dark brown or black, sunken patches on the stem.",
+        "Leaves fall early."
+      ],
+      "do_now": [
+        "Cut off and destroy dried tips and badly sick plants, away from the field.",
+        "Do not leave sick plant parts in the field or in the water used for retting nearby.",
+        "Ask your local agriculture officer which product and dose to use, if any treatment is needed."
+      ],
+      "prevention": [
+        "Use healthy, clean seed from a trusted source.",
+        "Keep good drainage so water does not stand around the plants.",
+        "Remove plant remains after harvest and rotate crops."
+      ],
+      "see_expert_when": "Ask an expert soon: several fungi cause similar damage on jute, and an expert can tell which one it is.",
+      "looks_like": ["Jute stem rot", "Jute black band", "Jute anthracnose"],
+      "sources": [
+        {"title": "Anthracnose of jute (Colletotrichum) — Scientific Reports (PMC4848545)", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4848545"},
+        {"title": "Jute — Banglapedia", "url": "https://en.banglapedia.org/index.php/Jute"}
+      ],
+      "checked": true
+    },
+    {
+      "id": "healthy",
+      "kind": "healthy",
+      "group": null,
+      "crop": null,
+      "name_en": "Healthy leaf",
+      "name_bn": "সুস্থ পাতা",
+      "cause_type": null,
+      "cause": null,
+      "short": "The leaf looks like the healthy leaves in our pictures.",
+      "signs": [
+        "Even green colour, without spots, patches or a yellow mosaic.",
+        "No dry, brown tips or edges.",
+        "No holes and no insects on the leaf."
+      ],
+      "do_now": [
+        "Nothing to treat now. Keep checking your plants once or twice a week.",
+        "Check again after rain, fog or a spell of cool, damp weather, when many diseases spread."
+      ],
+      "prevention": [
+        "Use healthy seed and keep the field free of weeds.",
+        "Give plants space so air moves and leaves dry quickly.",
+        "Remove sick plants as soon as you see them."
+      ],
+      "see_expert_when": "Ask an expert if the plant looks weak or grows badly even though the leaves look healthy.",
+      "looks_like": [],
+      "sources": [],
+      "checked": true
+    },
+    {
+      "id": "unknown",
+      "kind": "unknown",
+      "group": null,
+      "crop": null,
+      "name_en": "Not in our list",
+      "name_bn": "আমাদের তালিকায় নেই",
+      "cause_type": null,
+      "cause": null,
+      "short": "The leaf looks most like a disease SafeCrop does not cover, so SafeCrop cannot give advice for it.",
+      "signs": [],
+      "do_now": [
+        "Do not spray anything until you know what the problem is.",
+        "Take a clear photo of the leaf and show it, or the plant, to your local agriculture officer.",
+        "You can also call the Krishi Call Centre at 16123."
+      ],
+      "prevention": [
+        "Remove badly sick leaves or plants so the problem does not spread.",
+        "Keep the field clean and free of weeds."
+      ],
+      "see_expert_when": "Ask an expert now: SafeCrop only knows 8 problems and this may be a different one.",
+      "looks_like": [],
+      "sources": [],
+      "checked": true
+    }
+  ]
+}

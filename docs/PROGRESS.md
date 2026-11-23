@@ -126,6 +126,11 @@ Dates shifted by 2 days on 21 Nov, then 1 more day from Day 4 (Day 4 = Mon 23 �
   test (Day 6, Wed 25) — show the Day 2 tables + the laptop time per check; real-photo results go into the Week 11
   update (Day 11, Mon 30). If still behind by Day 7, drop nice-to-haves first (feedback button, Bangla, home-screen icon, webcam, stats page) —
   never must-haves.
+- `backend/data/diseases.json` (23 Nov): Nabil checked every entry, source and Bangla name on 23 Nov (`checked: true`).
+  No BRRI / BJRI / BARI / DAE pages were found online for most diseases (we used
+  university extension, PhilRice / IRRI, TNAU and BanglaJOL papers instead); add Bangladesh institute sources if you
+  have them. Jute dieback's cause is not confirmed (written as "a later stage of fungus attacks on the stem; ask an
+  expert"). Helpline 16123 (DAE Krishi Call Centre) confirmed active by a BSS report, July 2026.
 - The Gemini check script is at `backend/scripts/check_gemini.py` (not `scripts/`).
 - The laptop's default Python is 3.14 — always use `backend/.venv` (3.11).
 - Git shows LF/CRLF warnings on Windows; harmless. Could add a `.gitattributes` later.

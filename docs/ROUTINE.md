@@ -266,11 +266,11 @@ The supervisor wants tables and numbers. The slides show the work **up to Day 3*
 
 #### Block A · Write the disease facts (≈ 2 h)
 
-- [ ] Create `data/diseases.json` with one entry for each of the 8 diseases, plus `healthy` and `unknown`.
-- [ ] For each disease: id, crop, English name, Bangla name, what causes it (fungus, virus, insect…), 3–5 signs to look for, what to do now, how to prevent it, when to call an expert, and 1–3 source links.
-- [ ] Use trusted sources: Bangladesh research institutes and extension services (for example BRRI for rice, BJRI for jute, BARI for potato and black gram, DAE), and university extension pages for apple, pear and grape. Write down every source you used.
-- [ ] Do **not** write chemical names with doses. Write “ask your local agriculture officer which product and dose to use”. Add the local agriculture helpline number after checking it is current.
-- [ ] Note: rice stem borer is an insect pest, not a disease. Say so on its page.
+- [x] Create `data/diseases.json` with one entry for each of the 8 diseases, plus `healthy` and `unknown`.
+- [x] For each disease: id, crop, English name, Bangla name, what causes it (fungus, virus, insect…), 3–5 signs to look for, what to do now, how to prevent it, when to call an expert, and 1–3 source links.
+- [x] Use trusted sources: Bangladesh research institutes and extension services (for example BRRI for rice, BJRI for jute, BARI for potato and black gram, DAE), and university extension pages for apple, pear and grape. Write down every source you used.
+- [x] Do **not** write chemical names with doses. Write “ask your local agriculture officer which product and dose to use”. Add the local agriculture helpline number after checking it is current.
+- [x] Note: rice stem borer is an insect pest, not a disease. Say so on its page.
 
 #### Block B · The advice service (≈ 2 h)
 
