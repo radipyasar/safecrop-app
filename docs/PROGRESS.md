@@ -21,7 +21,7 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 
 Dates shifted by 2 days on 21 Nov, then 1 more day from Day 4 (Day 4 = Mon 23 … Day 11 = Mon 30).
 
-## Where things are now (21 Nov, end of Day 3 — on the shifted plan)
+## Where things are now (23 Nov, end of Day 4 — on the shifted plan)
 
 - Front end: routing works — 7 pages + "page not found"; menus highlight the current page; home buttons
   open `/check`. Only the home page has real content (sample data); other pages are titles.
@@ -31,18 +31,25 @@ Dates shifted by 2 days on 21 Nov, then 1 more day from Day 4 (Day 4 = Mon 23 �
   `/static/thumbs/`, `timing_ms`. Model loads once in the background at start-up (`/api/health` → `model_loaded`;
   `/api/check` says "starting" with 503 until then). Uploads: JPEG / PNG / WebP / HEIC ≤ 10 MB, EXIF turn fixed,
   clear 400 / 413 / 415 errors. The newest 1,000 results (never photos) are kept in memory for `/api/advice`.
-  Files: `app/main.py`, `model.py`, `predict.py`, `photo_check.py`, `schemas.py`. **79 tests pass** (37 s).
+  Files: `app/main.py`, `model.py`, `predict.py`, `photo_check.py`, `schemas.py`.
   `scripts/time_checks.py` times start-up and checks (also `--url` for the Space on Day 8).
   All packages installed in `backend/.venv`; torch 2.14.1, transformers 5.22.1, Pillow 11.3.0 pinned to Colab.
-- Not built yet: `/api/advice`, `/api/diseases`, `data/diseases.json`, SQLite log (Day 4).
+- Back end, Day 4: **`POST /api/advice` works** (form: `check_id`, `lang` en/bn, optional `image` used once, never
+  stored) — Gemini 3.5 Flash-Lite writes advice from the facts (JSON schema, 20 s timeout + 1 retry, cached by check +
+  language, chemical / dose check), fallback from `diseases.json` with `fallback_reason`; retake answers never call
+  Gemini. **`GET /api/diseases`** (8) and **`/api/diseases/{id}`** (facts, sources, 6 photos, credit, helpline 16123).
+  **SQLite log** `app/db.py` → `backend/safecrop.db` (git-ignored; `DB_PATH` to move it): one row per check, advice
+  added later; numbers and labels only. `data/diseases.json`: 8 diseases + healthy + unknown, all checked by Nabil.
+  `scripts/try_advice.py` tries real Gemini on sample photos (`--lang bn`, `--no-key`). **140 tests pass** (110 s);
+  tests blank the Gemini key and use a throw-away log, so they never spend quota. Version 0.4.0.
 - Models: **done.** `backend/models/` (git-ignored) has `clip_ft_delta.safetensors`, `database.npz` (7,680 × 768),
   `thumbs/` (480), `photos.csv`, `photo_check.joblib` + `photo_check.py`, `thresholds.json`, `README.md`,
   `export_info.json`, `checks/`. Same files in the private HF repo `Radip/safecrop-models` and Drive
   `SafeCrop_app/app_model_files`. Checksums 10/10; all load with the pinned versions on Python 3.11; laptop CPU gives
   the same embeddings as the Colab database (cosine 1.000000). CLIP ViT-L/14 (1.7 GB) is in the laptop's HF cache.
 - Docs: `docs/MODEL_CARD.md` written. Notebook `notebooks/SafeCrop_app_model_export.ipynb` + `make_colab_inputs.py`.
-- Git: on GitHub (`radipyasar/safecrop-app`). Day 3 work is in 3 commits on `main` (`32924ef`, `b291959`,
-  `ae7d49e`) — push them. No keys in git.
+- Git: on GitHub (`radipyasar/safecrop-app`), everything pushed. Day 4 = `cd54d91`, `03871ab`, `503e559` (+ this
+  wrap-up). No keys in git.
 - Accounts: Hugging Face account + write token, Vercel account (Hobby) — done 18 Nov.
   `GEMINI_API_KEY`, `HF_TOKEN`, `ALLOWED_ORIGINS` are set in `backend/.env` (git-ignored); `HF_TOKEN` is also a
   Colab secret. Gemini key works: `backend/scripts/check_gemini.py` got a reply from `gemini-3.5-flash-lite` (18 Nov).
@@ -68,6 +75,14 @@ Dates shifted by 2 days on 21 Nov, then 1 more day from Day 4 (Day 4 = Mon 23 �
 - **Done:** option C decided and tested (sick L3 called healthy 6/48 → 0/48; healthy still recognised 96% → 56%); packages installed + pinned; model loads once (laptop = Colab, cosine 1.000000); photo check, vote, decisions, neighbours; `POST /api/check` with clear errors; 79 tests; time per check 0.82 s (on battery); Nabil checked everything in `/docs`.
 - **Left over:** none from Day 3. Plugged-in timing skipped (battery number kept, labelled). From Day 1: checklist, tell teammate.
 - **Blockers:** none.
+
+### Week 10 update — Sun 22 Nov
+- **Done:** slides presented (work up to Day 3). Day 1 leftovers (checklist, tell teammate) also done (ticked 23 Nov).
+
+### Day 4 — Mon 23 Nov
+- **Done:** `diseases.json` (8 + healthy + unknown, sources, no doses, helpline 16123; Nabil checked all); `advice.py` (Gemini + fallback + safety check + cache); `/api/advice`, `/api/diseases`, `/api/diseases/{id}`; SQLite log; 140 tests; real Gemini median 2.2 s; Nabil checked everything in `/docs`.
+- **Left over:** none. Plan on schedule (Day 5 tomorrow, Tue 24 Nov).
+- **Blockers:** none. Open points: no BRRI / BJRI / BARI / DAE web pages found as sources; jute dieback's cause not confirmed.
 
 <!-- one entry per day: done / left over / blockers -->
 
@@ -138,3 +153,12 @@ Dates shifted by 2 days on 21 Nov, then 1 more day from Day 4 (Day 4 = Mon 23 �
 - The Gemini check script is at `backend/scripts/check_gemini.py` (not `scripts/`).
 - The laptop's default Python is 3.14 — always use `backend/.venv` (3.11).
 - Git shows LF/CRLF warnings on Windows; harmless. Could add a `.gitattributes` later.
+- Day 6 (before the real-photo test): delete `backend/safecrop.db` (8 test rows from 23 Nov on sample photos), so
+  "Gemini agrees with CLIP" and "Fallback advice used" count only real photos.
+- The fallback advice is English only (`diseases.json` has only Bangla names). If the Bangla nice-to-have is done,
+  add Bangla text to `diseases.json`; Gemini already answers in Bangla (`lang=bn`).
+- Free Gemini quota: when it runs out, `/api/advice` gives the fallback (`fallback_reason: quota`), so the demo still
+  works. Watch it on demo day (Day 11).
+- Testing the fallback on Windows: in PowerShell `$env:GEMINI_API_KEY = ""` deletes the variable (then `.env` is read
+  again), so use `--no-key` in `scripts/try_advice.py` or a fake key (`fallback_reason: client_error`).
+- Sources: add BRRI / BJRI / BARI / DAE pages or booklets to `diseases.json` if found; confirm jute dieback's cause.

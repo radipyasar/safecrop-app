@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 Wrap up today's SafeCrop work. $ARGUMENTS
 
-1. Find today's day in `docs/ROUTINE.md` (dates shifted on 21 Nov: Day 3 = Sat 21 Nov 2026 … Day 11 = Sun 29 Nov; see the table at the top). Go through its "Done when" list and
+1. Find today's day in `docs/ROUTINE.md` (dates shifted by 2 days on 21 Nov, then 1 more day from Day 4: Day 3 = Sat 21 Nov 2026, Day 4 = Mon 23 Nov … Day 11 = Mon 30 Nov; see the table at the top). Go through its "Done when" list and
    check each item for real (run the test, call the endpoint, or look at the file). Mark each one done or not.
 2. Update `docs/PROGRESS.md`:
    - set the day's status to `done`, `partly done` or `not started`;
