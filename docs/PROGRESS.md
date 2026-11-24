@@ -67,7 +67,8 @@ Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days
   the same embeddings as the Colab database (cosine 1.000000). CLIP ViT-L/14 (1.7 GB) is in the laptop's HF cache.
 - Docs: `docs/MODEL_CARD.md` written. Notebook `notebooks/SafeCrop_app_model_export.ipynb` + `make_colab_inputs.py`.
 - Git: on GitHub (`radipyasar/safecrop-app`). Day 4 = `cd54d91`, `03871ab`, `503e559`. 24 Nov = `6091d25` (plan),
-  `c031604` (Check), `d8fc8fd` (Result), `7ed0672` (Diseases), `867c13a` (History / Profile / Home) — **not pushed yet**.
+  `c031604` (Check), `d8fc8fd` (Result), `7ed0672` (Diseases), `867c13a` (History / Profile / Home), `c925dff` +
+  this wrap-up — **all pushed 24 Nov**.
   No keys in git.
 - Accounts: Hugging Face account + write token, Vercel account (Hobby) — done 18 Nov.
   `GEMINI_API_KEY`, `HF_TOKEN`, `ALLOWED_ORIGINS` are set in `backend/.env` (git-ignored); `HF_TOKEN` is also a
@@ -110,6 +111,7 @@ Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days
   Tested in Chrome: 8 sample photos end to end, every special screen and error on purpose, phone width 390 px.
 - **Left over:** none from Days 5, 6B, 7. Tomorrow: Day 8 (online), then Day 6 Block A (real photos).
 - **Blockers:** none. Nabil: have 20–30 labelled phone photos ready for Wed 25 (labels written before the test).
+- Also: a 16-page progress report for today is on Nabil's Desktop (`SafeCrop_progress_24Nov2026.pdf`, not in git).
 
 <!-- one entry per day: done / left over / blockers -->
 
@@ -187,6 +189,9 @@ Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days
 - Gemini's second opinion said "no" on a clean PlantVillage healthy potato leaf (Bangla run, 24 Nov) and on a
   look-alike (potato early blight) photo. The app only shows a notice; it never changes CLIP's answer. Count
   "agrees" on the real photos before saying anything about it.
+- Day 10 safety check: one Bangla Gemini answer (potato late blight, 24 Nov) had a step "you may need to spray to
+  save healthy plants" without saying to ask the officer in that step (the safety note below it does). The safety
+  check only looks for chemical names and doses. Read a few Bangla answers on Day 10.
 - The browser shrink test used small test pictures enlarged to phone size, not real phone photos; watch one real
   HEIC / big JPEG on the phone on Day 8.
 - `backend/data/diseases.json` (23 Nov): Nabil checked every entry, source and Bangla name on 23 Nov (`checked: true`).
