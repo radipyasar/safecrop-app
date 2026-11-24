@@ -11,9 +11,9 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 | 3 | Sat 21 Nov | Back end: photo in, disease out | done (`/api/check` works, 79 tests, 0.82 s per check) |
 | — | Sun 22 Nov | Week 10 update (shows work up to Day 3) | done (presented) |
 | 4 | Mon 23 Nov | Back end: Gemini advice + disease facts | done (`/api/advice` + fallback, `/api/diseases`, SQLite log, 140 tests) |
-| 5 | Tue 24 Nov | Front end: the full check flow | not started |
-| 6 | Tue 24 (B) + Wed 25 (A) | Disease pages (Tue); real photos on the online app (Wed, after Day 8) | not started |
-| 7 | Tue 24 Nov | History, Profile, Home with real data | not started |
+| 5 | Tue 24 Nov | Front end: the full check flow | done (all 8 sample photos + every special screen and error, in Chrome) |
+| 6 | Tue 24 (B) + Wed 25 (A) | Disease pages (Tue); real photos on the online app (Wed, after Day 8) | Block B done 24 Nov; Block A (real photos) tomorrow |
+| 7 | Tue 24 Nov | History, Profile, Home with real data | done (`sample.js` deleted) |
 | 8 | Wed 25 Nov | Put it online (Hugging Face + Vercel) | not started |
 | 9 | Thu 26 Nov | Test everything, fix bugs | not started |
 | 10 | Thu 26 Nov | Must-have polish, safety, documents | not started |
@@ -23,11 +23,27 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 Dates shifted by 2 days on 21 Nov, then 1 more day from Day 4. **Plan shortened on 24 Nov: everything finished by
 Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days 9, 10, 11). Week 11 update stays Mon 30.
 
-## Where things are now (23 Nov, end of Day 4 — on the shifted plan)
+## Where things are now (24 Nov, end of Days 5, 6B and 7 — the whole app works on the laptop)
 
-- Front end: routing works — 7 pages + "page not found"; menus highlight the current page; home buttons
-  open `/check`. Only the home page has real content (sample data); other pages are titles.
-  `src/api.js` has `getHealth()`; the sidebar shows a server online / offline dot. (Day 5 connects it to `/api/check`.)
+- Front end, 24 Nov: **the whole app works on the laptop**, no sample data left.
+  - **Check** (`pages/Check.jsx`): upload, "Use camera" (`capture="environment"`), drag-and-drop (also on the home card),
+    preview (HEIC without preview still checks), shrink only above 2048 px / 5 MB (`lib/image.js`), button locked
+    while checking, privacy line, clear messages for not a photo / empty / too big.
+  - **Result** (`pages/Result.jsx`): steps tied to the real calls with times, photo warning, result card (confidence
+    word, runner-up, tip), 5 similar pictures, advice (same photo sent again from memory, never saved), "second check
+    is not sure" when Gemini says no, Retake / Learn about this disease / See history, safety note + helpline 16123.
+    Special screens: very likely, likely, not sure (weak vote and option C), healthy, not in list, not a leaf, too
+    unclear (no advice call). Errors: no internet, can't reach, starting (503 / timeout), too big, not a photo,
+    server error, advice 404 ("check the photo again").
+  - **Diseases** list grouped by crop + 8 detail pages (4 photos, signs, what to do, prevention, expert, cause,
+    look-alikes, sources). **History** (open saved result with no server call, delete one, clear all with in-page
+    confirm, empty state, max 50). **Profile** (name, district, crops, language → advice in Bangla via Gemini; device
+    id sent as `X-Device-Id`; About SafeCrop). **Home**: greeting with name, recent checks, real disease cards.
+  - Words for every result in `lib/words.js`; storage in `lib/history.js`, `lib/profile.js`; `api.js` errors have a
+    `kind`. Checked by driving Chrome headless with a small script (screenshots at 390 and 1366 px); the script is
+    not in the repo.
+- Back end, 24 Nov: Gemini prompt rule 5 now opens with a sentence that fits each decision (before it wrote
+  "SafeCrop thinks this is Not sure …"), and says the example sentences are English only (Bangla stays Bangla).
 - Back end: **`POST /api/check` works** — photo check (16 measurements + forests, resample for blocky photos),
   fine-tuned CLIP, 5-picture vote, option C decisions, 5 neighbours from different photos, clean thumbnails at
   `/static/thumbs/`, `timing_ms`. Model loads once in the background at start-up (`/api/health` → `model_loaded`;
@@ -50,8 +66,9 @@ Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days
   `SafeCrop_app/app_model_files`. Checksums 10/10; all load with the pinned versions on Python 3.11; laptop CPU gives
   the same embeddings as the Colab database (cosine 1.000000). CLIP ViT-L/14 (1.7 GB) is in the laptop's HF cache.
 - Docs: `docs/MODEL_CARD.md` written. Notebook `notebooks/SafeCrop_app_model_export.ipynb` + `make_colab_inputs.py`.
-- Git: on GitHub (`radipyasar/safecrop-app`), everything pushed. Day 4 = `cd54d91`, `03871ab`, `503e559` (+ this
-  wrap-up). No keys in git.
+- Git: on GitHub (`radipyasar/safecrop-app`). Day 4 = `cd54d91`, `03871ab`, `503e559`. 24 Nov = `6091d25` (plan),
+  `c031604` (Check), `d8fc8fd` (Result), `7ed0672` (Diseases), `867c13a` (History / Profile / Home) — **not pushed yet**.
+  No keys in git.
 - Accounts: Hugging Face account + write token, Vercel account (Hobby) — done 18 Nov.
   `GEMINI_API_KEY`, `HF_TOKEN`, `ALLOWED_ORIGINS` are set in `backend/.env` (git-ignored); `HF_TOKEN` is also a
   Colab secret. Gemini key works: `backend/scripts/check_gemini.py` got a reply from `gemini-3.5-flash-lite` (18 Nov).
@@ -86,6 +103,14 @@ Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days
 - **Left over:** none. Plan on schedule (Day 5 tomorrow, Tue 24 Nov).
 - **Blockers:** none. Open points: no BRRI / BJRI / BARI / DAE web pages found as sources; jute dieback's cause not confirmed.
 
+### Days 5, 6B and 7 — Tue 24 Nov (plan shortened today: finish by Thu 26)
+- **Done:** plan moved (ROUTINE, PROGRESS, CLAUDE.md, /today, /wrapup). Day 5: Check page, Result page, special screens,
+  errors, History saving; shrink test 5/5 same photo check. Day 6 Block B: Diseases list + 8 detail pages. Day 7:
+  History, Profile, Home with real data; `sample.js` deleted. Fixed the Gemini summary wording (and Bangla). 140 tests.
+  Tested in Chrome: 8 sample photos end to end, every special screen and error on purpose, phone width 390 px.
+- **Left over:** none from Days 5, 6B, 7. Tomorrow: Day 8 (online), then Day 6 Block A (real photos).
+- **Blockers:** none. Nabil: have 20–30 labelled phone photos ready for Wed 25 (labels written before the test).
+
 <!-- one entry per day: done / left over / blockers -->
 
 ## Numbers for slides
@@ -113,10 +138,12 @@ Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days
 | Real photos: right / wrong / not sure (of N) | | |
 | Gemini advice time, laptop (`scripts/try_advice.py`, 4 sample photos, with photo) | 2.0–4.3 s per answer (English 2.0, 2.3, 4.2 s; Bangla 4.3 s); fallback 0 s | 23 Nov 2026 |
 | Gemini advice time through the real server (`/api/advice` over HTTP, photo sent, 4 sample photos) | 2.1–3.2 s (median 2.2 s); agrees yes on both L0 photos, unsure on both L3 photos; fallback without key 0 s | 23 Nov 2026 |
+| Full check in the browser (laptop Chrome, upload → result on screen) | 0.63–0.97 s (8 result types; server part 0.6 s) | 24 Nov 2026 |
+| Gemini advice in the browser (laptop, photo sent again, English) | 1.7–5.6 s (6 checks); Bangla 6.7 s (1 check, `try_advice.py`) | 24 Nov 2026 |
 | Gemini agrees with CLIP (% of checks) | | |
 | Fallback advice used (count) | | |
 | Test plan passed (of 20) | | |
-| Back-end automatic tests passing | 140 / 140 (110 s, includes loading the model once; Gemini faked, no quota) | 23 Nov 2026 |
+| Back-end automatic tests passing | 140 / 140 (33 s on 24 Nov; 110 s on 23 Nov; includes loading the model once; Gemini faked, no quota) | 24 Nov 2026 |
 
 ## Bugs and ideas for later
 
@@ -154,6 +181,14 @@ Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days
   test (Day 6, Wed 25) — show the Day 2 tables + the laptop time per check; real-photo results go into the Week 11
   update (Day 11, Mon 30). If still behind by Day 7, drop nice-to-haves first (feedback button, Bangla, home-screen icon, webcam, stats page) —
   never must-haves.
+- Test plan row 9 (24 Nov): a photo over 10 MB that the browser can open is **shrunk to 2048 px and checked**, not
+  refused. The "too big" message shows for files the browser can't shrink (e.g. HEIC in Chrome) over 10 MB, and the
+  server's 10 MB limit stays. Expect this when running row 9 on Day 9.
+- Gemini's second opinion said "no" on a clean PlantVillage healthy potato leaf (Bangla run, 24 Nov) and on a
+  look-alike (potato early blight) photo. The app only shows a notice; it never changes CLIP's answer. Count
+  "agrees" on the real photos before saying anything about it.
+- The browser shrink test used small test pictures enlarged to phone size, not real phone photos; watch one real
+  HEIC / big JPEG on the phone on Day 8.
 - `backend/data/diseases.json` (23 Nov): Nabil checked every entry, source and Bangla name on 23 Nov (`checked: true`).
   No BRRI / BJRI / BARI / DAE pages were found online for most diseases (we used
   university extension, PhilRice / IRRI, TNAU and BanglaJOL papers instead); add Bangladesh institute sources if you
