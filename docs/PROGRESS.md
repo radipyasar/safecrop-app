@@ -109,6 +109,7 @@ Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days
 | Laptop vs Colab (torch 2.14.1 CPU) | embeddings cosine 1.000000 (8 clean photos); vote sanity 0.9917 = Colab's | 21 Nov 2026 |
 | CLIP embedding only, laptop CPU (not a full check) | 0.83 s per photo | 19 Nov 2026 |
 | Colab export run (T4): training / whole notebook | 176 s / 18 min | 19 Nov 2026 |
+| Browser shrink step (> 2048 px or > 5 MB → 2048 px JPEG 0.92), real Chrome, 5 test photos enlarged to 4032 × 3024 | photo check (problem + level) same **5/5**; decision + disease same **5/5**; vote share changed on 2 of 3 L3 photos (0.40 → 0.20, 0.40 → 0.60, both still "not sure"). Enlarged test pictures, not real phone photos | 24 Nov 2026 |
 | Real photos: right / wrong / not sure (of N) | | |
 | Gemini advice time, laptop (`scripts/try_advice.py`, 4 sample photos, with photo) | 2.0–4.3 s per answer (English 2.0, 2.3, 4.2 s; Bangla 4.3 s); fallback 0 s | 23 Nov 2026 |
 | Gemini advice time through the real server (`/api/advice` over HTTP, photo sent, 4 sample photos) | 2.1–3.2 s (median 2.2 s); agrees yes on both L0 photos, unsure on both L3 photos; fallback without key 0 s | 23 Nov 2026 |

@@ -706,3 +706,377 @@ button {
     padding: 0 4px;
   }
 }
+
+/* =====================================================================
+   Day 5–7: check flow, result, diseases, history, profile
+   ===================================================================== */
+
+a {
+  color: var(--blue-text);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-outline {
+  border-color: var(--line-strong);
+  background: var(--card);
+  color: var(--ink);
+}
+
+.btn-outline:hover {
+  border-color: #aab3bf;
+  background: #f7f8fa;
+}
+
+.btn-danger {
+  background: #b3261e;
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background: #8f1e18;
+}
+
+.btn-small {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 14px;
+  font-size: 15px;
+}
+
+.btn-small svg {
+  width: 20px;
+  height: 20px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2.5px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.btn .spinner {
+  width: 20px;
+  height: 20px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 2.4s;
+  }
+}
+
+/* ---------- notices (warnings, errors) ---------- */
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid #c9d6ec;
+  border-radius: 14px;
+  background: #eef3fb;
+  color: #1d3b6e;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.notice[data-tone='warn'] {
+  border-color: #f1dfbd;
+  background: #fdf5e7;
+  color: #6f4a12;
+}
+
+.notice[data-tone='error'] {
+  border-color: #f0c7c3;
+  background: #fdf0ef;
+  color: #7f1d17;
+}
+
+.notice[data-tone='good'] {
+  border-color: #c5dfc9;
+  background: var(--green-soft);
+  color: var(--green-text);
+}
+
+.notice-icon {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+}
+
+.notice-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.notice-title {
+  font-weight: 700;
+}
+
+.notice-text p + p {
+  margin-top: 4px;
+}
+
+.notice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* ---------- progress steps ---------- */
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.step-dot {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e9ecf0;
+  color: var(--ink-2);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.step-dot svg {
+  width: 18px;
+  height: 18px;
+}
+
+.step[data-state='working'] .step-dot {
+  background: #dfe9fb;
+  color: var(--blue);
+}
+
+.step[data-state='done'] .step-dot {
+  background: var(--green);
+  color: #ffffff;
+}
+
+.step[data-state='failed'] .step-dot {
+  background: #fbe0de;
+  color: #b3261e;
+}
+
+.step-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.step-label {
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.step-note {
+  font-size: 13.5px;
+  color: var(--ink-3);
+}
+
+.steps-row {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin-top: 0;
+}
+
+/* ---------- check page ---------- */
+
+.check-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.check-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.check-card[data-dragging] {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px #dfe9fb;
+}
+
+.drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 28px 12px;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.drop-icon {
+  width: 44px;
+  height: 44px;
+  color: var(--green);
+}
+
+.drop-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.drop-hint {
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: var(--ink-3);
+}
+
+.drop .btn-row {
+  width: 100%;
+  max-width: 460px;
+}
+
+.chosen {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.preview {
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  border-radius: 14px;
+  background: #eef0f3;
+  overflow: hidden;
+}
+
+.preview img {
+  display: block;
+  max-width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+}
+
+.preview-none {
+  max-width: 40ch;
+  padding: 20px;
+  font-size: 15px;
+  color: var(--ink-2);
+  text-align: center;
+}
+
+.chosen-name {
+  font-size: 14px;
+  color: var(--ink-3);
+  overflow-wrap: anywhere;
+}
+
+.check-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tips {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+
+.tips li {
+  position: relative;
+  padding-left: 18px;
+}
+
+.tips li::before {
+  content: '';
+  position: absolute;
+  top: 0.6em;
+  left: 2px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+.privacy {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink-3);
+}
+
+.privacy svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+}
+
+@media (min-width: 1024px) {
+  .check-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
+    align-items: start;
+    gap: 20px;
+  }
+
+  .drop {
+    padding: 56px 24px;
+  }
+}
+
+/* "drop it here" only makes sense with a mouse */
+@media (hover: none) {
+  .drag-only {
+    display: none;
+  }
+}

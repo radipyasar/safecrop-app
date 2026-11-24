@@ -308,10 +308,10 @@ If Gemini returns text that is not valid JSON, use the SDK's structured-output o
 
 #### Block A · The Check page (≈ 2 h)
 
-- [ ] Upload button (file picker), “Use camera” button (`<input type="file" accept="image/*" capture="environment">`, which opens the back camera on phones) and drag-and-drop on laptops.
-- [ ] Show a preview of the chosen photo with “Check this leaf” and “Choose another” buttons.
-- [ ] Only shrink the photo in the browser if it is larger than 2048 pixels or 5 MB (shrinking adds compression, which could change the photo check). Test that the photo check gives the same answer for 5 test images with and without this step.
-- [ ] Disable the button while a check runs so it can't be sent twice.
+- [x] Upload button (file picker), “Use camera” button (`<input type="file" accept="image/*" capture="environment">`, which opens the back camera on phones) and drag-and-drop on laptops.
+- [x] Show a preview of the chosen photo with “Check this leaf” and “Choose another” buttons.
+- [x] Only shrink the photo in the browser if it is larger than 2048 pixels or 5 MB (shrinking adds compression, which could change the photo check). Test that the photo check gives the same answer for 5 test images with and without this step.
+- [x] Disable the button while a check runs so it can't be sent twice.
 
 #### Block B · Progress and the Result page (≈ 2.5 h)
 
