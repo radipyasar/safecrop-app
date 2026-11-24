@@ -353,14 +353,14 @@ To trigger the special screens without hunting for photos, add a hidden test opt
 
 #### Block B · Diseases pages (Tue 24) (≈ 1.5 h)
 
-- [ ] Diseases page: cards from `/api/diseases` (photo, crop, name), grouped by crop.
-- [ ] Detail page: signs to look for, what to do now, prevention, when to call an expert, sources (as links), and 4 example pictures from the database.
+- [x] Diseases page: cards from `/api/diseases` (photo, crop, name), grouped by crop.
+- [x] Detail page: signs to look for, what to do now, prevention, when to call an expert, sources (as links), and 4 example pictures from the database.
 - [ ] Link from the Result page (“Learn about this disease”) and from the home page cards.
 
 **Done when**
 
 - [ ] Real-photo results table written, with the true labels recorded before the test.
-- [ ] Diseases list and all 8 detail pages show real facts and sources.
+- [x] Diseases list and all 8 detail pages show real facts and sources.
 
 **If you get stuck**
 
