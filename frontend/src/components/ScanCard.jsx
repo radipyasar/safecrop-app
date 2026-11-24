@@ -1,9 +1,24 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { setPendingPhoto } from '../lib/session.js';
 import { LeafShape } from './Leaf.jsx';
 import { CameraIcon, UploadIcon } from './Icons.jsx';
 
 // The main job of the home page: upload (or take) a photo of a sick leaf.
+// A photo dropped on the drop area opens the Check page with that photo ready.
 export default function ScanCard() {
+  const navigate = useNavigate();
+  const [dragging, setDragging] = useState(false);
+
+  function onDrop(event) {
+    event.preventDefault();
+    setDragging(false);
+    const file = event.dataTransfer.files && event.dataTransfer.files[0];
+    if (!file) return;
+    setPendingPhoto(file);
+    navigate('/check');
+  }
+
   return (
     <section className="scan" aria-labelledby="scan-title">
       <div className="scan-copy">
@@ -33,10 +48,19 @@ export default function ScanCard() {
         </ol>
       </div>
 
-      <div className="dropzone">
+      <div
+        className="dropzone"
+        data-dragging={dragging || undefined}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragging(true);
+        }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={onDrop}
+      >
         <LeafInFocus />
         <p className="dropzone-title">Drop a leaf photo here</p>
-        <p className="dropzone-hint">JPG or PNG. One leaf, filling the frame.</p>
+        <p className="dropzone-hint">JPEG, PNG, WebP or HEIC. One leaf, filling the frame.</p>
       </div>
     </section>
   );

@@ -355,7 +355,7 @@ To trigger the special screens without hunting for photos, add a hidden test opt
 
 - [x] Diseases page: cards from `/api/diseases` (photo, crop, name), grouped by crop.
 - [x] Detail page: signs to look for, what to do now, prevention, when to call an expert, sources (as links), and 4 example pictures from the database.
-- [ ] Link from the Result page (“Learn about this disease”) and from the home page cards.
+- [x] Link from the Result page (“Learn about this disease”) and from the home page cards.
 
 **Done when**
 
@@ -372,29 +372,29 @@ If you don't have labelled real photos yet, take 3–4 photos each of whatever l
 
 #### Block A · History page (≈ 2 h)
 
-- [ ] List of past checks from browser storage: date, thumbnail, disease, confidence word, newest first.
-- [ ] Tap a check to open its full result again (from storage, no new server call).
-- [ ] Delete one check; “Clear all” with a confirmation inside the page (not a browser pop-up).
-- [ ] Empty state: “No checks yet. Check your first leaf.” with a button to `/check`.
+- [x] List of past checks from browser storage: date, thumbnail, disease, confidence word, newest first.
+- [x] Tap a check to open its full result again (from storage, no new server call).
+- [x] Delete one check; “Clear all” with a confirmation inside the page (not a browser pop-up).
+- [x] Empty state: “No checks yet. Check your first leaf.” with a button to `/check`.
 
 #### Block B · Profile page (≈ 1.5 h)
 
-- [ ] Fields: name, district, main crops, language (English / Bangla). Saved in browser storage; a Save button with a “Saved” message.
-- [ ] Create a device id once (`crypto.randomUUID()`), keep it in storage, send it as `X-Device-Id` with every check (for the server log only).
-- [ ] A short “About SafeCrop” section: what it can and cannot do, and the safety note.
+- [x] Fields: name, district, main crops, language (English / Bangla). Saved in browser storage; a Save button with a “Saved” message.
+- [x] Create a device id once (`crypto.randomUUID()`), keep it in storage, send it as `X-Device-Id` with every check (for the server log only).
+- [x] A short “About SafeCrop” section: what it can and cannot do, and the safety note.
 
 #### Block C · Home page with real data (≈ 2 h)
 
-- [ ] Greeting uses the profile name (“Good evening, Nabil”), with the right greeting for the time of day.
-- [ ] “Recent checks” row from History (hidden when empty). Disease cards come from `/api/diseases` and open the detail pages.
-- [ ] Delete `src/data/sample.js` and fix anything that still used it.
+- [x] Greeting uses the profile name (“Good evening, Nabil”), with the right greeting for the time of day.
+- [x] “Recent checks” row from History (hidden when empty). Disease cards come from `/api/diseases` and open the detail pages.
+- [x] Delete `src/data/sample.js` and fix anything that still used it.
 - ~~Nice to have, only if time is left: Bangla switch — one strings file for English and Bangla, Bangla disease names, advice requested with `lang: "bn"`.~~ **Dropped 24 Nov.**
 
 **Done when**
 
-- [ ] History opens, deletes and clears checks; Profile saves and reloads after a page refresh.
-- [ ] The home page shows real recent checks and real disease cards.
-- [ ] `sample.js` is gone and nothing breaks.
+- [x] History opens, deletes and clears checks; Profile saves and reloads after a page refresh.
+- [x] The home page shows real recent checks and real disease cards.
+- [x] `sample.js` is gone and nothing breaks.
 
 **If you get stuck**
 

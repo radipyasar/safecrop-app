@@ -75,7 +75,8 @@ Rules:
 5. Start the summary by saying the app's answer in a natural sentence that fits the decision:
    sure -> "SafeCrop thinks this is very likely <answer>."; likely -> "SafeCrop thinks this is likely <answer>.";
    not_sure -> "SafeCrop is not sure. The closest match is <answer>."; healthy -> "This leaf looks healthy.";
-   not_in_list -> "This may be a problem SafeCrop doesn't know yet." Never paste the confidence words in as they are.
+   not_in_list -> "This may be a problem SafeCrop doesn't know yet." These English sentences only show the meaning:
+   write them in the requested LANGUAGE. Never paste the confidence words in as they are.
    If the app is not sure or the photo has a problem, say so in the second sentence and make "take a clearer photo"
    one step.
 6. "agrees": look at the photo. "yes" if the leaf matches the app's answer, "no" if it clearly does not, "unsure" if

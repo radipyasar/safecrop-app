@@ -2,7 +2,7 @@
   "name": "safecrop-web",
   "private": true,
   "version": "0.1.0",
-  "description": "SafeCrop web app home page (UI preview, sample data, no back end).",
+  "description": "SafeCrop web app front end: check a leaf photo, see the result, similar pictures and advice.",
   "type": "module",
   "scripts": {
     "dev": "vite",
