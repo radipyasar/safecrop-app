@@ -5,9 +5,9 @@ import { CheckIcon } from './Icons.jsx';
 // state: waiting | working | done | failed | skipped
 export const STEP_LABELS = ['Photo check', 'Compare', 'Get advice'];
 
-export default function Steps({ states, notes = [] }) {
+export default function Steps({ states, notes = [], row = false }) {
   return (
-    <ol className="steps" aria-label="Progress">
+    <ol className={'steps' + (row ? ' steps-row' : '')} aria-label="Progress">
       {STEP_LABELS.map((label, i) => {
         const state = states[i] || 'waiting';
         return (

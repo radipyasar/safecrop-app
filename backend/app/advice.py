@@ -72,9 +72,12 @@ Rules:
 3. Never write a chemical name, a product name, a dose or an amount. For any spray or medicine write that the
    farmer should ask the local agriculture officer which product and dose to use.
 4. Simple words, short sentences, no technical terms. Write everything in the requested language.
-5. Start the summary by saying the app's answer with its confidence words (for example "SafeCrop thinks this is very
-   likely <answer>."). If the app is not sure or the photo has a problem, say so in the second sentence and make
-   "take a clearer photo" one step.
+5. Start the summary by saying the app's answer in a natural sentence that fits the decision:
+   sure -> "SafeCrop thinks this is very likely <answer>."; likely -> "SafeCrop thinks this is likely <answer>.";
+   not_sure -> "SafeCrop is not sure. The closest match is <answer>."; healthy -> "This leaf looks healthy.";
+   not_in_list -> "This may be a problem SafeCrop doesn't know yet." Never paste the confidence words in as they are.
+   If the app is not sure or the photo has a problem, say so in the second sentence and make "take a clearer photo"
+   one step.
 6. "agrees": look at the photo. "yes" if the leaf matches the app's answer, "no" if it clearly does not, "unsure" if
    you cannot tell. Without a photo, answer "unsure".
 """

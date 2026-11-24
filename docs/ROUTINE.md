@@ -315,24 +315,24 @@ If Gemini returns text that is not valid JSON, use the SDK's structured-output o
 
 #### Block B · Progress and the Result page (≈ 2.5 h)
 
-- [ ] Progress steps tied to real calls: “Photo check” and “Compare” while `/api/check` runs, “Get advice” while `/api/advice` runs.
-- [ ] Result card: disease name and crop, the confidence word (Very likely / Likely / Not sure), and the runner-up when it is close.
-- [ ] Photo warning banner when the photo check finds a problem (for example “Your photo is blurry. Hold the phone steady and retake if you can.”). Use one simple “blurry” message for both blur types.
-- [ ] “Similar pictures from our library”: the 5 thumbnails with their disease names.
-- [ ] Advice box that fills in when `/api/advice` returns; if Gemini disagrees, show “Our second check is not sure about this answer. Retake the photo or ask an expert.”
-- [ ] Buttons: Retake, Learn about this disease, See history.
+- [x] Progress steps tied to real calls: “Photo check” and “Compare” while `/api/check` runs, “Get advice” while `/api/advice` runs.
+- [x] Result card: disease name and crop, the confidence word (Very likely / Likely / Not sure), and the runner-up when it is close.
+- [x] Photo warning banner when the photo check finds a problem (for example “Your photo is blurry. Hold the phone steady and retake if you can.”). Use one simple “blurry” message for both blur types.
+- [x] “Similar pictures from our library”: the 5 thumbnails with their disease names.
+- [x] Advice box that fills in when `/api/advice` returns; if Gemini disagrees, show “Our second check is not sure about this answer. Retake the photo or ask an expert.”
+- [x] Buttons: Retake, Learn about this disease, See history.
 
 #### Block C · Special results and errors (≈ 1.5 h)
 
-- [ ] Screens for: healthy leaf, not in our list, retake needed, not sure. Each says what happened and what to do next.
-- [ ] Error messages: no internet, server waking up (“SafeCrop is starting, try again in a minute”), wrong file, file too big, server error.
-- [ ] Save every finished check to History in the browser (`src/lib/history.js`): id, date, small thumbnail, disease, confidence word, decision, advice. Keep at most 50 checks.
+- [x] Screens for: healthy leaf, not in our list, retake needed, not sure. Each says what happened and what to do next.
+- [x] Error messages: no internet, server waking up (“SafeCrop is starting, try again in a minute”), wrong file, file too big, server error.
+- [x] Save every finished check to History in the browser (`src/lib/history.js`): id, date, small thumbnail, disease, confidence word, decision, advice. Keep at most 50 checks.
 
 **Done when**
 
-- [ ] Upload → steps → result → advice works for 8 sample photos on the laptop.
-- [ ] You can trigger every special screen and every error message on purpose (for example stop the back end to see “offline”).
-- [ ] Each check appears in the browser's saved history.
+- [x] Upload → steps → result → advice works for 8 sample photos on the laptop.
+- [x] You can trigger every special screen and every error message on purpose (for example stop the back end to see “offline”).
+- [x] Each check appears in the browser's saved history.
 
 **If you get stuck**
 
