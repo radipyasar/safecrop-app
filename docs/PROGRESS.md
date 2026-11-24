@@ -12,14 +12,16 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 | — | Sun 22 Nov | Week 10 update (shows work up to Day 3) | done (presented) |
 | 4 | Mon 23 Nov | Back end: Gemini advice + disease facts | done (`/api/advice` + fallback, `/api/diseases`, SQLite log, 140 tests) |
 | 5 | Tue 24 Nov | Front end: the full check flow | not started |
-| 6 | Wed 25 Nov | Real photos + disease pages | not started |
-| 7 | Thu 26 Nov | History, Profile, Home with real data | not started |
-| 8 | Fri 27 Nov | Put it online (Hugging Face + Vercel) | not started |
-| 9 | Sat 28 Nov | Test everything, fix bugs | not started |
-| 10 | Sun 29 Nov | Polish, safety, documents | not started |
-| 11 | Mon 30 Nov | Freeze, demo video, backups + Week 11 update | not started |
+| 6 | Tue 24 (B) + Wed 25 (A) | Disease pages (Tue); real photos on the online app (Wed, after Day 8) | not started |
+| 7 | Tue 24 Nov | History, Profile, Home with real data | not started |
+| 8 | Wed 25 Nov | Put it online (Hugging Face + Vercel) | not started |
+| 9 | Thu 26 Nov | Test everything, fix bugs | not started |
+| 10 | Thu 26 Nov | Must-have polish, safety, documents | not started |
+| 11 | Thu 26 Nov | Freeze, demo video, backups | not started |
+| — | Mon 30 Nov | Week 11 update | not started |
 
-Dates shifted by 2 days on 21 Nov, then 1 more day from Day 4 (Day 4 = Mon 23 … Day 11 = Mon 30).
+Dates shifted by 2 days on 21 Nov, then 1 more day from Day 4. **Plan shortened on 24 Nov: everything finished by
+Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days 9, 10, 11). Week 11 update stays Mon 30.
 
 ## Where things are now (23 Nov, end of Day 4 — on the shifted plan)
 
@@ -140,6 +142,12 @@ Dates shifted by 2 days on 21 Nov, then 1 more day from Day 4 (Day 4 = Mon 23 �
 - `dist/safecrop_app_inputs.zip` (88.5 MB, git-ignored) is only needed to rerun the Colab notebook; can be deleted.
 - "Not a leaf" gap is narrow at L3 (worst held-out leaf 0.790 vs most leaf-like non-leaf photo 0.730; cut 0.760):
   watch it on real photos (Day 6) but don't change the cut-off after seeing them.
+- **24 Nov: plan shortened — everything finished by Thu 26 Nov.** Tue 24 = Day 5 + Day 6 Block B (disease pages) +
+  Day 7 (must-haves). Wed 25 = Day 8 (Space + Vercel + `vercel.json` rewrite + phone test), then Day 6 Block A: the
+  real-photo test **on the online app** (label the photos before running them). Thu 26 = Day 9, Day 10 (must-have
+  polish, safety, docs only), Day 11 (freeze, v1.0, demo video, backups). Week 11 update stays Mon 30 Nov. **All
+  nice-to-haves dropped** (feedback button, Bangla switch, home-screen icon, webcam, stats page); no must-have dropped.
+  Cut-offs stay fixed after the real-photo results. The older shift notes below are kept for the record.
 - Plan shifted by 2 days on 21 Nov, then 1 more day from Day 4 (also 21 Nov): Day 3 = Sat 21, Day 4 = Mon 23, …
   Day 11 = Mon 30. The Week 10 update stays on Sun 22 (own section, no build work) and shows work up to Day 3 only, before the real-photo
   test (Day 6, Wed 25) — show the Day 2 tables + the laptop time per check; real-photo results go into the Week 11

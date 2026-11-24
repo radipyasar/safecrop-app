@@ -8,7 +8,7 @@ disable-model-invocation: true
 Start SafeCrop routine day $ARGUMENTS.
 
 1. Read `docs/PROGRESS.md`. If no day number was given, work it out from today's date
-   (shifted by 2 days on 21 Nov, then 1 more day from Day 4: Day 3 = Sat 21 Nov 2026, Day 4 = Mon 23 Nov … Day 11 = Mon 30 Nov 2026; the table at the top of
+   (Day 1 = Tue 17 Nov, Day 2 = Wed 18–Thu 19, Day 3 = Sat 21 Nov, Day 4 = Mon 23 Nov, Day 5 + Day 6 Block B + Day 7 = Tue 24 Nov, Day 8 + Day 6 Block A = Wed 25 Nov, Days 9–11 = Thu 26 Nov (plan shortened on 24 Nov), Week 11 update = Mon 30 Nov; one date can hold several days — do them in order; the table at the top of
    `docs/ROUTINE.md` has every date). If an earlier day is unfinished, say which
    tasks are left and ask whether to finish those first.
 2. Read that day's section in `docs/ROUTINE.md` (the heading starts with `## Day N —`), including its

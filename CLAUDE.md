@@ -7,9 +7,11 @@ fine-tuned CLIP model and asks Gemini for advice.
 
 The full project story and every result we rely on: @docs/PROJECT_STORY.md
 Where the build is right now (what's done, what's next): @docs/PROGRESS.md
-The day-by-day plan (17–30 Nov 2026) is in `docs/ROUTINE.md`. Before working on any app task,
+The day-by-day plan (17–26 Nov 2026) is in `docs/ROUTINE.md`. Before working on any app task,
 read that day's section (`## Day N — …`). Day 1 = Tue 17 Nov, Day 2 = Wed 18–Thu 19, Day 3 = Sat 21 Nov,
-Day 4 = Mon 23 Nov, Day 5 = Tue 24 … Day 11 = Mon 30 Nov (shifted by 2 days, then 1 more day from Day 4). Week 10 update = Sun 22 Nov (work up to Day 3).
+Day 4 = Mon 23 Nov. **Plan shortened on 24 Nov:** Tue 24 = Day 5 + Day 6 Block B (disease pages) + Day 7; Wed 25 = Day 8
+(online), then Day 6 Block A (real-photo test on the online app); Thu 26 = Days 9, 10, 11. Week 10 update = Sun 22 Nov
+(work up to Day 3); Week 11 update = Mon 30 Nov. All nice-to-haves dropped; never drop a must-have.
 
 ## How to work with me (Nabil)
 
