@@ -143,8 +143,11 @@ app runs and is demonstrated on the laptop (see the note under "Bugs and ideas")
 | Gemini advice in the browser (laptop, photo sent again, English) | 1.7–5.6 s (6 checks); Bangla 6.7 s (1 check, `try_advice.py`) | 24 Nov 2026 |
 | Gemini agrees with CLIP (% of checks) | | |
 | Fallback advice used (count) | | |
-| Test plan passed (of 20) | | |
-| Back-end automatic tests passing | 140 / 140 (33 s on 24 Nov; 110 s on 23 Nov; includes loading the model once; Gemini faked, no quota) | 24 Nov 2026 |
+| Test plan passed (of 20) | **20 / 20** on the laptop app (table in `docs/TEST_RESULTS.md`); Lighthouse not run yet | 26 Nov 2026 |
+| 3 checks at the same time (laptop) | all 3 right in 2.2 s together (2.08–2.20 s each, vs 0.8 s alone); nothing crashed | 26 Nov 2026 |
+| Fallback advice time (broken Gemini key) | 0.3 s (API) / 0.5–0.6 s (in the browser) | 26 Nov 2026 |
+| Gemini on the 8 clean sample photos (test plan row 1) | agreed with CLIP on 8/8 (sample photos, not real photos) | 26 Nov 2026 |
+| Back-end automatic tests passing | 140 / 140 (128 s on 26 Nov; 33 s on 24 Nov; includes loading the model once; Gemini faked, no quota) | 26 Nov 2026 |
 
 ## Bugs and ideas for later
 

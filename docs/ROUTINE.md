@@ -422,26 +422,26 @@ hosting files were kept. For the report: "The app runs locally; free hosting wit
 
 #### Block A · Run the test plan (≈ 2.5 h)
 
-- [ ] Run every row of the test plan (next page) on the laptop app (back end + front end running locally). Mark pass or fail and note what happened.
-- [ ] Run the back-end tests (`pytest`) once more against the local server.
+- [x] Run every row of the test plan (next page) on the laptop app (back end + front end running locally). Mark pass or fail and note what happened.
+- [x] Run the back-end tests (`pytest`) once more against the local server.
 
 #### Block B · Fix bugs (≈ 2 h)
 
-- [ ] Fix the failed tests one at a time, most serious first (crashes and wrong answers before looks).
-- [ ] After each fix, run that test again and the tests next to it (a fix can break something else).
-- [ ] Commit and push to GitHub; recheck in the browser.
+- [x] Fix the failed tests one at a time, most serious first (crashes and wrong answers before looks). (26 Nov: no test failed; 3 polish fixes.)
+- [x] After each fix, run that test again and the tests next to it (a fix can break something else).
+- [x] Commit and push to GitHub; recheck in the browser.
 
 #### Block C · Speed and limits (≈ 1 h)
 
 - [ ] Time per check on the laptop is already measured (0.82 s median); recheck it once plugged in with `scripts/time_checks.py`.
-- [ ] Check what happens with 3 checks at the same time (open 3 tabs): nothing should crash; slower is fine.
-- [ ] Count Gemini calls in the log; make sure caching stops repeat calls.
+- [x] Check what happens with 3 checks at the same time (open 3 tabs): nothing should crash; slower is fine.
+- [x] Count Gemini calls in the log; make sure caching stops repeat calls.
 
 **Done when**
 
-- [ ] Every must-have test in the plan passes on the laptop app.
-- [ ] The bug list is empty or only has nice-to-have items left.
-- [ ] `docs/TEST_RESULTS.md` has the full test table.
+- [x] Every must-have test in the plan passes on the laptop app.
+- [x] The bug list is empty or only has nice-to-have items left.
+- [x] `docs/TEST_RESULTS.md` has the full test table.
 
 ## Day 10 — Thursday 26 November: Polish, safety and documents
 
@@ -451,17 +451,17 @@ hosting files were kept. For the report: "The app runs locally; free hosting wit
 
 #### Block A · Look and feel (≈ 2 h)
 
-- [ ] Loading placeholders instead of empty boxes; visible keyboard focus; text at least 16 px on phones; buttons at least 44 px tall.
-- [ ] Check every page at 390, 820, 1366 and 1920 pixels wide. Nothing should spill sideways.
-- [ ] Page titles and the browser tab icon; a friendly “page not found” page.
+- [x] Loading placeholders instead of empty boxes; visible keyboard focus; text at least 16 px on phones; buttons at least 44 px tall. (26 Nov: placeholders, focus on every Tab stop and 44–50 px buttons checked; main text is 15–16 px, small captions 12–14 px — kept, since the demo is on the laptop.)
+- [x] Check every page at 390, 820, 1366 and 1920 pixels wide. Nothing should spill sideways.
+- [x] Page titles and the browser tab icon; a friendly “page not found” page.
 - [ ] Run Lighthouse in Chrome DevTools on the home and result pages; fix anything below 90 in Accessibility.
 
 #### Block B · Safety, privacy and security (≈ 1.5 h)
 
-- [ ] The safety note on every result: “SafeCrop gives a best guess, not a final diagnosis. Ask your local agriculture officer before using any chemical.”
-- [ ] Privacy line on the Check page: photos are checked and not stored.
-- [ ] Security check: search the whole repo history for the key (`git log -p | grep -i AIza`); upload size limit works; CORS allows only localhost.
-- [ ] If the key was ever committed, make a new key in AI Studio and delete the old one.
+- [x] The safety note on every result: “SafeCrop gives a best guess, not a final diagnosis. Ask your local agriculture officer before using any chemical.”
+- [x] Privacy line on the Check page: photos are checked and not stored.
+- [x] Security check: search the whole repo history for the key (`git log -p | grep -i AIza`); upload size limit works; CORS allows only localhost.
+- [x] If the key was ever committed, make a new key in AI Studio and delete the old one. (Not needed: 0 keys in the git history, 26 Nov.)
 
 #### Block C · Documents (≈ 2 h)
 
