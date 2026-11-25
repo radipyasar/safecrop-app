@@ -1081,6 +1081,13 @@ a {
   }
 }
 
+/* "Use camera" only helps on a touch screen; with a mouse it would open the same file picker as "Upload a photo" */
+@media (hover: hover) and (pointer: fine) {
+  .camera-only {
+    display: none !important; /* a helper class: must win over every .btn display rule */
+  }
+}
+
 /* ---------- result page ---------- */
 
 .narrow {
@@ -1299,6 +1306,13 @@ a {
 
 .result-buttons .btn {
   flex: 1 1 200px;
+}
+
+/* beside the result on a wide screen: one button per row, so "Learn about this disease" never breaks in two */
+@media (min-width: 1024px) {
+  .result-buttons .btn {
+    flex-basis: 100%;
+  }
 }
 
 .safety {

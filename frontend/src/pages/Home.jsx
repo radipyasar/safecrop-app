@@ -8,10 +8,12 @@ import { onHistoryChange, readHistory } from '../lib/history.js';
 import { getProfile } from '../lib/profile.js';
 import { useLoad } from '../lib/useLoad.js';
 import { cap, describe, shortTitle } from '../lib/words.js';
+import { useTitle } from '../lib/useTitle.js';
 
 const RECENT = 4;
 
 export default function Home() {
+  useTitle('');
   return (
     <main className="page">
       <Header />

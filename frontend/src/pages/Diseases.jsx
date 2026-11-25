@@ -4,9 +4,11 @@ import { useLoad } from '../lib/useLoad.js';
 import { cap } from '../lib/words.js';
 import Notice from '../components/Notice.jsx';
 import { ChevronIcon } from '../components/Icons.jsx';
+import { useTitle } from '../lib/useTitle.js';
 
 // The 8 problems SafeCrop knows, from GET /api/diseases, grouped by crop.
 export default function Diseases() {
+  useTitle('Diseases');
   const { data, error, loading, retry } = useLoad('diseases', getDiseases);
 
   const groups = [];

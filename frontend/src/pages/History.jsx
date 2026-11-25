@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { clearHistory, deleteCheck, MAX_CHECKS, onHistoryChange, readHistory } from '../lib/history.js';
 import { describe, formatDate, shortTitle } from '../lib/words.js';
 import { CameraIcon, ChevronIcon, LeafMark, TrashIcon } from '../components/Icons.jsx';
+import { useTitle } from '../lib/useTitle.js';
 
 // Past checks saved in this browser, newest first. Opening one shows the saved result (no server call).
 export default function History() {
+  useTitle('History');
   const [list, setList] = useState(readHistory);
   const [confirming, setConfirming] = useState(false);
 

@@ -4,11 +4,13 @@ import { useLoad } from '../lib/useLoad.js';
 import { cap } from '../lib/words.js';
 import Notice from '../components/Notice.jsx';
 import { CameraIcon, InfoIcon, LinkIcon } from '../components/Icons.jsx';
+import { useTitle } from '../lib/useTitle.js';
 
 // Facts about one disease, from GET /api/diseases/{id}: checked facts with their sources.
 export default function DiseaseDetail() {
   const { id } = useParams();
   const { data: d, error, loading, retry } = useLoad('disease:' + id, () => getDisease(id));
+  useTitle(d ? d.name_en : error ? 'Disease not found' : 'Disease');
 
   return (
     <main className="page">

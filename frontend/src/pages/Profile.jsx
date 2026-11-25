@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { getProfile, saveProfile } from '../lib/profile.js';
 import Notice from '../components/Notice.jsx';
 import { InfoIcon } from '../components/Icons.jsx';
+import { useTitle } from '../lib/useTitle.js';
 
 const CROPS = ['Rice', 'Jute', 'Potato', 'Black gram', 'Apple', 'Pear', 'Grape'];
 
 // The farmer's name, district, crops and language, saved in this browser only.
 export default function Profile() {
+  useTitle('Profile');
   const [form, setForm] = useState(getProfile);
   const [saved, setSaved] = useState(false);
   const [failed, setFailed] = useState(false);

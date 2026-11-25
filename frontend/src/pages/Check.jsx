@@ -7,6 +7,7 @@ import { rememberPhoto, takePendingPhoto } from '../lib/session.js';
 import Steps from '../components/Steps.jsx';
 import Notice from '../components/Notice.jsx';
 import { CameraIcon, GalleryIcon, InfoIcon, UploadIcon } from '../components/Icons.jsx';
+import { useTitle } from '../lib/useTitle.js';
 
 const TIPS = [
   'One leaf, filling most of the photo',
@@ -20,6 +21,7 @@ const RETRY_KINDS = new Set(['offline', 'unreachable', 'starting', 'server', 'ba
 
 // Upload or take a photo, see it, then send it to the back end.
 export default function Check() {
+  useTitle('Check a leaf');
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
@@ -135,7 +137,7 @@ export default function Check() {
                 <button type="button" className="btn btn-primary" onClick={() => uploadInput.current.click()}>
                   <UploadIcon /> Upload a photo
                 </button>
-                <button type="button" className="btn btn-outline" onClick={() => cameraInput.current.click()}>
+                <button type="button" className="btn btn-outline camera-only" onClick={() => cameraInput.current.click()}>
                   <CameraIcon /> Use camera
                 </button>
               </div>

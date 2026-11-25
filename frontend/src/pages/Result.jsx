@@ -4,13 +4,14 @@ import { ApiError, getAdvice } from '../api.js';
 import { getCheck, saveAdvice } from '../lib/history.js';
 import { getProfile } from '../lib/profile.js';
 import { forgetPhoto, photoFor } from '../lib/session.js';
-import { formatDate, OUR_DECISIONS, seconds } from '../lib/words.js';
+import { formatDate, OUR_DECISIONS, seconds, shortTitle } from '../lib/words.js';
 import Steps from '../components/Steps.jsx';
 import Notice from '../components/Notice.jsx';
 import ResultCard from '../components/ResultCard.jsx';
 import Neighbours from '../components/Neighbours.jsx';
 import AdviceBox from '../components/AdviceBox.jsx';
 import { BookIcon, ClockIcon, InfoIcon, RetakeIcon } from '../components/Icons.jsx';
+import { useTitle } from '../lib/useTitle.js';
 
 const HELPLINE = '16123';
 
@@ -26,6 +27,7 @@ export default function Result() {
 function ResultView({ id }) {
   const location = useLocation();
   const [entry] = useState(() => getCheck(id));
+  useTitle(entry ? shortTitle(entry) : 'Result not found');
   const [adviceState, setAdviceState] = useState(entry?.advice ? 'done' : 'idle');
   const [advice, setAdvice] = useState(entry?.advice || null);
   const [adviceError, setAdviceError] = useState(null);

@@ -31,7 +31,7 @@ export default function ScanCard() {
           <Link to="/check" className="btn btn-primary">
             <UploadIcon /> Upload a photo
           </Link>
-          <Link to="/check" className="btn btn-on-dark">
+          <Link to="/check" className="btn btn-on-dark camera-only">
             <CameraIcon /> Use camera
           </Link>
         </div>
