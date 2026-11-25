@@ -1,8 +1,8 @@
 """SQLite log of every check, for our own numbers (time per check, Gemini agreement, fallback count ...).
 
 Privacy: only numbers and labels. No photo, no file name, no picture data of any kind is ever written here.
-The file is backend/safecrop.db (git-ignored), or DB_PATH from the environment. A free Hugging Face Space loses it on
-restart, so the History page lives in the browser, never here. A failed write is logged and never breaks a check.
+The file is backend/safecrop.db (git-ignored), or DB_PATH from the environment. The History page lives in the browser,
+never in this log. A failed write is logged and never breaks a check.
 """
 
 import logging

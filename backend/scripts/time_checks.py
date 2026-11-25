@@ -1,7 +1,7 @@
 """Time per check: how long start-up takes and how long one POST /api/check takes.
 
     python scripts/time_checks.py                                  # this computer (starts the app here)
-    python scripts/time_checks.py --url https://<space>.hf.space   # a running server, e.g. the Space (Day 8)
+    python scripts/time_checks.py --url http://localhost:8000      # a server that is already running
 
 Sends the 16 sample photos in tests/samples --rounds times (default 3) and prints the median, fastest and slowest
 time per check, and the server's own split (photo check / CLIP / search). Copy the numbers into docs/PROGRESS.md.

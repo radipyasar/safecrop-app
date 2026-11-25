@@ -5,17 +5,22 @@
 > The Week 10 update stays on **Sun 22** (its own short section after Day 3; slides show work up to Day 3 only) and the
 > Week 11 update is on Day 11 (Mon 30).
 > **Plan shortened on 24 Nov: everything is finished by Thu 26 Nov.** Tue 24 = Day 5, Day 6 Block B (disease pages),
-> Day 7 · Wed 25 = Day 8 (online), then Day 6 Block A (real-photo test on the online app) · Thu 26 = Days 9, 10, 11.
+> Day 7 · ~~Wed 25 = Day 8 (online), then Day 6 Block A (real-photo test on the online app)~~ · Thu 26 = Days 9, 10, 11.
 > All nice-to-haves are dropped; no must-have is dropped. The Week 11 update stays on **Mon 30 Nov** (own section after Day 11).
+> **26 Nov: no hosting.** Hugging Face now needs a paid PRO plan for Docker Spaces on the free CPU (the Space was refused
+> on 26 Nov), free hosts without a card give at most 512 MB (our model needs about 2 GB), and Nabil chose to demo on the
+> laptop. So **Day 8 is removed**: no Hugging Face Space, no Vercel, no phone test. The app runs on the laptop (back end +
+> front end); the Hugging Face model repo stays as the backup of the model files. Thu 26 = Day 6 Block A (real photos,
+> uploaded on the laptop) → Day 9 → Day 10 → Day 11.
 > The PDF still has the old dates.
 
-Tuesday 17 November to Thursday 26 November 2026 (Week 11 update on Monday 30 November). Every task, in order, with a clear "done when" check for each day, so that by 26 November SafeCrop works end to end and is online.
+Tuesday 17 November to Thursday 26 November 2026 (Week 11 update on Monday 30 November). Every task, in order, with a clear "done when" check for each day, so that by 26 November SafeCrop works end to end on the laptop.
 
 **Where you are today (16 Nov) and where you will be on 26 Nov**
 
 **Today:** the React home page runs on `localhost:5173` with sample data. The models work in Colab and in the `NabilRafi/SafeCrop` repo (E4, fine-tuned CLIP + noisy copies, is the most robust: 97.1% at L3 on the test images, 85.2% on recipe B). There is no back end yet.
 
-**26 Nov:** a farmer opens one public link on a phone, takes a photo of a leaf, and gets: a photo-quality check, the disease from fine-tuned CLIP, the 5 most similar reference pictures, and advice written by Gemini from checked disease facts. Past checks are saved in History. A demo video is recorded (by 26 Nov) and shown at the Week 11 update (Mon 30 Nov).
+**26 Nov:** on the laptop, a leaf photo (taken with a phone) is uploaded and the app gives: a photo-quality check, the disease from fine-tuned CLIP, the 5 most similar reference pictures, and advice written by Gemini from checked disease facts. Past checks are saved in History. A demo video is recorded (by 26 Nov) and shown at the Week 11 update (Mon 30 Nov).
 
 ### The 11 days at a glance
 
@@ -27,15 +32,15 @@ Tuesday 17 November to Thursday 26 November 2026 (Week 11 update on Monday 30 No
 | —   | Sun 22 Nov    | **Week 10 update** (shows work up to Day 3)                | Week 10 slides presented                                         |
 | 4   | Mon 23 Nov    | Back end: Gemini advice + disease facts                    | `/api/advice` works, with a fallback                             |
 | 5   | Tue 24 Nov    | Front end: the full check flow                             | Upload → result → advice works on the laptop                     |
-| 6   | Tue 24 (B) + Wed 25 (A) | Disease pages (Tue) + real photos on the online app (Wed, after Day 8) | Disease pages filled; real-photo table done |
+| 6   | Tue 24 (B) + Thu 26 (A) | Disease pages (Tue) + real photos on the laptop app (Thu) | Disease pages filled; real-photo table done |
 | 7   | Tue 24 Nov    | History, Profile, Home with real data                      | No sample data left anywhere                                     |
-| 8   | Wed 25 Nov    | Put it online (Hugging Face + Vercel)                      | The public link works on a phone                                 |
+| 8   | —             | ~~Put it online~~ **removed 26 Nov** (laptop demo only)     | —                                                                |
 | 9   | Thu 26 Nov    | Test everything, fix bugs                                  | All tests in the test plan pass                                  |
 | 10  | Thu 26 Nov    | Must-have polish, safety, documents                        | A teammate can run it from the README                            |
 | 11  | Thu 26 Nov    | Freeze, demo video, backups                                | v1.0 tagged, video recorded, link works                          |
 | —   | Mon 30 Nov    | **Week 11 update**                                         | Week 11 update given                                             |
 
-Order of work: **Tue 24** Day 5 → Day 6 Block B → Day 7 · **Wed 25** Day 8 → Day 6 Block A · **Thu 26** Day 9 → Day 10 → Day 11.
+Order of work: **Tue 24** Day 5 → Day 6 Block B → Day 7 · **Thu 26** Day 6 Block A → Day 9 → Day 10 → Day 11 (Day 8 removed).
 
 ## Before you start
 
@@ -55,11 +60,11 @@ Order of work: **Tue 24** Day 5 → Day 6 Block B → Day 7 · **Wed 25** Day 8 
 
 ## What “fully functional” means (the target)
 
-These are the features SafeCrop must have by 26 November. Use this list as the finish line: the app is done when every must-have works on the public link.
+These are the features SafeCrop must have by 26 November. Use this list as the finish line: the app is done when every must-have works on the laptop.
 
 | \#  | Must-have feature                                                                                                                                       | Where it lives         |
 |-----|---------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|
-| 1   | Upload a photo, or take one with the phone camera                                                                                                       | Check page             |
+| 1   | Upload a photo (file picker or drag-and-drop on the laptop)                                                                                             | Check page             |
 | 2   | Photo check: names the problem (blur, grain, dark, blocky) and the level (L0–L3); warns when the photo is bad; asks for a retake when it is too unclear | Back end + Result page |
 | 3   | Disease answer from fine-tuned CLIP (E4) with a confidence word (Very likely / Likely / Not sure) and the next best guess                               | Back end + Result page |
 | 4   | Handles a healthy leaf, a disease not in our list, and a photo that is not a leaf                                                                       | Back end + Result page |
@@ -68,8 +73,8 @@ These are the features SafeCrop must have by 26 November. Use this list as the f
 | 7   | Disease list and a detail page for each of the 8 diseases (symptoms, what to do, prevention, sources)                                                   | Diseases pages         |
 | 8   | History of past checks: open, delete one, clear all                                                                                                     | History page           |
 | 9   | Profile: name, district, crops, language                                                                                                                | Profile page           |
-| 10  | Works on phone and laptop; online at a public link; no API key in the code                                                                              | Vercel + Hugging Face  |
-| 11  | Clear messages for: no internet, server waking up, wrong file type, file too big, server error                                                          | Every page             |
+| 10  | Runs on the laptop (back end + front end) for the demo; no API key in the code (no hosting, decided 26 Nov)                                             | Laptop                 |
+| 11  | Clear messages for: no internet, server still starting, wrong file type, file too big, server error                                                     | Every page             |
 | 12  | README, model card, data card and test results written                                                                                                  | `docs/` folder         |
 
 | Nice to have — **all dropped on 24 Nov** (plan shortened to 26 Nov)       | Why it is optional                                          |
@@ -88,15 +93,15 @@ One check, start to finish. Steps 2–3 happen in one request (`/api/check`), so
 
 | Part            | Tools (all free, no card needed)                                                                     | Notes                                                                            |
 |-----------------|------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| Front end       | React 19 + Vite 6 (your `safecrop-web`), `react-router-dom` for pages                                | Hosted on Vercel (Hobby plan, sign in with GitHub)                               |
+| Front end       | React 19 + Vite 6 (your `safecrop-web`), `react-router-dom` for pages                                | Runs on the laptop (`npm run dev`); no hosting (26 Nov)                          |
 | Back end        | Python 3.11, FastAPI, Uvicorn, python-multipart                                                      | Swagger test page at `/docs` for free                                            |
 | Image reading   | Pillow + pillow-heif (iPhone HEIC photos), EXIF rotation fix                                         | Uploads up to 10 MB                                                              |
 | Disease model   | PyTorch (CPU), transformers, CLIP ViT-L/14 with your fine-tuned last 4 blocks (E4)                   | Only the changed weights are saved (~100–200 MB)                                 |
 | Database search | numpy: cosine similarity, 5 nearest pictures, weighted vote                                          | Clean + noisy copies + healthy / look-alike pictures                             |
 | Photo check     | Your 16 measurements + random forests (scikit-learn, joblib)                                         | Pin the same scikit-learn version as in Colab                                    |
-| Advice          | google-genai with Gemini 3.5 Flash-Lite (free AI Studio key)                                         | Key kept in `.env` locally and as a Space secret online                          |
-| History         | Browser storage (localStorage) for the History page; SQLite log on the server for your own numbers   | Free Spaces lose their disk on restart, so History must not depend on the server |
-| Hosting         | Hugging Face Space (Docker, CPU basic: 2 vCPU, 16 GB RAM) + model files in a Hugging Face model repo | Free Spaces sleep when unused; wake it before a demo                             |
+| Advice          | google-genai with Gemini 3.5 Flash-Lite (free AI Studio key)                                         | Key kept only in `backend/.env` (git-ignored)                                    |
+| History         | Browser storage (localStorage) for the History page; SQLite log on the server for your own numbers   | History does not depend on the server                                            |
+| Hosting         | **None (26 Nov):** back end and front end run on the laptop; model files backed up in a Hugging Face model repo + Drive | HF Docker Spaces need PRO; free no-card hosts give ≤ 512 MB          |
 
 ## The API (what the front end and back end say to each other)
 
@@ -137,7 +142,7 @@ One check, start to finish. Steps 2–3 happen in one request (`/api/check`), so
         data/diseases.json      checked facts: 8 diseases + healthy + unknown
         models/                 model files (NOT in git; from Hugging Face)
         tests/                  pytest tests + sample images
-        requirements.txt, Dockerfile, .env.example
+        requirements.txt, .env.example
       notebooks/SafeCrop_app_model_export.ipynb
       docs/MODEL_CARD.md, DATA_CARD.md, API.md, TEST_RESULTS.md
 
@@ -338,16 +343,19 @@ If Gemini returns text that is not valid JSON, use the SDK's structured-output o
 
 To trigger the special screens without hunting for photos, add a hidden test option in development only (for example `?force=healthy`) that the back end ignores in production.
 
-## Day 6 — Tuesday 24 (Block B) and Wednesday 25 November (Block A): Real photos and the disease pages
+## Day 6 — Tuesday 24 (Block B) and Thursday 26 November (Block A): Real photos and the disease pages
 
 **Goal:** the first fair test of the app on real phone photos, and the Diseases pages filled with real facts. (The Week 10 update was on Sun 22.)
 
-**24 Nov plan:** Block B (disease pages) is done on Tue 24 with the rest of the front end. Block A (real-photo test) is done on Wed 25, **after Day 8**, on the online app.
+**Plan:** Block B (disease pages) was done on Tue 24 with the rest of the front end. Block A (real-photo test) is done
+on **Thu 26 on the laptop app** (no hosting since 26 Nov): the photos are taken with a phone, copied to the laptop and
+uploaded there.
 
-#### Block A · Real-photo test (Wed 25, after Day 8) (≈ 2 h)
+#### Block A · Real-photo test (Thu 26, on the laptop) (≈ 2 h)
 
-- [ ] Gather 20–30 real phone photos with a known disease (from the field trip or new ones), including a few healthy leaves and a few bad photos. Write the true label of each in a sheet **before** running them.
-- [ ] Run each through the online app (the public Vercel link). Record: photo, true label, app answer, decision, photo-check problem and level, Gemini agrees?, time.
+- [ ] Before the test, delete `backend/safecrop.db` (8 test rows from 23 Nov), so the log counts only real photos.
+- [ ] Gather 20–30 real phone photos with a known disease (from the field trip or new ones), including a few healthy leaves and a few bad photos. Copy them to the laptop. Write the true label of each in a sheet **before** running them.
+- [ ] Run each through the app on the laptop (upload on the Check page). Record: photo, true label, app answer, decision, photo-check problem and level, Gemini agrees?, time.
 - [ ] Count: right / wrong / not sure, and how often the photo check warned. Do **not** change any threshold after seeing these results (that would make the test unfair); write ideas down for later.
 - [ ] Save the table as `docs/TEST_RESULTS.md` (real-photo section).
 
@@ -400,67 +408,39 @@ If you don't have labelled real photos yet, take 3–4 photos each of whatever l
 
 Browser storage holds about 5 MB. Keep the history thumbnail small (about 160 pixels wide, JPEG) or 50 checks will not fit.
 
-## Day 8 — Wednesday 25 November: Put SafeCrop online
+## Day 8 — removed on 26 November (no hosting; the app is demonstrated on the laptop)
 
-**Goal:** one public link that works on a phone over mobile data, with the back end on a free Hugging Face Space and the front end on Vercel.
-
-#### Block A · Back end on a Hugging Face Space (≈ 2.5 h)
-
-- [ ] Write `backend/Dockerfile`: `python:3.11-slim`, install the CPU-only PyTorch wheel (much smaller), install requirements, copy the app, run Uvicorn on port **7860**.
-- [ ] At start-up, download the model files from your Hugging Face model repo with `huggingface_hub` (using the `HF_TOKEN` secret) and cache them.
-- [ ] Create a new Space: SDK **Docker**, hardware **CPU basic (free)**. Add secrets: `GEMINI_API_KEY`, `HF_TOKEN`, `ALLOWED_ORIGINS`.
-- [ ] Push the back end to the Space. Watch the build log until it says it is running. Open `https://<your-space>.hf.space/api/health` and `/docs`; run one check from `/docs`.
-- [ ] Measure: start-up time after sleeping, and time per check on the Space (write both down).
-
-#### Block B · Front end on Vercel (≈ 1.5 h)
-
-- [ ] In Vercel: import the GitHub repo, set the root directory to `frontend`, build command `npm run build`, output folder `dist`.
-- [ ] Add the environment variable `VITE_API_URL=https://<your-space>.hf.space` and redeploy.
-- [ ] Add `frontend/vercel.json` that sends every path to `index.html`, so refreshing `/history` doesn't give a 404.
-- [ ] Put the Vercel address in the Space's `ALLOWED_ORIGINS` secret and restart the Space.
-
-#### Block C · Phone test (≈ 1.5 h)
-
-- [ ] Open the Vercel link on an Android phone in Chrome, on mobile data and on Wi-Fi. Take a photo with the camera button; upload one from the gallery.
-- [ ] If anyone has an iPhone, test Safari too (HEIC photos, camera button).
-- [ ] Check: the layout fits, buttons are easy to tap, the result and advice appear, History keeps the check after closing the browser.
-- [ ] Write every problem you find in the bug list for Day 9.
-
-**Done when**
-
-- [ ] The public Vercel link works end to end on a phone over mobile data.
-- [ ] Start-up time and time per check on the Space are written down.
-- [ ] No secret appears in the GitHub repo or in the front-end code (search the built files for the key).
-
-**If you get stuck**
-
-If the Space build runs out of memory or space, make sure the CPU-only torch wheel is used and that model files are downloaded at start-up, not copied into the image. If the Space still fails, a backup for the demo is to run the back end on your laptop and share it with a free Cloudflare quick tunnel (`cloudflared tunnel --url http://localhost:8000`), which needs no account or card.
+Day 8 was "put SafeCrop online" (back end on a free Hugging Face Space, front end on Vercel, phone test). On 26 Nov
+Hugging Face refused to create the Space: Docker (and Gradio) Spaces on the free CPU now need a paid PRO subscription,
+which needs a card. Free hosts that ask for no card give at most 512 MB of memory; fine-tuned CLIP ViT-L/14 needs
+about 2 GB. Nabil decided not to host the app at all and to demonstrate it on the laptop. No Space was created and no
+hosting files were kept. For the report: "The app runs locally; free hosting without a card could not run the model."
 
 ## Day 9 — Thursday 26 November: Test everything and fix bugs
 
-**Goal:** every test in the plan below passes on the public link, and every bug from Day 8 is fixed.
+**Goal:** every test in the plan below passes on the laptop app, and every bug found so far is fixed.
 
 #### Block A · Run the test plan (≈ 2.5 h)
 
-- [ ] Run every row of the test plan (next page) on the public link: phone and laptop. Mark pass or fail and note what happened.
+- [ ] Run every row of the test plan (next page) on the laptop app (back end + front end running locally). Mark pass or fail and note what happened.
 - [ ] Run the back-end tests (`pytest`) once more against the local server.
 
 #### Block B · Fix bugs (≈ 2 h)
 
 - [ ] Fix the failed tests one at a time, most serious first (crashes and wrong answers before looks).
 - [ ] After each fix, run that test again and the tests next to it (a fix can break something else).
-- [ ] Push and let Vercel and the Space redeploy; recheck on the phone.
+- [ ] Commit and push to GitHub; recheck in the browser.
 
 #### Block C · Speed and limits (≈ 1 h)
 
-- [ ] If a check takes more than about 8 seconds on the Space, try: fewer CPU threads fighting (set threads = 2), make sure the photo is resized to 224 before CLIP, and show the result before the advice (already the design).
+- [ ] Time per check on the laptop is already measured (0.82 s median); recheck it once plugged in with `scripts/time_checks.py`.
 - [ ] Check what happens with 3 checks at the same time (open 3 tabs): nothing should crash; slower is fine.
 - [ ] Count Gemini calls in the log; make sure caching stops repeat calls.
 
 **Done when**
 
-- [ ] Every must-have test in the plan passes on the public link.
-- [ ] The bug list from Day 8 is empty or only has nice-to-have items left.
+- [ ] Every must-have test in the plan passes on the laptop app.
+- [ ] The bug list is empty or only has nice-to-have items left.
 - [ ] `docs/TEST_RESULTS.md` has the full test table.
 
 ## Day 10 — Thursday 26 November: Polish, safety and documents
@@ -480,12 +460,12 @@ If the Space build runs out of memory or space, make sure the CPU-only torch whe
 
 - [ ] The safety note on every result: “SafeCrop gives a best guess, not a final diagnosis. Ask your local agriculture officer before using any chemical.”
 - [ ] Privacy line on the Check page: photos are checked and not stored.
-- [ ] Security check: search the whole repo history for the key (`git log -p | grep -i AIza`); upload size limit works; CORS allows only your Vercel address and localhost.
+- [ ] Security check: search the whole repo history for the key (`git log -p | grep -i AIza`); upload size limit works; CORS allows only localhost.
 - [ ] If the key was ever committed, make a new key in AI Studio and delete the old one.
 
 #### Block C · Documents (≈ 2 h)
 
-- [ ] `README.md`: what SafeCrop does, a screenshot, how to run it locally (back end and front end), how to deploy, the environment variables.
+- [ ] `README.md`: what SafeCrop does, a screenshot, how to run it locally (back end and front end; this is also how it is demonstrated), how to get the model files from the Hugging Face model repo, the environment variables.
 - [ ] `docs/API.md` (or a link to `/docs`), `docs/MODEL_CARD.md`, and `docs/DATA_CARD.md`: where each disease's photos come from, how many, the licences, the noise recipe, and the known limits (one source per disease, synthetic noise).
 - [ ] Ask your teammate to follow the README on their own laptop. Fix every step they get stuck on.
 
@@ -497,39 +477,39 @@ If the Space build runs out of memory or space, make sure the CPU-only torch whe
 
 ## Day 11 — Thursday 26 November: Freeze, demo video and backups
 
-**Goal:** version 1.0 is online, a demo video is recorded, and everything is backed up — ready for the Week 11 update on Mon 30 Nov.
+**Goal:** version 1.0 runs on the laptop, a demo video is recorded, and everything is backed up — ready for the Week 11 update on Mon 30 Nov.
 
 **The Week 11 update is on Mon 30 Nov** (section below). The supervisor wants a working app, the demo video and numbers, so have the video and the Block C numbers ready by the end of today.
 
 #### Block A · Freeze (≈ 1.5 h)
 
 - [ ] Only fix bugs that break a must-have. No new features today.
-- [ ] Final deploy of both parts. Tag the release in git: `git tag v1.0` and push the tag.
-- [ ] Open the Space and the Vercel link 10 minutes before any demo to wake the Space.
+- [ ] Final run of both parts on the laptop (`pytest`, `npm run build`, one full check). Tag the release in git: `git tag v1.0` and push the tag.
+- [ ] Before any demo: start the back end and the front end 5 minutes early and wait for "Server online" (start-up about 11 s).
 
 #### Block B · Demo script and video (≈ 2.5 h)
 
-- [ ] Write a 2–3 minute demo script: open the link on a phone → home → take a photo of a sick leaf → photo check warning → result with similar pictures → advice → History → disease page → (Bangla, if done).
-- [ ] Practise it twice. Then record it: screen recording of the phone plus a short laptop part showing `/docs`.
-- [ ] Keep the video as a backup in case the live demo fails (bad network, Space asleep).
+- [ ] Write a 2–3 minute demo script on the laptop: home → upload a real phone photo of a sick leaf → photo check warning → result with similar pictures → advice (and Bangla advice from Profile) → History → disease page → a short look at `/docs`.
+- [ ] Practise it twice. Then record it: screen recording of the laptop.
+- [ ] Keep the video as a backup in case the live demo fails (no internet for Gemini, laptop problem).
 
 #### Block C · Numbers, backups and notes (≈ 1.5 h)
 
-- [ ] Numbers for the Week 11 slides: real-photo results, time per check (laptop and Space), start-up time, Gemini agreement rate, fallback count, tests passed.
+- [ ] Numbers for the Week 11 slides: real-photo results, time per check (laptop), start-up time, Gemini agreement rate, fallback count, tests passed.
 - [ ] Backups: model files on Hugging Face and Drive; repo pushed; `.env` saved safely offline (never in Drive folders you share).
-- [ ] Write “known limits” for the report: synthetic noise in training, one photo source per disease, real-photo test size, Gemini not tested as a classifier (E5), free hosting sleeps.
+- [ ] Write “known limits” for the report: synthetic noise in training, one photo source per disease, real-photo test size, Gemini not tested as a classifier (E5), not hosted online (runs on the laptop; free hosting without a card can't run the model).
 - [ ] Write the next steps: E5 (Gemini + fine-tuned neighbours), more real photos, the “Was this right?” button.
 
 **Done when**
 
-- [ ] `v1.0` is tagged and the live link works on a phone.
+- [ ] `v1.0` is tagged and the app works end to end on the laptop.
 - [ ] The demo video is recorded and saved in two places.
 - [ ] Week 11 numbers and the known-limits list are written.
 
 ## Week 11 update — Monday 30 November (after Day 11)
 
-**Goal:** show the working app, the demo video and the numbers. No build work today. Open the Space and the Vercel
-link 10 minutes before the meeting to wake the Space; keep the video ready in case the live demo fails.
+**Goal:** show the working app on the laptop, the demo video and the numbers. No build work today. Start the back end
+and the front end 5 minutes before the meeting; keep the video ready in case the live demo fails.
 
 **Done when**
 
@@ -545,11 +525,11 @@ link 10 minutes before the meeting to wake the Space; keep the video ready in ca
 | 4   | Look-alike disease not in our list (for example potato early blight) | “May be a disease SafeCrop doesn't know yet”             |       |
 | 5   | Not a leaf (desk, face, wall)                                        | “We can't read this photo” + retake                      |       |
 | 6   | Very dark photo; very blurry photo                                   | Warning; retake suggested when too unclear               |       |
-| 7   | Phone camera button (Android Chrome)                                 | Back camera opens; check works                           |       |
-| 8   | iPhone HEIC photo (if anyone has an iPhone)                          | Accepted and checked                                     |       |
+| 7   | Drag a photo onto the Check page and onto the home card              | Preview shows; check works                               |       |
+| 8   | iPhone HEIC photo uploaded on the laptop (if anyone has an iPhone)   | Accepted and checked                                     |       |
 | 9   | Huge photo (over 10 MB) and a PDF                                    | Clear “too big” / “not a photo” message                  |       |
 | 10  | Turn off the internet during a check                                 | “No internet” message, no crash                          |       |
-| 11  | Space asleep (first visit after a long break)                        | “SafeCrop is starting” message, then it works            |       |
+| 11  | Check right after starting the back end (model still loading)        | “SafeCrop is starting” message, then it works            |       |
 | 12  | Gemini key removed or quota used up                                  | Fallback advice shown; result still shown                |       |
 | 13  | Refresh the browser on `/result/…`, `/history`, `/diseases/…`        | Page loads (no 404)                                      |       |
 | 14  | History: open, delete one, clear all, then reload                    | Works and stays correct after reload                     |       |
@@ -564,14 +544,13 @@ link 10 minutes before the meeting to wake the Space; keep the video ready in ca
 
 | Risk                                        | Sign                                    | What to do                                                                                                                               |
 |---------------------------------------------|-----------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| The Space build fails or runs out of memory | Build log stops with an error           | CPU-only torch; download models at start-up; if still stuck, run the back end on your laptop with a Cloudflare quick tunnel for the demo |
-| The Space is asleep during the demo         | First request takes a minute            | Open the link 10 minutes before; show the “starting” message; keep the demo video ready                                                  |
+| The laptop fails on demo day                | Won't start, or the back end won't load | Keep the demo video ready; model files are backed up on Hugging Face + Drive; README steps let a teammate's laptop run it               |
+| No internet at the demo                     | Advice says it is the fallback          | Fine: the check runs fully on the laptop; advice falls back to `diseases.json`; show the video for the Gemini part                      |
 | Gemini is slow, out of quota or down        | Advice takes \> 20 s or errors          | Fallback advice from `diseases.json` (built on Day 4); cache answers                                                                     |
-| Checks are too slow on the free CPU         | More than about 8 s per check           | 2 threads; resize to 224 early; result shown before advice                                                                               |
+| Checks are slow on battery                  | More than about 2 s per check           | Plug the laptop in for the demo; close other heavy programs                                                                              |
 | Real photos give many wrong answers         | Day 6 table below about 70%             | Report it honestly (it is a real finding); the “not sure” screen protects farmers; plan more real photos for Week 11                     |
 | scikit-learn version mismatch               | Error when loading `photo_check.joblib` | Pin the exact version used in Colab in `requirements.txt`                                                                                |
 | Model files too big for GitHub              | Push rejected                           | Keep them only in the Hugging Face model repo (and Drive); `models/` is in `.gitignore`                                                  |
-| Camera button doesn't open the camera       | Gallery opens instead                   | Fine: upload still works; test `capture="environment"` on another phone                                                                  |
 | Running out of days                         | A day's “done when” is not met          | Cut nice-to-haves (in the order of the “nice to have” table), never the must-haves; use Day 11's buffer                                  |
 
 ## Commands you will use every day
@@ -591,7 +570,6 @@ Test page: `http://localhost:8000/docs`
 
     npm install
     npm run dev
-    npm run dev -- --host     (open on your phone on the same Wi-Fi)
     npm run build
     npm run preview
 
@@ -604,16 +582,13 @@ Test page: `http://localhost:8000/docs`
     git commit -m "Day 5: result page with similar pictures"
     git push
 
-### Deploy
+### Release (no hosting since 26 Nov; the app runs on the laptop)
 
-    Back end:  push backend/ to the Hugging Face Space repo (it rebuilds by itself)
-    Front end: push to GitHub (Vercel rebuilds by itself)
-    Release:   git tag v1.0 && git push --tags
+    git tag v1.0 && git push --tags
 
 **Good habits for the whole 11 days**
 
 - Never paste the Gemini key or the Hugging Face token into code, chat screenshots or slides.
-- Test on the phone early (from Day 5 with `npm run dev -- --host`), not only on Day 8.
 - One change at a time: change, test, commit. If something breaks, `git diff` shows what changed.
 - Keep a running “numbers” note (time per check, real-photo results, fold-0 checks) for the Week 10 and Week 11 slides.
 
@@ -633,17 +608,17 @@ Tick these on the last day. If every box is ticked, SafeCrop is fully functional
 - [ ] pytest tests pass
 - [ ] Model card written
 
-### Online
+### Running on the laptop (no hosting since 26 Nov)
 
-- [ ] Back end on a free Hugging Face Space
-- [ ] Front end on Vercel; page refresh works on every route
-- [ ] CORS limited to your addresses; secrets only in Space settings
-- [ ] Works on a phone over mobile data
+- [ ] Back end and front end start from the README commands; "Server online" shows
+- [ ] Page refresh works on every route
+- [ ] CORS limited to localhost; keys only in `backend/.env`
+- [ ] Model files backed up on Hugging Face + Drive
 
 ### Front end
 
 - [ ] Every menu item opens a working page
-- [ ] Upload, camera and drag-and-drop
+- [ ] Upload and drag-and-drop
 - [ ] Progress steps tied to real calls
 - [ ] Result: disease, confidence word, runner-up, photo warning
 - [ ] 5 similar pictures

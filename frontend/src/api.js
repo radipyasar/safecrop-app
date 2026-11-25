@@ -1,5 +1,5 @@
 // Every call to the SafeCrop back end goes through this file.
-// The back end's address comes from VITE_API_URL (frontend/.env.local on your laptop, Vercel settings online).
+// The back end's address comes from VITE_API_URL (frontend/.env.local on the laptop; default http://localhost:8000).
 
 import { getDeviceId } from './lib/profile.js';
 
@@ -32,7 +32,7 @@ async function request(path, { timeoutMs = 10000, ...options } = {}) {
     response = await fetch(API_URL + path, { ...options, signal: AbortSignal.timeout(timeoutMs) });
   } catch (err) {
     if (typeof navigator !== 'undefined' && navigator.onLine === false) throw new ApiError('offline');
-    // a timeout usually means a sleeping Space is waking up
+    // a timeout usually means the back end is still starting (loading the model)
     throw new ApiError(err.name === 'TimeoutError' ? 'starting' : 'unreachable');
   }
 
@@ -66,7 +66,7 @@ export function checkPhoto(file) {
     method: 'POST',
     body: form,
     headers: { 'X-Device-Id': getDeviceId() },
-    timeoutMs: 60000, // a free Space can be slow on the first check after waking
+    timeoutMs: 60000, // the first check right after start-up can be slow
   });
 }
 

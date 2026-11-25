@@ -9,9 +9,10 @@ The full project story and every result we rely on: @docs/PROJECT_STORY.md
 Where the build is right now (what's done, what's next): @docs/PROGRESS.md
 The day-by-day plan (17–26 Nov 2026) is in `docs/ROUTINE.md`. Before working on any app task,
 read that day's section (`## Day N — …`). Day 1 = Tue 17 Nov, Day 2 = Wed 18–Thu 19, Day 3 = Sat 21 Nov,
-Day 4 = Mon 23 Nov. **Plan shortened on 24 Nov:** Tue 24 = Day 5 + Day 6 Block B (disease pages) + Day 7; Wed 25 = Day 8
-(online), then Day 6 Block A (real-photo test on the online app); Thu 26 = Days 9, 10, 11. Week 10 update = Sun 22 Nov
-(work up to Day 3); Week 11 update = Mon 30 Nov. All nice-to-haves dropped; never drop a must-have.
+Day 4 = Mon 23 Nov. **Plan shortened on 24 Nov:** Tue 24 = Day 5 + Day 6 Block B (disease pages) + Day 7;
+Thu 26 = Day 6 Block A (real-photo test on the laptop app), then Days 9, 10, 11. **Day 8 (hosting) removed on 26 Nov:**
+no Hugging Face Space, no Vercel, no phone test — the app runs and is demonstrated on the laptop. Week 10 update = Sun 22
+Nov (work up to Day 3); Week 11 update = Mon 30 Nov. All nice-to-haves dropped; never drop a must-have.
 
 ## How to work with me (Nabil)
 
@@ -28,9 +29,9 @@ Day 4 = Mon 23 Nov. **Plan shortened on 24 Nov:** Tue 24 = Day 5 + Day 6 Block B
 ## Hard rules
 
 - **No card anywhere.** Only free services that don't ask for a credit or debit card (no Google Cloud
-  trial). Hosting = Hugging Face Space (free CPU) + Vercel (Hobby). Gemini = free AI Studio key.
+  trial). **No hosting** (26 Nov: HF Docker Spaces need PRO): the app runs on the laptop. Gemini = free AI Studio key.
 - **Never put a key in code, git, logs or screenshots.** `GEMINI_API_KEY` and `HF_TOKEN` live only in
-  `backend/.env` (git-ignored) and in the Hugging Face Space secrets. Check `git status` before every commit.
+  `backend/.env` (git-ignored). Check `git status` before every commit.
 - **Models:** only CLIP ViT-L/14 (our fine-tuned E4 version) and **Gemini 3.5 Flash-Lite**. No Gemma, no other models.
 - **CLIP names the disease; Gemini does not change it.** Gemini only writes advice from the checked facts in
   `backend/data/diseases.json` and gives a second opinion (`agrees: yes/no/unsure`). E5 (Gemini as the
@@ -52,7 +53,7 @@ Day 4 = Mon 23 Nov. **Plan shortened on 24 Nov:** Tue 24 = Day 5 + Day 6 Block B
 | Photo check | 16 quality measurements + random forests (scikit-learn, joblib) — pin the Colab scikit-learn version |
 | Advice | `google-genai`, Gemini 3.5 Flash-Lite, JSON output, 20 s timeout, fallback from `diseases.json` |
 | History | browser localStorage (History page); SQLite log on the server for our own numbers |
-| Hosting | Hugging Face Space (Docker, CPU basic, port 7860) + Vercel; model files in a private HF model repo |
+| Hosting | None — runs on the laptop (decided 26 Nov); model files backed up in a private HF model repo + Drive |
 
 ## Folder layout
 
@@ -102,7 +103,7 @@ pytest -q
 
 # front end (in frontend/)  —  frontend/.env.local: VITE_API_URL=http://localhost:8000
 npm install
-npm run dev            # http://localhost:5173 ;  npm run dev -- --host  to open on a phone
+npm run dev            # http://localhost:5173
 npm run build
 ```
 

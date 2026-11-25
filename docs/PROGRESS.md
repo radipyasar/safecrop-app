@@ -12,16 +12,17 @@ Update this at the end of every day (the `/wrapup` command does it for you).
 | — | Sun 22 Nov | Week 10 update (shows work up to Day 3) | done (presented) |
 | 4 | Mon 23 Nov | Back end: Gemini advice + disease facts | done (`/api/advice` + fallback, `/api/diseases`, SQLite log, 140 tests) |
 | 5 | Tue 24 Nov | Front end: the full check flow | done (all 8 sample photos + every special screen and error, in Chrome) |
-| 6 | Tue 24 (B) + Wed 25 (A) | Disease pages (Tue); real photos on the online app (Wed, after Day 8) | Block B done 24 Nov; Block A (real photos) tomorrow |
+| 6 | Tue 24 (B) + Thu 26 (A) | Disease pages (Tue); real photos on the laptop app (Thu) | Block B done 24 Nov; Block A (real photos) Thu 26 |
 | 7 | Tue 24 Nov | History, Profile, Home with real data | done (`sample.js` deleted) |
-| 8 | Wed 25 Nov | Put it online (Hugging Face + Vercel) | not started |
+| 8 | — | ~~Put it online (Hugging Face + Vercel)~~ | **removed 26 Nov** — no hosting; demo on the laptop |
 | 9 | Thu 26 Nov | Test everything, fix bugs | not started |
 | 10 | Thu 26 Nov | Must-have polish, safety, documents | not started |
 | 11 | Thu 26 Nov | Freeze, demo video, backups | not started |
 | — | Mon 30 Nov | Week 11 update | not started |
 
 Dates shifted by 2 days on 21 Nov, then 1 more day from Day 4. **Plan shortened on 24 Nov: everything finished by
-Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days 9, 10, 11). Week 11 update stays Mon 30.
+Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Thu 26 = Day 6A, then Days 9, 10, 11). **26 Nov: Day 8 (hosting) removed** — the
+app runs and is demonstrated on the laptop (see the note under "Bugs and ideas"). Week 11 update stays Mon 30.
 
 ## Where things are now (24 Nov, end of Days 5, 6B and 7 — the whole app works on the laptop)
 
@@ -50,7 +51,7 @@ Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days
   `/api/check` says "starting" with 503 until then). Uploads: JPEG / PNG / WebP / HEIC ≤ 10 MB, EXIF turn fixed,
   clear 400 / 413 / 415 errors. The newest 1,000 results (never photos) are kept in memory for `/api/advice`.
   Files: `app/main.py`, `model.py`, `predict.py`, `photo_check.py`, `schemas.py`.
-  `scripts/time_checks.py` times start-up and checks (also `--url` for the Space on Day 8).
+  `scripts/time_checks.py` times start-up and checks (also `--url` for an already running server).
   All packages installed in `backend/.venv`; torch 2.14.1, transformers 5.22.1, Pillow 11.3.0 pinned to Colab.
 - Back end, Day 4: **`POST /api/advice` works** (form: `check_id`, `lang` en/bn, optional `image` used once, never
   stored) — Gemini 3.5 Flash-Lite writes advice from the facts (JSON schema, 20 s timeout + 1 retry, cached by check +
@@ -122,8 +123,6 @@ Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days
 | Time per check, laptop CPU (i5-13420H, 12 threads, **on battery**) | median **0.82 s** (48 checks; typical 0.80–0.84 s, one outlier 5.4 s that did not repeat); split: CLIP 0.71 s, photo check 0.05–0.11 s, read 3 ms, search 1 ms | 21 Nov 2026 |
 | Laptop start-up until `model_loaded: true` | 11.2 s (7.6 s importing PyTorch etc. + 3.5 s loading the model and warm-up) | 21 Nov 2026 |
 | PyTorch threads, laptop (median per check) | 12 threads 0.77 s vs 8 threads 0.94 s → keep 12 (all CPU threads) | 21 Nov 2026 |
-| Time per check, Hugging Face Space | | |
-| Space start-up time after sleeping | | |
 | Fold 0, E4 L3 with vs without healthy / look-alike pictures | 85.4% (41/48) with vs 97.9% (47/48) without; McNemar 0 vs 6, p = 0.031 (all 6 → healthy / not in list) | 19 Nov 2026 |
 | Fold 0, compressed L3 with vs without resample | 8/9 vs 8/9 (tie → resample kept) | 19 Nov 2026 |
 | Fold 0, app database, answers by decision | sure 99.4% right (161/162), likely 85.7% (18/21), not sure 44.4% (4/9) | 19 Nov 2026 |
@@ -149,7 +148,15 @@ Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days
 
 ## Bugs and ideas for later
 
-- Vercel (Day 8): add a rewrite so deep links like `/history` don't give 404 (we use BrowserRouter).
+- **26 Nov: no hosting — Day 8 removed.** Hugging Face refused to create the Space (`402 Payment Required`: "hosting
+  Gradio and Docker Spaces on free cpu-basic requires a PRO subscription"; only static Spaces are free). Free hosts that
+  need no card give at most 512 MB of memory (Render, SnapDeploy, Koyeb, Back4app); fine-tuned CLIP ViT-L/14 needs about
+  2 GB. Nabil chose to demo on the laptop: no Space, no Vercel, no tunnel, no phone test. No Space was created and the
+  hosting files (Dockerfile, model download, deploy script) were deleted, not committed. The HF model repo
+  `Radip/safecrop-models` stays as the backup of the model files. For the report: "runs locally; free hosting without a
+  card could not run the model". Real photos are still taken with a phone, then uploaded on the laptop.
+- ~~Vercel (Day 8): add a rewrite so deep links like `/history` don't give 404~~ — not needed (no Vercel; the Vite dev
+  server already serves every route).
 - ~~Gemini model ID `gemini-3.5-flash-lite` is a guess~~ — confirmed working 18 Nov (no `GEMINI_MODEL` needed in `.env`).
 - ~~Day 2: pin scikit-learn~~ — done 19 Nov (scikit-learn 1.6.1, numpy 2.4.6, joblib 1.6.0, opencv-python-headless
   4.14.0.*). Installed in `backend/.venv` on 21 Nov, with torch 2.14.1 (CPU), transformers 5.22.1 and Pillow 11.3.0
@@ -168,7 +175,7 @@ Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days
   diseases (its vote share can be 0) and `runner_up` is the healthy / look-alike label that won the vote. Word it like
   "Not sure: this could be a healthy leaf, or Potato late blight. Retake a clearer photo."
 - On Windows the photo-check measurements differ very slightly from Colab/Linux for 6/840 images (same answers);
-  the HF Space runs Linux like Colab.
+  the app now runs only on the Windows laptop (no hosting), so this tiny difference stays.
 - `dist/safecrop_app_inputs.zip` (88.5 MB, git-ignored) is only needed to rerun the Colab notebook; can be deleted.
 - "Not a leaf" gap is narrow at L3 (worst held-out leaf 0.790 vs most leaf-like non-leaf photo 0.730; cut 0.760):
   watch it on real photos (Day 6) but don't change the cut-off after seeing them.
@@ -178,6 +185,7 @@ Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days
   polish, safety, docs only), Day 11 (freeze, v1.0, demo video, backups). Week 11 update stays Mon 30 Nov. **All
   nice-to-haves dropped** (feedback button, Bangla switch, home-screen icon, webcam, stats page); no must-have dropped.
   Cut-offs stay fixed after the real-photo results. The older shift notes below are kept for the record.
+  (Changed again on 26 Nov: Day 8 removed, Day 6 Block A moved to Thu 26 on the laptop app — see the note above.)
 - Plan shifted by 2 days on 21 Nov, then 1 more day from Day 4 (also 21 Nov): Day 3 = Sat 21, Day 4 = Mon 23, …
   Day 11 = Mon 30. The Week 10 update stays on Sun 22 (own section, no build work) and shows work up to Day 3 only, before the real-photo
   test (Day 6, Wed 25) — show the Day 2 tables + the laptop time per check; real-photo results go into the Week 11
@@ -193,7 +201,7 @@ Thu 26 Nov** (Tue 24 = Days 5, 6B, 7 · Wed 25 = Day 8, then 6A · Thu 26 = Days
   save healthy plants" without saying to ask the officer in that step (the safety note below it does). The safety
   check only looks for chemical names and doses. Read a few Bangla answers on Day 10.
 - The browser shrink test used small test pictures enlarged to phone size, not real phone photos; watch one real
-  HEIC / big JPEG on the phone on Day 8.
+  HEIC / big JPEG uploaded on the laptop during the real-photo test (Day 6 Block A).
 - `backend/data/diseases.json` (23 Nov): Nabil checked every entry, source and Bangla name on 23 Nov (`checked: true`).
   No BRRI / BJRI / BARI / DAE pages were found online for most diseases (we used
   university extension, PhilRice / IRRI, TNAU and BanglaJOL papers instead); add Bangladesh institute sources if you
