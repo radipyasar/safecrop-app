@@ -4,7 +4,7 @@ import { ApiError, getAdvice } from '../api.js';
 import { getCheck, saveAdvice } from '../lib/history.js';
 import { getProfile } from '../lib/profile.js';
 import { forgetPhoto, photoFor } from '../lib/session.js';
-import { formatDate, OUR_DECISIONS, seconds, shortTitle } from '../lib/words.js';
+import { finalOf, formatDate, OUR_DECISIONS, seconds, shortTitle } from '../lib/words.js';
 import Steps from '../components/Steps.jsx';
 import Notice from '../components/Notice.jsx';
 import ResultCard from '../components/ResultCard.jsx';
@@ -27,9 +27,11 @@ export default function Result() {
 function ResultView({ id }) {
   const location = useLocation();
   const [entry] = useState(() => getCheck(id));
-  useTitle(entry ? shortTitle(entry) : 'Result not found');
   const [adviceState, setAdviceState] = useState(entry?.advice ? 'done' : 'idle');
   const [advice, setAdvice] = useState(entry?.advice || null);
+  // the answer shown: CLIP's, or our second check's (Gemini) when it said no (26 Nov)
+  const shown = entry ? finalOf(entry.check, advice) : null;
+  useTitle(entry ? shortTitle({ ...entry, ...shown }) : 'Result not found');
   const [adviceError, setAdviceError] = useState(null);
   const asked = useRef(new Set());
 
@@ -81,7 +83,9 @@ function ResultView({ id }) {
   const { check } = entry;
   const { result, photo_check: pc, neighbours, timing_ms: t } = check;
   const retake = decision === 'retake';
-  const ours = OUR_DECISIONS.has(decision);
+  const fromGemini = shown.source === 'gemini';
+  const ours =
+    (OUR_DECISIONS.has(shown.decision) || shown.decision === 'second_check') && shown.disease_id !== 'other_unknown';
 
   const step3 = retake ? 'skipped' : adviceState === 'idle' ? 'waiting' : adviceState;
   const notes = [
@@ -99,7 +103,7 @@ function ResultView({ id }) {
         <RetakeIcon /> Retake
       </Link>
       {ours && (
-        <Link to={`/diseases/${result.disease_id}`} className="btn btn-outline">
+        <Link to={`/diseases/${shown.disease_id}`} className="btn btn-outline">
           <BookIcon /> Learn about this disease
         </Link>
       )}
@@ -129,7 +133,12 @@ function ResultView({ id }) {
             </Notice>
           )}
 
-          <ResultCard result={result} thumb={entry.thumb} tipToShow={tip} />
+          <ResultCard
+            result={shown}
+            clip={fromGemini ? result : null}
+            thumb={entry.thumb}
+            tipToShow={fromGemini ? null : tip}
+          />
 
           {retake && (
             <div className="btn-row">
@@ -143,9 +152,11 @@ function ResultView({ id }) {
             <Neighbours
               neighbours={neighbours}
               note={
-                retake || decision === 'not_sure'
-                  ? 'These are the closest pictures, but they may not match your leaf.'
-                  : 'Compare your leaf with these pictures.'
+                fromGemini
+                  ? 'The closest pictures in our library. Our second check did not agree with them.'
+                  : retake || decision === 'not_sure'
+                    ? 'These are the closest pictures, but they may not match your leaf.'
+                    : 'Compare your leaf with these pictures.'
               }
             />
           )}

@@ -2,8 +2,9 @@ import { describe } from '../lib/words.js';
 import { LeafMark } from './Icons.jsx';
 
 // The answer: the farmer's photo, the disease (or a special result), how sure, and the next best guess.
-export default function ResultCard({ result, thumb, tipToShow }) {
-  const d = describe(result);
+// result = CLIP's result, or the advice's `final` answer when our second check said no (then clip = CLIP's result).
+export default function ResultCard({ result, clip, thumb, tipToShow }) {
+  const d = describe(result, clip);
   return (
     <section className="card verdict" data-decision={result.decision} aria-labelledby="verdict-title">
       <div className="verdict-photo">

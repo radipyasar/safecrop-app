@@ -7,7 +7,7 @@ import { fileUrl, getDiseases } from '../api.js';
 import { onHistoryChange, readHistory } from '../lib/history.js';
 import { getProfile } from '../lib/profile.js';
 import { useLoad } from '../lib/useLoad.js';
-import { cap, describe, shortTitle } from '../lib/words.js';
+import { cap, describeEntry, shortTitle } from '../lib/words.js';
 import { useTitle } from '../lib/useTitle.js';
 
 const RECENT = 4;
@@ -75,7 +75,7 @@ function RecentChecks() {
               <span className="recent-thumb">{c.thumb ? <img src={c.thumb} alt="" /> : <LeafMark />}</span>
               <span className="recent-text">
                 <span className="recent-title">{shortTitle(c)}</span>
-                <span className="badge badge-small" data-tone={describe(c.check.result).tone}>
+                <span className="badge badge-small" data-tone={describeEntry(c).tone}>
                   {c.confidence_words}
                 </span>
                 <span className="recent-date">

@@ -46,11 +46,20 @@ export default function AdviceBox({ state, advice, error, onRetry, actions }) {
 
       {state === 'done' && advice && (
         <div className="advice-body">
-          {advice.agrees === 'no' && (
-            <Notice tone="warn" title="Second opinion">
-              <p>Our second check is not sure about this answer. Retake the photo or ask an expert.</p>
-            </Notice>
-          )}
+          {advice.agrees === 'no' &&
+            (advice.final && advice.final.source === 'gemini' ? (
+              <Notice tone="warn" title="Our two checks disagree">
+                <p>
+                  The picture comparison and our second check gave different answers. The answer shown comes from the
+                  second check. If you are not sure, ask your local agriculture officer.
+                </p>
+              </Notice>
+            ) : (
+              // a check saved before 26 Nov (no `final`): today's notice
+              <Notice tone="warn" title="Second opinion">
+                <p>Our second check is not sure about this answer. Retake the photo or ask an expert.</p>
+              </Notice>
+            ))}
           <p className="advice-summary" lang={advice.lang}>
             {advice.summary}
           </p>

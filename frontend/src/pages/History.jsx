@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { clearHistory, deleteCheck, MAX_CHECKS, onHistoryChange, readHistory } from '../lib/history.js';
-import { describe, formatDate, shortTitle } from '../lib/words.js';
+import { describeEntry, formatDate, shortTitle } from '../lib/words.js';
 import { CameraIcon, ChevronIcon, LeafMark, TrashIcon } from '../components/Icons.jsx';
 import { useTitle } from '../lib/useTitle.js';
 
@@ -70,7 +70,7 @@ export default function History() {
                 <span className="hrow-text">
                   <span className="hrow-title">{shortTitle(c)}</span>
                   <span className="hrow-meta">
-                    <span className="badge badge-small" data-tone={describe(c.check.result).tone}>
+                    <span className="badge badge-small" data-tone={describeEntry(c).tone}>
                       {c.confidence_words}
                     </span>
                     <span>{formatDate(c.date)}</span>

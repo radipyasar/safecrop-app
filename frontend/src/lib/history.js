@@ -61,9 +61,21 @@ export function saveCheck(check, thumb) {
   return entry;
 }
 
+// Add the advice. If our second check (Gemini) said no, its answer becomes the check's answer in History too.
 export function saveAdvice(id, advice) {
+  const f = advice && advice.final;
+  const answer =
+    f && f.source === 'gemini'
+      ? {
+          decision: f.decision,
+          disease_id: f.disease_id,
+          disease_name: f.disease_name,
+          crop: f.crop,
+          confidence_words: f.confidence_words,
+        }
+      : {};
   try {
-    writeHistory(readHistory().map((c) => (c.id === id ? { ...c, advice } : c)));
+    writeHistory(readHistory().map((c) => (c.id === id ? { ...c, ...answer, advice } : c)));
   } catch {
     // see saveCheck
   }

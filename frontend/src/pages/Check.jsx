@@ -195,7 +195,7 @@ export default function Check() {
           </section>
           <p className="privacy">
             <InfoIcon /> Your photo is checked and not stored on our server. A small copy is kept only on this device,
-            in History.
+            in History. We keep a number fingerprint of the photo (not the photo) to improve SafeCrop.
           </p>
         </aside>
       </div>

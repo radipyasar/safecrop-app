@@ -22,14 +22,29 @@ export function shortTitle(entry) {
       return entry.disease_name || 'Looks healthy';
     case 'not_in_list':
       return 'Not in our list';
+    case 'not_sure':
+      return entry.disease_id === 'other_unknown' ? 'Not sure' : entry.disease_name || 'Not sure';
     default:
       return entry.disease_name || 'Unknown';
   }
 }
 
-// Everything the result card says, from the /api/check `result`.
+// The answer the farmer sees: CLIP's result, or our second check's (Gemini's) answer when it said no (26 Nov).
+export function finalOf(check, advice) {
+  const f = advice && advice.final;
+  return f && f.source === 'gemini' ? f : check.result;
+}
+
+// The card words for a saved History entry (uses the final answer).
+export function describeEntry(entry) {
+  return describe(finalOf(entry.check, entry.advice), entry.check.result);
+}
+
+// Everything the result card says, from the /api/check `result`, or from the advice's `final` answer when our
+// second check (Gemini) said no; then `clip` is CLIP's result, shown as "closest match in our library".
 //   tone: good | warn | bad | neutral (colour of the confidence badge)
-export function describe(result) {
+export function describe(result, clip = null) {
+  if (result.source === 'gemini') return describeSecondCheck(result, clip);
   const { decision, reason, disease_id, disease_name, crop, vote_share, runner_up } = result;
   const votePct = Math.round((vote_share || 0) * 100);
   const pest = disease_id === 'rice_stem_borer' ? 'Rice stem borer is an insect pest, not a disease.' : '';
@@ -104,6 +119,47 @@ export function describe(result) {
         ? 'SafeCrop can only check photos of leaves.'
         : 'The photo is too unclear for a safe answer, so SafeCrop is not guessing.',
     ],
+  };
+}
+
+// Our second check (Gemini) said no to CLIP's answer: its answer is the main one (decision rule of 26 Nov).
+function describeSecondCheck(final, clip) {
+  const closest = clip && clip.disease_name ? `Closest match in our library: ${lower(clip.disease_name)}.` : '';
+  const expert = 'Ask an expert: show the leaf to your local agriculture officer.';
+
+  if (final.decision === 'second_check') {
+    return {
+      kicker: cap(final.crop),
+      title: `SafeCrop's answer: ${final.disease_name}`,
+      badge: 'From our second check',
+      tone: 'warn',
+      lines: [
+        closest,
+        'Our second check looked at your photo and did not agree with the closest match.',
+        final.disease_id === 'rice_stem_borer' ? 'Rice stem borer is an insect pest, not a disease.' : '',
+      ].filter(Boolean),
+    };
+  }
+  if (final.decision === 'not_in_list') {
+    return {
+      kicker: '',
+      title: "May be a problem SafeCrop doesn't know yet",
+      badge: 'Not in our list',
+      tone: 'neutral',
+      lines: [`Our second check sees: ${lower(final.disease_name)}.`, closest, expert].filter(Boolean),
+    };
+  }
+  // not_sure, other_unknown: Gemini said no but can't name it
+  return {
+    kicker: '',
+    title: 'Not sure',
+    badge: 'Not sure',
+    tone: 'warn',
+    lines: [
+      "Our second check does not agree with the closest match, and can't say what this is.",
+      closest,
+      'Retake a clearer photo, or show the leaf to your local agriculture officer.',
+    ].filter(Boolean),
   };
 }
 
