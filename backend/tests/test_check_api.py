@@ -141,7 +141,10 @@ def test_check_is_remembered_without_the_photo(client):
             return all(no_pictures(v) for v in x)
         return not isinstance(x, (bytes, bytearray, np.ndarray))
 
-    assert no_pictures(saved)
+    # the one array kept is the fingerprint: 768 numbers from CLIP, not pixels (used if Gemini says no, 26 Nov)
+    emb = saved["emb"]
+    assert emb.shape == (768,) and emb.dtype == np.float32
+    assert no_pictures({k: v for k, v in saved.items() if k != "emb"})
 
 
 @needs_models

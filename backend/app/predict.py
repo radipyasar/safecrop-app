@@ -17,10 +17,14 @@ Decision rules (checked in this order; option C chosen by Nabil on 21 Nov 2026):
 4. one of our 8 diseases: vote share >= sure -> sure; >= not_sure -> likely; else not_sure
 
 "Closest disease" = the same 5-picture vote, but only over pictures of our 8 diseases.
+
+The library = database.npz (v1, never changed) + database_added.npz (photos our second check, Gemini, labelled;
+see app/learn.py). Added rows have no thumbnail (we never keep the photo) and carry Gemini's own words as their name.
 """
 
 import csv
 import json
+import threading
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -31,6 +35,8 @@ from . import photo_check
 from .model import embed, load_model, set_threads
 
 EXTRA_KINDS = ("healthy", "other")  # database pictures that are not one of our 8 diseases
+OTHER_UNKNOWN = "other_unknown"     # label of added photos that Gemini said are not one of our 8
+ADDED_FILE = "database_added.npz"
 
 CONFIDENCE_WORDS = {"sure": "Very likely", "likely": "Likely", "not_sure": "Not sure", "healthy": "Looks healthy",
                     "not_in_list": "Not in our list", "retake": "Can't read this photo"}
@@ -48,15 +54,18 @@ GENERIC_TIP = "Take a new photo of one leaf, close up, in good light."
 NOT_A_LEAF_TIP = "This doesn't look like a leaf. Take a close photo of one leaf so that it fills most of the picture."
 
 
-@dataclass
+@dataclass(frozen=True)
 class Library:
-    """database.npz + names from photos.csv + thresholds.json, loaded once."""
+    """database.npz (+ database_added.npz) + names from photos.csv + thresholds.json. Never changed in place:
+    adding rows makes a new Library, so a check that is already running keeps a consistent copy."""
     emb: np.ndarray          # N x 768, unit length
     label: np.ndarray        # N labels, e.g. "potato_late_blight", "healthy_potato", "other_potato_early_blight"
     photo_id: np.ndarray     # N photo ids (a clean picture and its 15 noisy copies share one id)
     is_disease: np.ndarray   # N booleans: one of our 8 diseases?
     names: dict              # label -> {"name", "crop", "kind"}
     thresholds: dict
+    row_name: np.ndarray     # N display names: the label's name, or Gemini's own words for added rows
+    added: np.ndarray        # N booleans: from database_added.npz (these have no thumbnail)
 
     def kind(self, label):
         return self.names[label]["kind"]
@@ -64,19 +73,44 @@ class Library:
     def name(self, label):
         return self.names[label]["name"]
 
+    @property
+    def n_added(self):
+        return int(self.added.sum())
 
-def load_library(models_dir):
+    def extended(self, emb, label, photo_id, row_name):
+        """A new Library with extra (added) rows at the end."""
+        label = np.asarray(label, dtype=str)
+        return Library(emb=np.ascontiguousarray(np.vstack([self.emb, np.asarray(emb, dtype=np.float32)])),
+                       label=np.concatenate([self.label, label]),
+                       photo_id=np.concatenate([self.photo_id, np.asarray(photo_id, dtype=str)]),
+                       is_disease=np.concatenate([self.is_disease, [self.kind(x) == "disease" for x in label]]),
+                       names=self.names, thresholds=self.thresholds,
+                       row_name=np.concatenate([self.row_name, np.asarray(row_name, dtype=str)]),
+                       added=np.concatenate([self.added, np.ones(len(label), dtype=bool)]))
+
+
+def load_library(models_dir, added_path=None):
+    """database.npz + photos.csv + thresholds.json, then the rows of database_added.npz if that file exists
+    (added_path: where it is; default models_dir/database_added.npz)."""
     models_dir = Path(models_dir)
     db = np.load(models_dir / "database.npz")
     names = {}
     with open(models_dir / "photos.csv", encoding="utf-8") as f:
         for row in csv.DictReader(f):
             names.setdefault(row["label"], {"name": row["label_name"], "crop": row["crop"], "kind": row["kind"]})
+    names[OTHER_UNKNOWN] = {"name": "Not in our list", "crop": None, "kind": "other"}
     thresholds = json.loads((models_dir / "thresholds.json").read_text(encoding="utf-8"))
     label = db["label"].astype(str)
-    return Library(emb=np.ascontiguousarray(db["emb"], dtype=np.float32), label=label,
-                   photo_id=db["photo_id"].astype(str), is_disease=np.array([names[x]["kind"] == "disease" for x in label]),
-                   names=names, thresholds=thresholds)
+    lib = Library(emb=np.ascontiguousarray(db["emb"], dtype=np.float32), label=label,
+                  photo_id=db["photo_id"].astype(str), is_disease=np.array([names[x]["kind"] == "disease" for x in label]),
+                  names=names, thresholds=thresholds, row_name=np.array([names[x]["name"] for x in label]),
+                  added=np.zeros(len(label), dtype=bool))
+    added_path = Path(added_path) if added_path else models_dir / ADDED_FILE
+    if added_path.exists():
+        with np.load(added_path) as a:
+            if len(a["label"]):
+                lib = lib.extended(a["emb"], a["label"].astype(str), a["photo_id"].astype(str), a["name"].astype(str))
+    return lib
 
 
 def weighted_vote(labels, similarities):
@@ -131,12 +165,13 @@ class Predictor:
     def __init__(self, model, lib, checker):
         self.model, self.lib, self.checker = model, lib, checker
         self.t = lib.thresholds
+        self._add_lock = threading.Lock()
 
     @classmethod
-    def load(cls, models_dir):
+    def load(cls, models_dir, added_path=None):
         models_dir = Path(models_dir)
         set_threads()
-        lib = load_library(models_dir)
+        lib = load_library(models_dir, added_path)
         checker = photo_check.load_checker(models_dir / "photo_check.joblib")
         model = load_model(models_dir / "clip_ft_delta.safetensors")
         return cls(model, lib, checker)
@@ -147,12 +182,14 @@ class Predictor:
         fake = np.clip(rng.normal([90, 140, 70], 30, (224, 224, 3)), 0, 255).astype(np.uint8)
         self.run(fake)
 
-    def guess(self, label, share):
-        return {"disease_id": label, "disease_name": self.lib.name(label), "vote_share": round(float(share), 4)}
+    def add_rows(self, emb, label, photo_id, row_name):
+        """Put newly added rows into the live library, so the next check can match them."""
+        with self._add_lock:
+            self.lib = self.lib.extended(emb, label, photo_id, row_name)
 
     def run(self, photo):
         """photo: 224 x 224 RGB uint8 from photo_check.prepare_photo. Returns photo_check, result, neighbours,
-        timing_ms and `raw` (numbers for the server's own log)."""
+        timing_ms, `raw` (numbers for the server's own log) and `emb` (the 768 numbers, kept in memory only)."""
         t, ms = self.t, {}
 
         t0 = time.perf_counter()
@@ -175,6 +212,7 @@ class Predictor:
                               "level_sure": round(check["level_sure"], 3), "signs": check["signs"],
                               "message": photo_message(check), "fix_applied": fix}
         out["timing_ms"] = {k: round(v, 1) for k, v in ms.items()}
+        out["emb"] = q
         return out
 
     def answer(self, q, check):
@@ -189,19 +227,28 @@ class Predictor:
         best = float(sims[order[0]])
         decision, reason = decide(lib.kind(winner), share, best, check["level"], check["level_sure"], t)
 
+        def name_of(label):  # an added "not in our list" photo is named with Gemini's words for the closest one
+            if label == OTHER_UNKNOWN:
+                return str(lib.row_name[next(i for i in order if lib.label[i] == label)])
+            return lib.name(label)
+
+        def guess(label, s):
+            return {"disease_id": str(label), "disease_name": name_of(label), "vote_share": round(float(s), 4)}
+
         shares = dict(ranked)
         if decision == "retake":
             shown, runner_up = None, None
         elif decision == "not_sure" and reason == "healthy_or_other_unclear":
             d_order = order[lib.is_disease[order]][: t["k"]]  # option C: the closest of our 8 diseases
             shown = weighted_vote(lib.label[d_order], sims[d_order])[0][0]
-            runner_up = self.guess(winner, share)
+            runner_up = guess(winner, share)
         else:
             shown = winner
-            runner_up = self.guess(*ranked[1]) if len(ranked) > 1 else None
+            runner_up = guess(*ranked[1]) if len(ranked) > 1 else None
 
-        neighbours = [{"disease_id": lib.label[i], "disease_name": lib.name(lib.label[i]),
-                       "thumb_url": f"/static/thumbs/{lib.photo_id[i]}.jpg", "similarity": round(float(sims[i]), 4)}
+        neighbours = [{"disease_id": str(lib.label[i]), "disease_name": str(lib.row_name[i]),
+                       "thumb_url": None if lib.added[i] else f"/static/thumbs/{lib.photo_id[i]}.jpg",
+                       "added": bool(lib.added[i]), "similarity": round(float(sims[i]), 4)}
                       for i in unique_neighbours(order, lib)]
 
         message = photo_message(check)
@@ -214,7 +261,7 @@ class Predictor:
 
         return {
             "result": {"decision": decision, "reason": reason, "disease_id": shown,
-                       "disease_name": lib.name(shown) if shown else None,
+                       "disease_name": name_of(shown) if shown else None,
                        "crop": lib.names[shown]["crop"] if shown else None,
                        "vote_share": round(float(shares.get(shown, 0.0)), 4) if shown else round(float(share), 4),
                        "confidence_words": CONFIDENCE_WORDS[decision], "runner_up": runner_up, "tip": tip,

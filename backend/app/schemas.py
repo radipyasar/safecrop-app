@@ -9,6 +9,9 @@ class Health(BaseModel):
     status: str = Field(examples=["ok"])
     model_loaded: bool = Field(description="true once CLIP and the database are loaded and warmed up")
     version: str
+    added_rows: int | None = Field(None, description="rows in the library added by our second check "
+                                                     "(database_added.npz); null while starting")
+    learn_from_gemini: bool = Field(False, description="LEARN_FROM_GEMINI: are new fingerprints being saved?")
 
 
 class PhotoCheck(BaseModel):
@@ -45,7 +48,10 @@ class Result(BaseModel):
 class Neighbour(BaseModel):
     disease_id: str
     disease_name: str
-    thumb_url: str = Field(description="clean 200 x 200 thumbnail, e.g. /static/thumbs/apple_scab_001.jpg")
+    thumb_url: str | None = Field(description="clean 200 x 200 thumbnail, e.g. /static/thumbs/apple_scab_001.jpg; "
+                                              "null for a picture added by our second check (no photo is kept)")
+    added: bool = Field(False, description="true for a fingerprint added by our second check (Gemini); "
+                                           "disease_name is then Gemini's own words")
     similarity: float
 
 
@@ -65,10 +71,29 @@ class CheckResponse(BaseModel):
     timing_ms: Timing
 
 
+class FinalAnswer(BaseModel):
+    source: Literal["clip", "gemini"] = Field(description="clip = CLIP's answer stays; gemini = our second check "
+                                                          "said no, so its answer is shown")
+    decision: Literal["sure", "likely", "not_sure", "healthy", "not_in_list", "retake", "second_check"] = Field(
+        description="second_check = Gemini named one of our 8 diseases")
+    reason: str | None = Field(description="CLIP's reason, or second_check_other / second_check_unknown")
+    disease_id: str | None = Field(description="one of our 8, other_unknown, or CLIP's label")
+    disease_name: str | None = Field(description="for not_in_list / not_sure from the second check: Gemini's words")
+    crop: str | None
+    confidence_words: str
+
+
 class Advice(BaseModel):
     source: Literal["gemini", "fallback"] = Field(description="who wrote the advice")
     agrees: Literal["yes", "no", "unsure"] = Field(description="Gemini's second opinion on CLIP's answer "
                                                                "(always 'unsure' for the fallback or without a photo)")
+    gemini_label: str | None = Field(description="Gemini's own answer: one of our 8 ids, healthy or other "
+                                                  "(null without a photo or for the fallback)")
+    gemini_name: str | None = Field(description="Gemini's own words for what it sees, e.g. 'pumpkin leaf with yellowing'")
+    gemini_sure: Literal["high", "medium", "low"] | None
+    final: FinalAnswer = Field(description="what the farmer sees (CLIP's answer, or Gemini's after a 'no')")
+    learn: Literal["saved", "off", "duplicate", "daily_limit"] | None = Field(
+        None, description="after a 'no': was the photo's fingerprint saved to database_added.npz? null otherwise")
     summary: str
     steps: list[str] = Field(description="3-5 short steps")
     see_expert_when: str

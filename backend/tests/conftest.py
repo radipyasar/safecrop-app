@@ -11,6 +11,9 @@ import pytest
 # and write to a throw-away log instead of backend/safecrop.db.
 os.environ["GEMINI_API_KEY"] = ""
 os.environ["DB_PATH"] = str(Path(tempfile.mkdtemp(prefix="safecrop_test_")) / "test.db")
+# Learning from Gemini: off, and into a throw-away folder (never the real backend/models/database_added.npz).
+os.environ["LEARN_FROM_GEMINI"] = "false"
+os.environ["LEARN_DIR"] = tempfile.mkdtemp(prefix="safecrop_learn_")
 
 from app.main import MODELS_DIR  # noqa: E402
 

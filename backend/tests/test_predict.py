@@ -19,10 +19,10 @@ pytestmark = needs_models
 BLUR = {"motion_blur", "defocus_blur"}
 
 
-def test_vote_gives_the_same_number_as_colab():
+def test_vote_gives_the_same_number_as_colab(tmp_path):
     """Day 2 sanity check: each clean test photo, with all its own pictures hidden, voted to its own disease.
     Colab saved this number in export_info.json; the same vote on the laptop must give it exactly."""
-    lib = load_library(MODELS_DIR)
+    lib = load_library(MODELS_DIR, added_path=tmp_path / "none.npz")  # database.npz (v1) only
     db = np.load(MODELS_DIR / "database.npz")
     with open(MODELS_DIR / "photos.csv", encoding="utf-8") as f:
         test_photos = {r["photo_id"] for r in csv.DictReader(f) if r["in_test_set"] == "True"}

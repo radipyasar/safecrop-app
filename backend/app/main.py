@@ -26,7 +26,8 @@ from PIL import Image
 from . import photo_check
 from .advice import Advisor, photo_jpeg
 from .db import CheckLog
-from .predict import Predictor
+from .learn import Learner, env_flag
+from .predict import ADDED_FILE, Predictor
 from .schemas import Advice, CheckResponse, DiseaseDetail, DiseaseSummary, Health
 
 BACKEND = Path(__file__).resolve().parents[1]
@@ -34,7 +35,7 @@ BACKEND = Path(__file__).resolve().parents[1]
 load_dotenv(BACKEND / ".env")
 pillow_heif.register_heif_opener()  # lets Pillow open iPhone HEIC photos
 
-VERSION = "0.4.0"
+VERSION = "0.5.0"
 logging.basicConfig(level=logging.WARNING, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 log = logging.getLogger("safecrop")  # our own lines at INFO; other libraries only show warnings
 log.setLevel(logging.INFO)
@@ -45,7 +46,11 @@ FACTS_PATH = BACKEND / "data" / "diseases.json"
 DB_PATH = Path(os.getenv("DB_PATH") or BACKEND / "safecrop.db")  # git-ignored (*.db)
 MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 PHOTO_FORMATS = {"JPEG", "PNG", "WEBP", "HEIF"}  # what Pillow calls JPEG, PNG, WebP and HEIC files
-KEEP_CHECKS = 1000  # the newest results kept in memory for /api/advice (Day 4); no photos are kept
+KEEP_CHECKS = 1000  # the newest results (+ 768-number fingerprints) kept in memory for /api/advice; no photos
+# Learning from our second check (26 Nov): database_added.npz + added_by_gemini.csv live in LEARN_DIR (git-ignored).
+# LEARN_FROM_GEMINI=true turns saving on; keep it false during the real-photo test.
+LEARN_DIR = Path(os.getenv("LEARN_DIR") or MODELS_DIR)
+LEARN_FROM_GEMINI = env_flag("LEARN_FROM_GEMINI", default=False)
 
 # Which front-end addresses may call this API. Comma-separated, no slash at the end.
 ALLOWED_ORIGINS = [
@@ -66,6 +71,7 @@ class State:
 STATE = State()
 ADVISOR = Advisor.from_env(FACTS_PATH)  # Gemini key from GEMINI_API_KEY; without it every answer is the fallback
 CHECK_LOG = CheckLog(DB_PATH)
+LEARNER = Learner(LEARN_DIR, LEARN_FROM_GEMINI, lambda: STATE.predictor)
 
 
 def load_photo_list(models_dir):
@@ -91,7 +97,7 @@ def load_everything():
     'starting' until this has finished."""
     t0 = time.perf_counter()
     try:
-        predictor = Predictor.load(MODELS_DIR)
+        predictor = Predictor.load(MODELS_DIR, LEARN_DIR / ADDED_FILE)
         predictor.warm_up()
     except Exception as e:
         log.exception("Could not load the model files from %s", MODELS_DIR)
@@ -99,7 +105,8 @@ def load_everything():
         return
     STATE.load_seconds = time.perf_counter() - t0
     STATE.predictor = predictor
-    log.info("Model loaded and warmed up in %.1f s", STATE.load_seconds)
+    log.info("Model loaded and warmed up in %.1f s; %d rows added by our second check; learning %s",
+             STATE.load_seconds, predictor.lib.n_added, "ON" if LEARNER.enabled else "off")
 
 
 @asynccontextmanager
@@ -124,7 +131,9 @@ app.mount("/static/thumbs", StaticFiles(directory=MODELS_DIR / "thumbs", check_d
 @app.get("/api/health", response_model=Health)
 def health():
     """Is the server up? model_loaded becomes true once the model is loaded and warmed up."""
-    return {"status": "ok", "model_loaded": STATE.predictor is not None, "version": VERSION}
+    p = STATE.predictor
+    return {"status": "ok", "model_loaded": p is not None, "version": VERSION,
+            "added_rows": p.lib.n_added if p else None, "learn_from_gemini": LEARNER.enabled}
 
 
 def read_photo(data):
@@ -164,12 +173,12 @@ def check(image: UploadFile = File(description="a photo of one leaf: JPEG, PNG, 
     if predictor is None:
         raise HTTPException(503, "SafeCrop is starting. Try again in a minute.")
     out = predictor.run(photo)
-    raw = out.pop("raw")
+    raw, emb = out.pop("raw"), out.pop("emb")
     out["timing_ms"] = {"read": round(read_ms, 1), **out["timing_ms"],
                         "total": round((time.perf_counter() - t0) * 1000, 1)}
     check_id = uuid.uuid4().hex
-    with STATE.lock:  # remember the answer (never the photo) for the advice call
-        STATE.checks[check_id] = {"time": time.time(), "device_id": x_device_id, **out, "raw": raw}
+    with STATE.lock:  # remember the answer and the fingerprint (never the photo) for the advice call
+        STATE.checks[check_id] = {"time": time.time(), "device_id": x_device_id, **out, "raw": raw, "emb": emb}
         while len(STATE.checks) > KEEP_CHECKS:
             STATE.checks.popitem(last=False)
     CHECK_LOG.add_check(check_id, x_device_id, out, raw)
@@ -185,21 +194,29 @@ def advice(check_id: str = Form(max_length=64, description="check_id from /api/c
            image: UploadFile | None = File(None, description="optional: the same photo again, so Gemini can look "
                                                              "at it (used for this request only, never stored)")):
     """Advice for one check: written by Gemini from the checked facts, or the fallback from diseases.json.
-    CLIP's answer never changes here; Gemini only gives a second opinion (`agrees`)."""
+    Gemini also gives its own answer. If it says no to CLIP's answer, `final` is Gemini's answer (rules in
+    app/advice.py) and, with LEARN_FROM_GEMINI on, the photo's fingerprint is saved (app/learn.py; never the photo)."""
     with STATE.lock:
         check = STATE.checks.get(check_id)
     if check is None:
         raise HTTPException(404, "This check was not found. It may be too old or the server restarted; "
                                  "check the photo again.")
-    photo = None
+    img = photo = None
     if image is not None:
-        photo = photo_jpeg(open_photo(image.file.read(MAX_UPLOAD_BYTES + 1)))
+        img = open_photo(image.file.read(MAX_UPLOAD_BYTES + 1))
+        photo = photo_jpeg(img)
     out = ADVISOR.advise(check_id, check, lang, photo)
-    del photo  # the photo is not kept anywhere
+    if out["final"]["source"] == "gemini" and "learn" not in check:  # save once per check
+        square = photo_check.prepare_photo(img) if img is not None else None
+        check["learn"] = LEARNER.save(check_id, check, square, out["final"], out)
+        del square
+    del img, photo  # the photo is not kept anywhere
+    out["learn"] = check.get("learn") if out["final"]["source"] == "gemini" else None
     if not out["cached"]:
         CHECK_LOG.add_advice(check_id, out)
-    log.info("advice %s: %s (%s), agrees %s, %.0f ms", check_id[:8], out["source"], out["fallback_reason"] or lang,
-             out["agrees"], out["timing_ms"] or 0)
+    log.info("advice %s: %s (%s), agrees %s, final %s %s, learn %s, %.0f ms", check_id[:8], out["source"],
+             out["fallback_reason"] or lang, out["agrees"], out["final"]["source"], out["final"]["disease_id"],
+             out["learn"], out["timing_ms"] or 0)
     return out
 
 
