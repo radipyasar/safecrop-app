@@ -49,10 +49,32 @@ page's buttons one per row on wide screens ("Learn about this disease" no longer
 
 The only fair new test of the app model. Rules: the true label of every photo is written **before** running it; the
 cut-offs in `backend/models/thresholds.json` are **not** changed after seeing the results; `backend/safecrop.db` is
-deleted first so the log counts only these photos.
+deleted first so the log counts only these photos. **Since 26 Nov** (Gemini can override CLIP): keep
+`LEARN_FROM_GEMINI=false` in `backend/.env`, and run `python scripts/undo_added.py --list` first: it must say 0 rows
+(else `--all`), so no photo is matched against a fingerprint saved from an earlier photo.
 
-| # | Photo | True label (written before) | App answer | Decision | Photo check (problem, level) | Gemini agrees? | Time (s) | Right? |
-|---|-------|-----------------------------|------------|----------|------------------------------|----------------|----------|--------|
-| | | | | | | | | |
+Each row has three answers, so we can count which one was right more often. CLIP's answer = the picture comparison
+(`label` in the log), Gemini's answer = its own label and words (`gemini_label`, `gemini_name`, `gemini_sure`), final =
+what the farmer saw (`final_label`). "Right?" uses the true label; a photo of something not in our 8 counts as right when
+the answer is "not in our list" / "not sure" (not one of our 8 by mistake).
 
-Summary (fill in): right __ / wrong __ / not sure __ of __; photo check warned on __; Gemini agreed on __.
+| # | Photo | True label (written before) | CLIP's answer (decision, vote) | CLIP right? | Gemini's answer (label, words, how sure) | Gemini agrees? | Gemini right? | Final answer (source) | Final right? | Photo check (problem, level) | Time (s) |
+|---|-------|-----------------------------|--------------------------------|-------------|-------------------------------------------|----------------|---------------|-----------------------|--------------|------------------------------|----------|
+| | | | | | | | | | | | |
+
+Summary (fill in), of __ photos:
+
+| | Right | Wrong | Not sure |
+|---|---|---|---|
+| CLIP alone | | | |
+| Gemini alone | | | |
+| Final (CLIP + Gemini rule) | | | |
+
+Also count: Gemini said "no" on __ photos; of these CLIP was wrong on __ (Gemini caught it) and right on __ (Gemini
+overrode a right answer). Photo check warned on __. Compare CLIP vs final on the same photos with McNemar counts
+(CLIP right & final wrong vs CLIP wrong & final right), not just the two percentages.
+
+The 26 Nov evening checks (before this change, not labelled in advance) are an informal first look, not this test:
+CLIP said "Very likely" (vote 100%) on 5 photos: rice stem borer ×2, black gram yellow mosaic ×3 (log rows
+16:23–16:45). Nabil says the photos shown were neither. Gemini said "no" on 4 of the 5 (it agreed on the 16:42 one).
+The "dry grass head" photo passed the "not a leaf" cut by 0.0006 (best similarity 0.7606 vs 0.7602).

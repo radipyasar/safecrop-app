@@ -33,11 +33,19 @@ Nov (work up to Day 3); Week 11 update = Mon 30 Nov. All nice-to-haves dropped; 
 - **Never put a key in code, git, logs or screenshots.** `GEMINI_API_KEY` and `HF_TOKEN` live only in
   `backend/.env` (git-ignored). Check `git status` before every commit.
 - **Models:** only CLIP ViT-L/14 (our fine-tuned E4 version) and **Gemini 3.5 Flash-Lite**. No Gemma, no other models.
-- **CLIP names the disease; Gemini does not change it.** Gemini only writes advice from the checked facts in
-  `backend/data/diseases.json` and gives a second opinion (`agrees: yes/no/unsure`). E5 (Gemini as the
-  classifier) is not tested, so it must not decide the label.
+- **CLIP answers first; Gemini can replace the answer only when it says "no"** (decided by Nabil, 26 Nov 2026;
+  replaces "Gemini does not change it"). Gemini sees the photo, CLIP's answer and the checked facts in
+  `backend/data/diseases.json`, and returns `gemini_label` / `gemini_name` / `gemini_sure` + `agrees`.
+  yes / unsure → CLIP's answer stays. no + sure high/medium → Gemini's answer (one of our 8 → that disease, advice
+  from its facts; else "not in our list" with Gemini's words). no but can't name it → "not sure", `other_unknown`.
+  Rules: `final_answer` in `backend/app/advice.py`, `docs/MODEL_CARD.md` ("Second check"). E5 (Gemini as the
+  classifier) is still not measured: report CLIP, Gemini and final answers separately on real photos.
+- **Learning from Gemini's "no"** only with `LEARN_FROM_GEMINI=true` (false during the real-photo test): the
+  fingerprint + 15 noisy copies go to `backend/models/database_added.npz` (git-ignored). **`database.npz` (v1) is
+  never changed.** Undo with `backend/scripts/undo_added.py`.
 - **No chemical names with doses** in advice. Say "ask your local agriculture officer which product and dose to use".
-- **Don't store farmers' photos** on the server. The SQLite log keeps only numbers and labels.
+- **Don't store farmers' photos** on the server. The SQLite log keeps only numbers and labels; `database_added.npz`
+  keeps only 768-number fingerprints (the Check page says so).
 - **Accuracy claims come from the 5-fold results** in the `NabilRafi/SafeCrop` repo, never from testing the
   app model on the 840 test images (it was trained on them). Real phone photos are the only fair new test.
 - Never change the decision thresholds after looking at the real-photo test results.
@@ -49,7 +57,7 @@ Nov (work up to Day 3); Week 11 update = Mon 30 Nov. All nice-to-haves dropped; 
 | Front end | React 19 + Vite 6, `react-router-dom`, plain CSS (`frontend/src/styles.css`), Inter font |
 | Back end | Python 3.11, FastAPI, Uvicorn, python-multipart, Pillow + pillow-heif |
 | Model | PyTorch (CPU), transformers, `openai/clip-vit-large-patch14` + our fine-tuned last 4 blocks + projection (`clip_ft_delta.safetensors`) |
-| Search | numpy cosine similarity over `database.npz` (clean + noisy copies + healthy / look-alike pictures), k = 5 weighted vote |
+| Search | numpy cosine similarity over `database.npz` (clean + noisy copies + healthy / look-alike pictures) + `database_added.npz` (Gemini-labelled, since 26 Nov), k = 5 weighted vote |
 | Photo check | 16 quality measurements + random forests (scikit-learn, joblib) — pin the Colab scikit-learn version |
 | Advice | `google-genai`, Gemini 3.5 Flash-Lite, JSON output, 20 s timeout, fallback from `diseases.json` |
 | History | browser localStorage (History page); SQLite log on the server for our own numbers |
@@ -68,8 +76,11 @@ backend/
   app/model.py       CLIP + fine-tuned weights → 768 numbers
   app/photo_check.py problem + level, resample fix
   app/predict.py     database search, vote, decision
-  app/advice.py      Gemini prompt + fallback
+  app/advice.py      Gemini prompt + its own answer + the final-answer rule + fallback
+  app/learn.py       save Gemini-labelled fingerprints to database_added.npz (LEARN_FROM_GEMINI)
+  app/noise.py       the Day 2 noise recipe (15 noisy copies), copied from the research repo
   app/db.py          SQLite log
+  scripts/undo_added.py  remove added fingerprints (--list, --all, --date, --check-id)
   data/diseases.json checked facts (8 diseases + healthy + unknown) with sources
   models/            model files — NOT in git (download from the HF model repo)
   tests/             pytest + sample images
@@ -79,13 +90,14 @@ docs/                PROJECT_STORY, ROUTINE, PROGRESS, MODEL_CARD, DATA_CARD, AP
 
 ## API
 
-- `GET /api/health` → `{status, model_loaded, version}`
+- `GET /api/health` → `{status, model_loaded, version, added_rows, learn_from_gemini}`
 - `POST /api/check` (form field `image`, header `X-Device-Id`) → `check_id`, `photo_check`
   {problem, problem_words, level, sure, level_sure, signs, message, fix_applied}, `result` {decision, reason,
   disease_id, disease_name, crop, vote_share, confidence_words, runner_up, tip, best_similarity},
-  `neighbours` [5 × {disease_id, disease_name, thumb_url, similarity}], `timing_ms` {read, photo_check, embed,
-  search, total}. Errors: 400 empty, 413 too big, 415 not a photo, 503 still starting. Shapes: `app/schemas.py`.
-- `POST /api/advice` (form fields `check_id`, `lang` = en|bn, optional `image` = the same photo again, used once and never stored) → `{source: gemini|fallback, agrees, summary, steps[], see_expert_when, safety_note, lang, fallback_reason, cached, timing_ms}`. 404 unknown `check_id`.
+  `neighbours` [5 × {disease_id, disease_name, thumb_url (null for an added fingerprint), added, similarity}],
+  `timing_ms` {read, photo_check, embed, search, total}. Errors: 400 empty, 413 too big, 415 not a photo, 503 still
+  starting. Shapes: `app/schemas.py`.
+- `POST /api/advice` (form fields `check_id`, `lang` = en|bn, optional `image` = the same photo again, used once and never stored) → `{source: gemini|fallback, agrees, gemini_label, gemini_name, gemini_sure, final {source: clip|gemini, decision (+ second_check), reason, disease_id, disease_name, crop, confidence_words}, learn: saved|off|duplicate|daily_limit|null, summary, steps[], see_expert_when, safety_note, lang, fallback_reason, cached, timing_ms}`. The front end shows `final` and saves it to History. 404 unknown `check_id`.
 - `GET /api/diseases`, `GET /api/diseases/{id}`, static `/static/thumbs/…`
 - Decisions: `sure`, `likely`, `not_sure`, `healthy`, `not_in_list`, `retake` (cut-offs in `backend/models/thresholds.json`).
   Option C (21 Nov): `healthy` / `not_in_list` only with vote ≥ the `sure` cut and a photo that is not L3; otherwise

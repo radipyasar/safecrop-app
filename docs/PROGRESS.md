@@ -26,6 +26,20 @@ app runs and is demonstrated on the laptop (see the note under "Bugs and ideas")
 
 ## Where things are now (24 Nov, end of Days 5, 6B and 7 — the whole app works on the laptop)
 
+- **New decision rule, 26 Nov (built 27 Nov, version 0.5.0): Gemini can replace CLIP's answer when it says "no".**
+  Why: on 26 Nov evening CLIP said "Very likely" (vote 100%) for photos that were not ours (a dry grass head → rice
+  stem borer, a yellow leaf → black gram yellow mosaic); Gemini said "no" on 4 of 5 such checks. Now `/api/advice`
+  returns Gemini's own answer (`gemini_label`, `gemini_name`, `gemini_sure`) and a `final` answer: yes / unsure →
+  CLIP; no + high/medium → Gemini's disease (advice from its facts, second Gemini call) or "not in our list" with
+  Gemini's words; no but can't name it → "not sure" (`other_unknown`). The Result page shows "SafeCrop's answer: X
+  (from our second check)" with CLIP's "Closest match in our library" and the 5 pictures; History saves the final
+  answer. **Learning** (`app/learn.py`, `LEARN_FROM_GEMINI`, default **false**): after a "no", fingerprint + 15
+  noisy copies → `backend/models/database_added.npz` + `added_by_gemini.csv`; duplicates (cosine > 0.99) skipped,
+  max 20 per device per day, `scripts/undo_added.py` to remove. `database.npz` and every cut-off unchanged. SQLite log
+  has new columns (`gemini_label`, `gemini_name`, `gemini_sure`, `final_source`, `final_label`, `final_decision`,
+  `learn`). Check page: "We keep a number fingerprint of the photo (not the photo) to improve SafeCrop." 164 tests.
+  Rules in `docs/MODEL_CARD.md` ("Second check"); real-photo table now has CLIP / Gemini / final columns.
+
 - Front end, 24 Nov: **the whole app works on the laptop**, no sample data left.
   - **Check** (`pages/Check.jsx`): upload, "Use camera" (`capture="environment"`), drag-and-drop (also on the home card),
     preview (HEIC without preview still checks), shrink only above 2048 px / 5 MB (`lib/image.js`), button locked
@@ -116,6 +130,15 @@ app runs and is demonstrated on the laptop (see the note under "Bugs and ideas")
 
 <!-- one entry per day: done / left over / blockers -->
 
+### 26–27 Nov — Gemini's second check can override CLIP
+- **Done:** Nabil's new decision rule (Gemini's own answer, `final` answer, learning from "no" with safety nets and
+  undo script), Result / History / Check page, docs (CLAUDE.md hard rule, MODEL_CARD, TEST_RESULTS columns).
+  164 back-end tests pass (24 new). New screens checked in headless Chrome (1366 and 390 px) with made-up History
+  entries, without calling Gemini.
+- **Left over:** the real-photo test (Day 6 Block A) with the new columns; Days 9–11 as planned.
+- **Blockers:** none. Note: the rule was chosen after seeing the 26 Nov evening photos, so those photos are not a fair
+  test of it; only new, labelled-in-advance photos are.
+
 ## Numbers for slides
 
 | What | Value | Date measured |
@@ -148,8 +171,17 @@ app runs and is demonstrated on the laptop (see the note under "Bugs and ideas")
 | Fallback advice time (broken Gemini key) | 0.3 s (API) / 0.5–0.6 s (in the browser) | 26 Nov 2026 |
 | Gemini on the 8 clean sample photos (test plan row 1) | agreed with CLIP on 8/8 (sample photos, not real photos) | 26 Nov 2026 |
 | Back-end automatic tests passing | 140 / 140 (128 s on 26 Nov; 33 s on 24 Nov; includes loading the model once; Gemini faked, no quota) | 26 Nov 2026 |
+| Back-end automatic tests passing (after the Gemini-override change) | **164 / 164** (103 s; 24 new: decision rule, learning, duplicates, daily limit, undo) | 27 Nov 2026 |
+| 26 Nov evening checks, before the change (not labelled in advance) | CLIP "Very likely" (vote 100%) on 5 photos Nabil says were not ours; Gemini said "no" on 4 / 5 | 26 Nov 2026 |
+| Noise code in the app vs `database.npz` copies | 16 / 16 rows of a sample photo rebuilt, cosine 1.0, same seeds | 27 Nov 2026 |
+| Real photos: CLIP right / Gemini right / final right (of N) | | |
 
 ## Bugs and ideas for later
+
+- **27 Nov (Gemini override):** before the real-photo test run `python scripts/undo_added.py --list` (in `backend/`):
+  it must show 0 rows, and `/api/health` must say `learn_from_gemini: false`. The fallback advice for a "second
+  check" answer is English only (like every fallback). Gemini-labelled fingerprints are not checked by a person; if
+  `LEARN_FROM_GEMINI` is turned on for the demo, read `added_by_gemini.csv` afterwards and undo wrong rows.
 
 - **26 Nov: no hosting — Day 8 removed.** Hugging Face refused to create the Space (`402 Payment Required`: "hosting
   Gradio and Docker Spaces on free cpu-basic requires a PRO subscription"; only static Spaces are free). Free hosts that

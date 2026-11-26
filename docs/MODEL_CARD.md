@@ -8,8 +8,9 @@ results in the research repo [NabilRafi/SafeCrop](https://github.com/NabilRafi/S
 
 The app runs **E4**: CLIP ViT-L/14 with its last 4 blocks fine-tuned on our photos plus noisy copies, and a
 **picture database** of 7,680 pictures. A photo is turned into 768 numbers, compared with every database picture, and
-the **5 most similar pictures vote** (weighted by similarity). CLIP's vote names the disease. Gemini only writes the
-advice and gives a second opinion; it never changes the label. Before that, a **photo check** (16 measurements + two
+the **5 most similar pictures vote** (weighted by similarity). CLIP's vote gives the first answer. **Since 26 Nov 2026**
+Gemini 3.5 Flash-Lite looks at the same photo, gives its own answer and a second opinion, and **can replace CLIP's
+answer when it says "no"** (rules below: "Second check"). Before that, a **photo check** (16 measurements + two
 random forests) says what is wrong with the photo (blur, grain, dark, blocky) and how badly (L0–L3).
 
 ## How accurate is it? (the numbers to report)
@@ -117,6 +118,41 @@ What option C changes (measured 21 Nov 2026, before any real-photo test):
   level (copies are not saved as images; the photo check gets the level right 93.2%).
 - The cost: unclear healthy leaves see "not sure + closest disease + retake" instead of "healthy".
 
+## Second check: Gemini can replace CLIP's answer (decided by Nabil, 26 Nov 2026)
+
+**Why:** on the evening of 26 Nov, photos that were not one of our 8 problems (a dry grass head, a yellow leaf of
+another crop) got "Very likely" with 100% of the vote: CLIP can only pick from the pictures in its library, and the
+vote shows that the 5 closest pictures agree with each other, not that the photo matches them. Gemini said "no" on 4 of
+5 such checks. **Gemini as the classifier (E5) has not been measured**; the real-photo table in `docs/TEST_RESULTS.md`
+now records CLIP's, Gemini's and the final answer separately so we can count which is right more often.
+
+`/api/advice` sends Gemini the photo, CLIP's answer and the checked facts. Gemini answers `gemini_label` (one of our 8
+ids, `healthy` or `other`), `gemini_name` (its own words) and `gemini_sure` (high / medium / low) plus `agrees`.
+Rules (`final_answer` in `backend/app/advice.py`):
+
+| Gemini says | Final answer shown | Advice |
+| --- | --- | --- |
+| agrees yes / unsure | CLIP's answer (as before) | from CLIP's disease facts |
+| no, names one of our 8, sure high / medium | **that disease** ("SafeCrop's answer: X, from our second check"); CLIP's answer shown as "Closest match in our library" | a second Gemini call writes it from that disease's facts (fallback: those facts) |
+| no, names healthy / other, sure high / medium | "Not in our list" with Gemini's words + ask an expert | Gemini's "no" advice (no treatment) |
+| no, sure low / no words / names the same answer | "Not sure", label `other_unknown` | Gemini's "no" advice |
+
+No cut-off changed. Retake answers never go to Gemini. Without a photo or without Gemini (fallback), CLIP's answer stays.
+
+**Learning from "no"** (`backend/app/learn.py`, only with `LEARN_FROM_GEMINI=true` in `backend/.env`; default false,
+and false during the real-photo test): after a "no", the check's 768 numbers (kept in memory since `/api/check`) plus
+15 noisy copies (Day 2 noise code `app/noise.py`, seed family 2026, made from the photo sent with the advice call, in
+the background) are added to `backend/models/database_added.npz` with label = Gemini's disease id or `other_unknown`,
+name = Gemini's words, source `gemini`, date, check_id, device id. The app loads `database.npz` (v1, never changed) +
+`database_added.npz`; added pictures show a leaf mark and Gemini's words (no photo is kept). Safety nets: skip if
+cosine > 0.99 to any library picture, at most 20 saves per device per day, every save logged in
+`added_by_gemini.csv`, `python scripts/undo_added.py --list / --all / --date D / --check-id C`.
+`tests/test_learn.py`: the noise code rebuilds the `database.npz` copies (cosine > 0.9999), a saved photo is matched
+by the same photo next time (closest picture 0.999+, the saved label wins the vote).
+
+Risk to say in reports: labels saved this way are Gemini's, not checked by a person; a wrong Gemini "no" adds a wrong
+picture that later checks can match. Undo removes them; `/api/health` shows `added_rows`.
+
 ## The fair checks (fold 0: a second model trained without 48 photos, same seed)
 
 **1. Do the healthy / look-alike pictures hurt?** The same 192 held-out images, three databases:
@@ -194,3 +230,5 @@ own disease). Both are back-end tests (`tests/test_model.py`, `tests/test_predic
 - Black gram rests on 30 photos. Only the default fine-tuning settings were tried.
 - The "not a leaf" check was set with 30 phone photos and 14 sample pictures; unusual objects may still pass.
 - The app model must never be scored on the test images (it trained on them).
+- Since 26 Nov Gemini can replace CLIP's answer, but Gemini's accuracy as a classifier is not measured (E5 not run);
+  only the real-photo test will show whether the final answer is right more often than CLIP alone.
